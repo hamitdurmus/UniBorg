@@ -1,16 +1,12 @@
-import asyncio
-import os
 from html.parser import HTMLParser
 
 import requests
 
-import wget
 from bs4 import BeautifulSoup
-from sample_config import Config
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern=("coronatr ?(.*)"))) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern=("coronatr ?(.*)")))  
 async def cor_tr(event):
     x = await event.edit("`Corona Virüs Bilgileri https://covid19.saglik.gov.tr/ adresinden alınıyor..`")
     try:
@@ -34,6 +30,9 @@ async def cor_tr(event):
             bugun_vefat = bugun_[15].text
             bugun_iyilesen = bugun_[17].text
 
+            tarih = soup.find(class_="takvim text-center")
+            tarih = tarih.text.split()
+            tarih_ = tarih[0] + " " + tarih[1] + " " + tarih[2]
             msg = """
 Sağlık Bakanlığı Corona Virus Bilgileri
 Kaynak: `https://covid19.saglik.gov.tr/`
@@ -51,6 +50,8 @@ Bugünkü Test: **{}**
 Bugünkü Vaka: **{}**
 Bugünkü Vefat: **{}**
 Bugünkü İyileşen: **{}**
+
+Tarih: **{}**
 """.format(
     toplam_test,
     toplam_vaka,
@@ -60,7 +61,8 @@ Bugünkü İyileşen: **{}**
     bugun_test,
     bugun_vaka,
     bugun_vefat,
-    bugun_iyilesen
+    bugun_iyilesen,
+    tarih_
 )
             await x.edit(msg)
         else:

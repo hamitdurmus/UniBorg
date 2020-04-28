@@ -1,19 +1,21 @@
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import io
+import logging
 import time
+from datetime import datetime
+
 from sample_config import Config
 from uniborg.util import admin_cmd
-import subprocess
-from datetime import datetime
-import io
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 
 
 
-@borg.on(admin_cmd(pattern=("cmrdl ?(.*)"))) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern=("cmrdl ?(.*)")))  
 async def _(event):
     url = event.pattern_match.group(1)
     if event.fwd_from:
@@ -58,4 +60,3 @@ async def _(event):
                 caption=f"`{full_file_name}`",
                 reply_to=reply_to_id
             )
-

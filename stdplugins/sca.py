@@ -1,14 +1,17 @@
 """Send Chat Actions
 Syntax: .sca <option>
 Options: typing, contact, game, location, voice, round, video, photo, document, cancel"""
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
+
 from uniborg.util import admin_cmd
 
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="sca ?(.*)")) # pylint:disable=E0602
+
+@borg.on(admin_cmd(pattern="sca ?(.*)"))  
 async def _(event):
     if event.fwd_from:
         return

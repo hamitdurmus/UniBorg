@@ -1,19 +1,23 @@
 import datetime
 import json
 import logging
-# from ..bin.namaz_vakti import namazvakti
-from uniborg.util import admin_cmd
 from datetime import datetime
+
 import pytz
+
 # from bin.namaz_vakti import namazvakti
 from bin.namaz_vakti.namazvakti import namazvakti
+# from ..bin.namaz_vakti import namazvakti
+from uniborg.util import admin_cmd
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 TEMP = ''
 
 
-@borg.on(admin_cmd(pattern=("ezanv ?(.*) + ?(.*)"))) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern=("ezanv ?(.*) + ?(.*)")))  
 async def namaz_(event):
     """kullanımı .ezanv <şehir> <ilçe>"""
     if not event.text.startswith("."):

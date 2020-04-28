@@ -1,13 +1,17 @@
 """Query Indian Financial System Code to get address of the relevant bank or branch
 Syntax: .ifsc rp <IFSC CODE>"""
-import requests
 import json
-from uniborg.util import admin_cmd
 import logging
+
+import requests
+
+from uniborg.util import admin_cmd
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="ifsc rp (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="ifsc rp (.*)"))  
 async def _(event):
     if event.fwd_from:
         return

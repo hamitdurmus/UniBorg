@@ -6,21 +6,25 @@ Available Commands:
 .upload <Path To File>
 .uploadir <Path To Directory>
 .uploadasstream <Path To File>"""
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import os
 import subprocess
 import time
 from datetime import datetime
-from telethon.tl.types import DocumentAttributeAudio, DocumentAttributeVideo
 
-from uniborg.util import admin_cmd, progress
+from telethon.tl.types import DocumentAttributeAudio, DocumentAttributeVideo
 
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from sample_config import Config
+from uniborg.util import admin_cmd, progress
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 
@@ -35,7 +39,7 @@ def get_lst_of_files(input_directory, output_lst):
     return output_lst
 
 
-@borg.on(admin_cmd(pattern="uploadir (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="uploadir (.*)"))  
 async def _(event):
     if event.fwd_from:
         return
@@ -143,7 +147,7 @@ async def _(event):
         await event.edit("404: Directory Not Found")
 
 
-@borg.on(admin_cmd(pattern="upload (.*)", allow_sudo=True)) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="upload (.*)", allow_sudo=True))  
 async def _(event):
     if event.fwd_from:
         return
@@ -188,7 +192,7 @@ def get_video_thumb(file, output=None, width=90):
         return output
 
 
-@borg.on(admin_cmd(pattern="uploadasstream (.*)", allow_sudo=True)) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="uploadasstream (.*)", allow_sudo=True))  
 async def _(event):
     if event.fwd_from:
         return

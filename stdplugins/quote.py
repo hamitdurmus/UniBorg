@@ -14,15 +14,16 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import logging
-import requests
 import base64
 import json
-import os 
+import logging
+import os
+from io import BytesIO
+
+import requests
 import telethon
 
 from PIL import Image
-from io import BytesIO
 from uniborg.util import admin_cmd
 
 logger = logging.getLogger(__name__)
@@ -57,7 +58,7 @@ if 1 == 1:
                                           "default_username_color": "#b48bf2"}
     client = borg
 
-    @borg.on(admin_cmd(pattern="quote(.*)")) # pylint:disable=E0602
+    @borg.on(admin_cmd(pattern="quote(.*)"))  
     async def quotecmd(message):  # noqa: C901
         """Quote a message.
         Usage: .quote [template]
@@ -217,8 +218,8 @@ def get_markdown(reply):
         elif isinstance(entity, telethon.tl.types.MessageEntityUnderline):
             md_item["Type"] = "underline"
         else:
-            # logger.warning("Unknown entity: " + str(entity))
-            logger.warnin('Unknown entity: {}', entity)
+            # logger.warninging("Unknown entity: " + str(entity))
+            logger.warningin('Unknown entity: {}', entity)
 
         markdown.append(md_item)
     return markdown

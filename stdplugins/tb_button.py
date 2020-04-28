@@ -1,18 +1,22 @@
 """Create Button Posts
 """
 import logging
+import re
+
+from telethon import custom
+
+from sample_config import Config
+from uniborg.util import admin_cmd
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
-import re
-from telethon import custom
-from uniborg.util import admin_cmd
-from sample_config import Config
+logger = logging.getLogger(__name__)
 
 # regex obtained from: https://github.com/PaulSonOfLars/tgbot/blob/master/tg_bot/modules/helper_funcs/string_handling.py#L23
 BTN_URL_REGEX = re.compile(r"(\{([^\[]+?)\}\<button(url|text):(?:/{0,2})(.+?)(:same)?\>)")
 
 
-@borg.on(admin_cmd(pattern="cbutton"))  # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="cbutton"))   
 async def _(event):
     if Config.TG_BOT_USER_NAME_BF_HER is None or tgbot is None:
         await event.edit("need to set up a @BotFather bot for this module to work")
@@ -80,7 +84,7 @@ async def _(event):
 
 # Helpers
 if Config.TG_BOT_USER_NAME_BF_HER is None or tgbot is None:
-    @tgbot.on(events.callbackquery.CallbackQuery(  # pylint:disable=E0602
+    @tgbot.on(events.callbackquery.CallbackQuery(   
         data=re.compile(b"txt_prod_(.*)")
     ))
     async def on_plug_in_callback_query_handler(event):

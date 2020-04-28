@@ -9,10 +9,13 @@ import math
 import os
 import random
 import urllib.request
-from PIL import Image
-from telethon.tl.functions.messages import GetStickerSetRequest
-from telethon.tl.types import (DocumentAttributeFilename, DocumentAttributeSticker, InputStickerSetID, MessageMediaPhoto)
 
+from telethon.tl.functions.messages import GetStickerSetRequest
+from telethon.tl.types import (DocumentAttributeFilename,
+                               DocumentAttributeSticker, InputStickerSetID,
+                               MessageMediaPhoto)
+
+from PIL import Image
 from uniborg.util import admin_cmd
 
 KANGING_STR = [
@@ -27,7 +30,7 @@ KANGING_STR = [
 
 
 # @register(outgoing=True, pattern="^.kang")
-@borg.on(admin_cmd(pattern="kang ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="kang ?(.*)"))  
 async def kang(args):
     """ For .kang command, kangs stickers or creates new ones. """
     if not args.text[0].isalpha() and args.text[0] not in ("/", "#", "@", "!"):
@@ -263,7 +266,7 @@ async def resize_photo(photo):
 
 
 # @register(outgoing=True, pattern="^.stkrinfo$")
-@borg.on(admin_cmd(pattern="stkrinfo ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="stkrinfo ?(.*)"))  
 async def get_pack_info(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@",
                                                              "!"):

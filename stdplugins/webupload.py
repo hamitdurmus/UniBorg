@@ -1,16 +1,20 @@
 # originally created by
 # https://github.com/Total-Noob-69/X-tra-Telegram/blob/master/userbot/plugins/webupload.py
 # modified by __me__ to suit **my** needs
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
-from uniborg.util import admin_cmd
 import asyncio
 import json
+import logging
 import os
 
+from uniborg.util import admin_cmd
+from sample_config import Config
 
-@borg.on(admin_cmd(pattern="webupload ?(.+?|) --(anonfiles|transfer|filebin|anonymousfiles|megaupload|bayfiles)")) # pylint:disable=E0602
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+
+@borg.on(admin_cmd(pattern="webupload ?(.+?|) --(anonfiles|transfer|filebin|anonymousfiles|megaupload|bayfiles|letsupload)"))  
 async def _(event):
 	await event.edit("processing ...")
 	PROCESS_RUN_TIME = 100
@@ -31,7 +35,8 @@ async def _(event):
 		"filebin": "curl -X POST --data-binary \"@{full_file_path}\" -H \"filename: {bare_local_name}\" \"https://filebin.net\"",
 		"anonymousfiles": "curl -F file=\"@{full_file_path}\" https://api.anonymousfiles.io/",
 		"megaupload": "curl -F \"file=@{full_file_path}\" https://megaupload.is/api/upload",
-		"bayfiles": ".exec curl -F \"file=@{full_file_path}\" https://bayfiles.com/api/upload"
+		"bayfiles": ".exec curl -F \"file=@{full_file_path}\" https://bayfiles.com/api/upload",
+		"letsupload": ".exec curl -F \"file=@{full_file_path}\" https://api.letsupload.cc/upload"
 	}
 	filename = os.path.basename(file_name)
 	try:

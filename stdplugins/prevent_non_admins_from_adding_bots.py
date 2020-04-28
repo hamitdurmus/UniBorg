@@ -1,11 +1,16 @@
 # For @UniBorg
 # (c) Shrimadhav U K
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+
 from telethon import events
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.types import ChatBannedRights
+
+  
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 CHATS_TO_MONITOR_FOR_ADDED_BOTS = [
     # add the ID of the groups (Use .get_id command)
@@ -16,7 +21,7 @@ CHATS_TO_MONITOR_FOR_ADDED_BOTS = [
 ]
 
 
-@borg.on(events.ChatAction(chats=CHATS_TO_MONITOR_FOR_ADDED_BOTS)) # pylint:disable=E0602
+@borg.on(events.ChatAction(chats=CHATS_TO_MONITOR_FOR_ADDED_BOTS))  
 async def kick_if_bots(event):
     if event.user_added:
         users_added_by = event.action_message.from_id
@@ -37,7 +42,7 @@ async def kick_if_bots(event):
                     # kick the bot
                     await borg(EditBannedRequest(event.chat_id, user_obj, rights))
                 except Exception as e:
-                    logger.warn(str(e))
+                    logger.warning(str(e))
                     # maybe you don't have admin priveleges here :\
                     pass
         if is_ban_able:

@@ -1,13 +1,15 @@
+import asyncio
 import os
+import shutil
 import time
 from datetime import datetime
-from PyPDF2 import PdfFileWriter, PdfFileReader
-import asyncio
-from uniborg.util import admin_cmd, progress
-from sample_config import Config
-import shutil
 
-@borg.on(admin_cmd(pattern="watermark")) # pylint:disable=E0602
+from PyPDF2 import PdfFileReader, PdfFileWriter
+from sample_config import Config
+from uniborg.util import admin_cmd, progress
+
+
+@borg.on(admin_cmd(pattern="watermark")) 
 async def _(event):
     if event.fwd_from:
         return
@@ -29,7 +31,7 @@ async def _(event):
                     progress(d, t, mone, c_time, "trying to download")
                 )
             )
-        except Exception as e:  # pylint:disable=C0103,W0703
+        except Exception as e:  
             await mone.edit(str(e))
         else:
             end = datetime.now()

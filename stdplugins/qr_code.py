@@ -2,26 +2,29 @@
 Available Commands
 .getqr
 .makeqr <long text to include>"""
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import os
 from datetime import datetime
 
+import qrcode
 from bs4 import BeautifulSoup
-
+from sample_config import Config
 from uniborg.util import admin_cmd
 
-import qrcode
-from sample_config import Config
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+
+
 
 
 def progress(current, total):
     logger.info("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
 
 
-@borg.on(admin_cmd(pattern="getqr")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="getqr"))  
 async def _(event):
     if event.fwd_from:
         return
@@ -65,7 +68,7 @@ async def _(event):
     await event.edit(qr_contents)
 
 
-@borg.on(admin_cmd(pattern="makeqr ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="makeqr ?(.*)"))  
 async def _(event):
     if event.fwd_from:
         return

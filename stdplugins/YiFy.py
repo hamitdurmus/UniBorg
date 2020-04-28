@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # (c) Shrimadhav U K
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
-
 import asyncio
+import logging
 
 import requests
-from bs4 import BeautifulSoup
 from telethon import events
+  
+from bs4 import BeautifulSoup
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 
-@borg.on(events.NewMessage(pattern=r"\.yify recents", outgoing=True)) # pylint:disable=E0602
+
+
+@borg.on(events.NewMessage(pattern=r"\.yify recents", outgoing=True))  
 async def _(event):
     if event.fwd_from:
         return
@@ -24,9 +28,9 @@ async def _(event):
     main_soup = BeautifulSoup(main_page_response.text, "html.parser")
     movies_in_page = main_soup.find_all("div", class_="browse-movie-wrap")
     for movie in movies_in_page:
-        movie_bottom = movie.div
-        name = movie_bottom.a.string
-        year = movie_bottom.div.string
+        # movie_bottom = movie.div
+        # name = movie_bottom.a.string
+        # year = movie_bottom.div.string
         movie_links = movie.div.find_all("a")
         movie_links = movie_links[1:]
         for torrent_link in movie_links:

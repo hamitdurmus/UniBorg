@@ -1,14 +1,18 @@
 """Dictionary Plugin for @UniBorg
 Syntax: .meaning <word>"""
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+
 import requests
 
 from uniborg.util import admin_cmd
 
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="meaning (.*)")) # pylint:disable=E0602
+
+
+@borg.on(admin_cmd(pattern="meaning (.*)"))  
 async def _(event):
     if event.fwd_from:
         return

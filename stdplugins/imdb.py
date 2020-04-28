@@ -7,17 +7,21 @@ Imdb Module
 .imdb
 """
 import logging
+import re
+
+import requests
+
+import bs4
+from uniborg.util import admin_cmd
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
-import bs4
-import requests
-import re
-from uniborg.util import admin_cmd
+logger = logging.getLogger(__name__)
 
 langi = "en"
 
 #kanged from Blank-x ;---;
-@borg.on(admin_cmd(pattern="imdb (.*)"))  # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="imdb (.*)"))   
 async def imdb(e):
  try:
     movie_name = e.pattern_match.group(1)

@@ -2,22 +2,25 @@
 Syntax:
 .download
 .download url | file.name to download files from a Public Link"""
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import math
 import os
 import time
 from datetime import datetime
-from pySmartDL import SmartDL
 
+from pySmartDL import SmartDL
+from sample_config import Config
 from uniborg.util import admin_cmd, humanbytes, progress, time_formatter
 
-from sample_config import Config
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
-@borg.on(admin_cmd(pattern="download ?(.*)", allow_sudo=True)) # pylint:disable=E0602
+
+
+@borg.on(admin_cmd(pattern="download ?(.*)", allow_sudo=True))  
 async def _(event):
     if event.fwd_from:
         return

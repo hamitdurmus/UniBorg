@@ -2,12 +2,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import asyncio
 import math
 import os
-import time
 import re
+import time
+
 from telethon import events
 from telethon.tl.functions.messages import GetPeerDialogsRequest
+
+from alive_progress import alive_bar
 
 # the secret configuration specific things
 ENV = bool(os.environ.get("ENV", False))
@@ -111,15 +115,15 @@ async def progress(current, total, event, start, type_of_ps):
 # 	now = time.time()
 # 	diff = now - start
 # 	if round(diff % 10.00) == 0 or current == total:
-# 		percentage = current * 100 / total
+#         percentage = current * 100 / total
 #         speed = current / diff
 #         elapsed_time = round(diff) * 1000
 #         time_to_completion = round((total - current) / speed) * 1000
 #         estimated_total_time = elapsed_time + time_to_completion
 #         with alive_bar(100, bar='blocks') as bar:
 #         	for i in range(100):
-# 			await asyncio.sleep(5)
-# 			progress_str = bar()
+#                 await asyncio.sleep(5)
+#                 progress_str = bar()
 #         tmp = progress_str + \
 #             "{0} of {1}\nETA: {2}".format(
 #                 humanbytes(current),
@@ -131,6 +135,29 @@ async def progress(current, total, event, start, type_of_ps):
 #             tmp
 #         ))
 
+# async def progress(current,total,event,start,type_of_ps):
+#     now = time.time()
+#     diff = now -start
+#     if round(diff % 10.00)== 0 or current == total:
+#         percentage = current * 100 / total
+#         speed = current / diff
+#         elapsed_time = round(diff) * 1000
+#         time_to_completion = round((total - current)/speed) * 1000
+#         estimated_total_time = elapsed_time + time_to_completion
+#         with alive_bar(100, bar='blocks') as bar:
+#             for i in range(100):
+#                 await asyncio.sleep(5)
+#                 progress_str = bar()
+#         tmp = progress_str + \
+#             "{0} of {1}\nETA: {2}".format(
+#                 humanbytes(current),
+#                 humanbytes(total),
+#                 time_formatter(estimated_total_time)
+#             )
+#         await event.edit("{}\n {}".format(
+#             type_of_ps,
+#             tmp
+#         ))
 
 def humanbytes(size):
     """Input size in bytes,

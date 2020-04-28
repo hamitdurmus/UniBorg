@@ -1,19 +1,20 @@
 """Speech to Text
 Syntax: .stt <Language Code> as reply to a speech message"""
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import os
 from datetime import datetime
 
 import requests
 
+from sample_config import Config
 from uniborg.util import admin_cmd
 
-from sample_config import Config
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
-@borg.on(admin_cmd(pattern="stt (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="stt (.*)"))  
 async def _(event):
     if event.fwd_from:
         return

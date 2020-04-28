@@ -1,14 +1,18 @@
 """Malayalam Calendar plugin for @UniBorg
 SYNTAX: .calendar YYYY-MM-DD"""
-from datetime import datetime
-import requests
 import json
-from uniborg.util import admin_cmd
 import logging
+from datetime import datetime
+
+import requests
+
+from uniborg.util import admin_cmd
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="calendar (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="calendar (.*)"))  
 async def _(event):
     if event.fwd_from:
         return

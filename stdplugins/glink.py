@@ -7,25 +7,29 @@ Syntax:
 # there might be some changes made to suit the needs for this repository
 # Licensed under MIT License
 
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import math
 import os
+import ssl
 import time
-from pySmartDL import SmartDL
-from telethon import events
 from datetime import datetime
+from mimetypes import guess_type
+
+import httplib2
+from telethon import events
+
 from apiclient.discovery import build
 from apiclient.http import MediaFileUpload
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.file import Storage
-from mimetypes import guess_type
-import httplib2
-from uniborg.util import admin_cmd, progress, humanbytes
-import ssl
+from pySmartDL import SmartDL
 from sample_config import Config
+from uniborg.util import admin_cmd, humanbytes, progress
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 # Path to token json file, it should be in same directory as script
 G_DRIVE_TOKEN_FILE = Config.TMP_DOWNLOAD_DIRECTORY + "/auth_token.txt"
 # Copy your credentials from the APIs Console
@@ -49,7 +53,7 @@ else:
     # Handle target environment that doesn't support HTTPS verification
     ssl._create_default_https_context = _create_unverified_https_context
 
-@borg.on(admin_cmd(pattern="glink ?(.*)", allow_sudo=True)) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="glink ?(.*)", allow_sudo=True))  
 async def download(dryb):
     """ For .gdrive command, upload files to google drive. """
     if not dryb.text[0].isalpha() and dryb.text[0] not in ("/", "#", "@", "!"):
@@ -236,7 +240,7 @@ async def upload_file(http, file_path, file_name, mime_type, event):
     download_url = response.get("webContentLink")
     return download_url
 
-@borg.on(admin_cmd(pattern="gfolder ?(.*)", allow_sudo=True)) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="gfolder ?(.*)", allow_sudo=True))  
 async def _(event):
     if event.fwd_from:
         return

@@ -7,19 +7,25 @@ Click on any of the Buttons"""
 
 import asyncio
 import json
+import logging
 import os
 import re
 from datetime import datetime
+
 from telethon import events
 
+from sample_config import Config
+  
 
-# pylint:disable=E0602
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
-    @tgbot.on(events.callbackquery.CallbackQuery(  # pylint:disable=E0602
+    @tgbot.on(events.callbackquery.CallbackQuery(   
         data=re.compile(b"ytdl|(.*)|(.*)|(.*)")
     ))
     async def on_plug_in_callback_query_handler(event):
-        if event.query.user_id == borg.uid:  # pylint:disable=E0602
+        if event.query.user_id == borg.uid:   
             ctc, tg_send_type, ytdl_format_code, ytdl_extension = event.query.data.decode("UTF-8").split("|")
             try:
                 with open(Config.TMP_DOWNLOAD_DIRECTORY + "/" + "YouTubeDL.json", "r", encoding="utf8") as f:

@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # (c) Shrimadhav U K
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
+
 from uniborg.util import admin_cmd
 
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="typewriter (.*)")) # pylint:disable=E0602
+
+@borg.on(admin_cmd(pattern="typewriter (.*)"))  
 async def _(event):
     if event.fwd_from:
         return
@@ -20,7 +23,7 @@ async def _(event):
     try:
         await event.edit(shiiinabot)
     except Exception as e:
-        logger.warn(str(e))
+        logger.warning(str(e))
     typing_symbol = "|"
     DELAY_BETWEEN_EDITS = 0.3
     previous_text = ""
@@ -32,12 +35,12 @@ async def _(event):
         try:
             await event.edit(typing_text)
         except Exception as e:
-            logger.warn(str(e))
+            logger.warning(str(e))
             pass
         await asyncio.sleep(DELAY_BETWEEN_EDITS)
         try:
             await event.edit(previous_text)
         except Exception as e:
-            logger.warn(str(e))
+            logger.warning(str(e))
             pass
         await asyncio.sleep(DELAY_BETWEEN_EDITS)

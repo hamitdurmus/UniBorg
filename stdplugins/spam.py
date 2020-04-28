@@ -4,14 +4,18 @@
 # you may not use this file except in compliance with the License.
 #
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 from asyncio import wait
 
 from telethon import events
+  
 from sample_config import Config
 
-@borg.on(events.NewMessage(pattern=r"\.spam", outgoing=True)) # pylint:disable=E0602
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+
+@borg.on(events.NewMessage(pattern=r"\.spam", outgoing=True))  
 async def spammer(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         message = e.text
@@ -25,7 +29,7 @@ async def spammer(e):
         await e.delete()
         if Config.LOGGER:
             await e.client.send_message(
-                Config.LOGGER_GROUP,
+                Config.PRIVATE_GROUP_BOT_API_ID,
                 "#SPAM \n\n"
                 "Spam was executed successfully"
                 )

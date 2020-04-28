@@ -8,18 +8,23 @@ Available Commands:
 .clearfilter
 .clearallfilters"""
 import asyncio
-import re
-from sql_helpers.filters_sql import add_filter, remove_filter, get_all_filters, remove_all_filters
-from uniborg.util import admin_cmd
 import logging
+import re
+
+from sql_helpers.filters_sql import (add_filter, get_all_filters,
+                                     remove_all_filters, remove_filter)
+from uniborg.util import admin_cmd
+from sample_config import Config
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 DELETE_TIMEOUT = 300
 last_triggered_filters = {}
 
 
-@borg.on(admin_cmd(incoming=True)) # pylint:disable=E0602
+@borg.on(admin_cmd(incoming=True))  
 async def on_snip(event):
     name = event.raw_text
     if event.chat_id in last_triggered_filters:
@@ -52,7 +57,7 @@ async def on_snip(event):
                 last_triggered_filters[event.chat_id].remove(name)
 
 
-@borg.on(admin_cmd(pattern="savefilter (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="savefilter (.*)"))  
 async def on_snip_save(event):
     name = event.pattern_match.group(1)
     msg = await event.get_reply_message()
@@ -69,7 +74,7 @@ async def on_snip_save(event):
         await event.edit("Reply to a message with `savefilter keyword` to save the filter")
 
 
-@borg.on(admin_cmd(pattern="listfilters")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="listfilters"))  
 async def on_snip_list(event):
     all_snips = get_all_filters(event.chat_id)
     OUT_STR = "Available Filters in the Current Chat:\n"
@@ -94,14 +99,14 @@ async def on_snip_list(event):
         await event.edit(OUT_STR)
 
 
-@borg.on(admin_cmd(pattern="clearfilter (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="clearfilter (.*)"))  
 async def on_snip_delete(event):
     name = event.pattern_match.group(1)
     remove_filter(event.chat_id, name)
     await event.edit(f"filter **{name}** deleted successfully")
 
 
-@borg.on(admin_cmd(pattern="clearallfilters")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="clearallfilters"))  
 async def on_all_snip_delete(event):
     remove_all_filters(event.chat_id)
     await event.edit(f"filters **in current chat** deleted successfully")

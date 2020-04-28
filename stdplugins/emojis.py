@@ -5,12 +5,15 @@ Available Commands:
 .emoji :/
 .emoji -_-"""
 import asyncio
-from uniborg.util import admin_cmd
 import logging
+
+from uniborg.util import admin_cmd
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="emoji (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="emoji (.*)"))  
 async def _(event):
     if event.fwd_from:
         return

@@ -3,27 +3,31 @@ Available Commands:
 .google search <query>
 .google image <query>
 .google reverse search"""
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import os
 from datetime import datetime
 
 import requests
+
 from bs4 import BeautifulSoup
-
-from uniborg.util import admin_cmd
-
 from google_images_download import google_images_download
 from sample_config import Config
+from uniborg.util import admin_cmd
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+
+
 
 
 def progress(current, total):
     logger.info("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
 
 
-@borg.on(admin_cmd(pattern="google search (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="google search (.*)"))  
 async def _(event):
     if event.fwd_from:
         return
@@ -48,7 +52,7 @@ async def _(event):
     await event.edit("Google: {}\n{}".format(input_str, output_str), link_preview=False)
 
 
-@borg.on(admin_cmd(pattern="google image (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="google image (.*)"))  
 async def _(event):
     if event.fwd_from:
         return
@@ -69,6 +73,9 @@ async def _(event):
     paths = response.download(arguments)
     logger.info(paths)
     lst = paths[0].get(input_str)
+    if len(lst) == 0:
+        await event.delete()
+        return
     await borg.send_file(
         event.chat_id,
         lst,
@@ -86,7 +93,7 @@ async def _(event):
     await event.delete()
 
 
-@borg.on(admin_cmd(pattern="google reverse search")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="google reverse search"))  
 async def _(event):
     if event.fwd_from:
         return
