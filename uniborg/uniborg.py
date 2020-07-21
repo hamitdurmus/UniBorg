@@ -7,9 +7,9 @@ import logging
 import os
 from pathlib import Path
 
-import telethon.events
-import telethon.utils
 from telethon import TelegramClient
+import telethon.utils
+import telethon.events
 
 from . import hacks
 
@@ -35,7 +35,7 @@ class Uniborg(TelegramClient):
         kwargs = {
             "device_model": "GNU/Linux nonUI",
             "app_version": "@UniBorg 2.0",
-            "lang_code": "tr",
+            "lang_code": "ml",
             **kwargs
         }
 
@@ -82,6 +82,7 @@ class Uniborg(TelegramClient):
                     if plugin_name in self._plugins:
                         self.remove_plugin(plugin_name)
 
+
     async def _async_init(self, **kwargs):
         await self.start(**kwargs)
 
@@ -92,6 +93,7 @@ class Uniborg(TelegramClient):
             f"Logged in as {self.uid} "
             f"Try {self.config.COMMAND_HAND_LER}helpme in any chat..!"
         )
+
 
     def load_plugin(self, shortname):
         self.load_plugin_from_file(f"{self.n_plugin_path}/{shortname}.py")
@@ -110,6 +112,7 @@ class Uniborg(TelegramClient):
         mod.Config = self.config
         if self.config.TG_BOT_USER_NAME_BF_HER is not None:
             mod.tgbot = self.tgbot
+
 
         spec.loader.exec_module(mod)
         self._plugins[shortname] = mod
