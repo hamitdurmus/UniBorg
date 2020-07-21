@@ -62,6 +62,7 @@ youtube-dl
 PyLyrics 
 soundcloud-lib
 JustWatch
+alchemysession
 # gitpython
 # aioschedule
 # alive_progress
