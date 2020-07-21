@@ -63,13 +63,9 @@ class Config(object):
     # foloowing plugins won't work on Heroku,
     # because of their ephemeral file system
     NO_LOAD = [
-<<<<<<< HEAD
-        "rss",
-=======
         "notification_mtab_manager",
         "dbhelper",
         "fban_gban"
->>>>>>> bd67908380ceb7772cf0beec29806245726b0c31
         "unbanmute",
         "antispam",
         "notification_mtab_manager"
