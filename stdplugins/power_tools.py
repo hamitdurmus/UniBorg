@@ -3,15 +3,16 @@ Available Commands:
 .restart
 .shutdown"""
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import os
 import sys
 
 from uniborg.util import admin_cmd
 
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="restart")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="restart"))
 async def _(event):
     if event.fwd_from:
         return
@@ -28,7 +29,7 @@ async def _(event):
     quit()
 
 
-@borg.on(admin_cmd(pattern="shutdown")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="shutdown"))
 async def _(event):
     if event.fwd_from:
         return

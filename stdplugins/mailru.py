@@ -1,39 +1,33 @@
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
-import time
+import logging
+
 from sample_config import Config
 from uniborg.util import admin_cmd
-import subprocess
-from datetime import datetime
 
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-
-
-@borg.on(admin_cmd(pattern=("mailru ?(.*)"))) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern=("mailru ?(.*)")))
 async def _(event):
     url = event.pattern_match.group(1)
     if event.fwd_from:
         return
-    input_str = event.pattern_match.group(1)
-    mone = await event.edit("Processing ...")
-    start = datetime.now()
-    reply_message = await event.get_reply_message()
+    event.pattern_match.group(1)
+    await event.edit("Processing ...")
+    await event.get_reply_message()
     try:
-        c_time = time.time()
         downloaded_file_name = Config.TMP_DOWNLOAD_DIRECTORY
         await event.edit("Finish downloading to my local")
         command_to_exec = [
-                "./bin/cmrudl.py",
-                url,
-                "-d",
-                "./DOWNLOADS/"
-                ]
+            "./bin/cmrudl.py",
+            url,
+            "-d",
+            downloaded_file_name
+        ]
         process = await asyncio.create_subprocess_shell(
-        command_to_exec, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+            command_to_exec, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
         )
-        OUTPUT = f"**Files in DOWNLOADS folder:**\n"
         stdout, stderr = await process.communicate()
 
         if stdout.decode():

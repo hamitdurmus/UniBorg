@@ -1,23 +1,25 @@
 """IX.IO pastebin like site
 Syntax: .paste"""
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import os
 from datetime import datetime
 
 import requests
 
+from sample_config import Config
 from uniborg.util import admin_cmd
 
-from sample_config import Config
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 def progress(current, total):
-    logger.info("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
+    logger.info("Downloaded {} of {}\nCompleted {}".format(
+        current, total, (current / total) * 100))
 
 
-@borg.on(admin_cmd(pattern="npaste ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="npaste ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -46,19 +48,21 @@ async def _(event):
             os.remove(downloaded_file_name)
         else:
             message = previous_message.message
-    else:
-        message = "SYNTAX: `.paste <long text to include>`"
-    py_file =  ""
+    # else:
+    #     message = "SYNTAX: `.paste <long text to include>`"
+    py_file = ""
     if downloaded_file_name.endswith(".py"):
         py_file += ".py"
         data = message
-        key = requests.post('https://nekobin.com/api/documents', json={"content": data}).json().get('result').get('key')
+        key = requests.post('https://nekobin.com/api/documents',
+                            json={"content": data}).json().get('result').get('key')
         url = f'https://nekobin.com/{key}{py_file}'
         reply_text = f'Nekofied to *Nekobin* : {url}'
         await event.edit(reply_text)
     else:
         data = message
-        key = requests.post('https://nekobin.com/api/documents', json={"content": data}).json().get('result').get('key')
+        key = requests.post('https://nekobin.com/api/documents',
+                            json={"content": data}).json().get('result').get('key')
         url = f'https://nekobin.com/{key}'
         reply_text = f'Nekofied to *Nekobin* : {url}'
         await event.edit(reply_text)

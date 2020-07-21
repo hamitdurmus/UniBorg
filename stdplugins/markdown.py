@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import re
 from functools import partial
 
@@ -14,6 +12,11 @@ from telethon.tl.types import (MessageEntityBold, MessageEntityCode,
                                MessageEntityItalic, MessageEntityPre,
                                MessageEntityTextUrl)
 from telethon.utils import add_surrogate, del_surrogate
+
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 
@@ -35,6 +38,8 @@ def get_tag_parser(tag, entity):
 
 
 PRINTABLE_ASCII = range(0x21, 0x7f)
+
+
 def parse_aesthetics(m):
     def aesthetify(string):
         for c in string:
@@ -59,7 +64,7 @@ def parse_subreddit(m):
 
 def parse_strikethrough(m):
     text = m.group(2)
-    text =  "\u0336".join(text) + "\u0336 "
+    text = "\u0336".join(text) + "\u0336 "
     return text, None
 
 
@@ -77,7 +82,8 @@ MATCHERS = [
     (get_tag_parser('`', MessageEntityCode)),
     (re.compile(r'\+\+(.+?)\+\+'), parse_aesthetics),
     (re.compile(r'([^/\w]|^)(/?(r/\w+))'), parse_subreddit),
-    (re.compile(r"(?<!\w)(~{2})(?!~~)(.+?)(?<!~)\1(?!\w)"), parse_strikethrough)
+    (re.compile(r"(?<!\w)(~{2})(?!~~)(.+?)(?<!~)\1(?!\w)"),
+     parse_strikethrough)
 ]
 
 
@@ -131,8 +137,8 @@ def parse(message, old_entities=None):
     return del_surrogate(message), entities + old_entities
 
 
-@borg.on(events.MessageEdited(outgoing=True)) # pylint:disable=E0602
-@borg.on(events.NewMessage(outgoing=True)) # pylint:disable=E0602
+@borg.on(events.MessageEdited(outgoing=True))
+@borg.on(events.NewMessage(outgoing=True))
 async def reparse(event):
     old_entities = event.message.entities or []
     parser = partial(parse, old_entities=old_entities)

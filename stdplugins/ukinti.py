@@ -3,11 +3,10 @@ Available Commands:
 .unbanall
 .kick option
 Available Options: d, y, m, w, o, q, r """
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 from time import sleep
+
 from telethon.tl import functions
 from telethon.tl.types import (ChannelParticipantsKicked, ChatBannedRights,
                                UserStatusEmpty, UserStatusLastMonth,
@@ -15,6 +14,10 @@ from telethon.tl.types import (ChannelParticipantsKicked, ChatBannedRights,
                                UserStatusOnline, UserStatusRecently)
 
 from uniborg.util import admin_cmd
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 @borg.on(admin_cmd(pattern="unbanall ?(.*)"))
@@ -37,7 +40,7 @@ async def _(event):
             try:
                 await borg(functions.channels.EditBannedRequest(event.chat_id, i, rights))
             except FloodWaitError as ex:
-                logger.warn("sleeping for {} seconds".format(ex.seconds))
+                logger.warning("sleeping for {} seconds".format(ex.seconds))
                 sleep(ex.seconds)
             except Exception as ex:
                 await event.edit(str(ex))
@@ -46,7 +49,7 @@ async def _(event):
         await event.edit("{}: {} unbanned".format(event.chat_id, p))
 
 
-@borg.on(admin_cmd(pattern="ukick ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="ukick ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

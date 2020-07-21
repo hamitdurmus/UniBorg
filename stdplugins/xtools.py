@@ -2,14 +2,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 from datetime import datetime
+
 import requests
+
 from uniborg.util import admin_cmd
 
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="xtools (.*)")) # pylint:disable=E0602
+
+@borg.on(admin_cmd(pattern="xtools (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -21,7 +25,8 @@ async def _(event):
         sub_domain = input_str
     else:
         sub_domain, username = input_str.split("|")
-    final_url = "https://xtools.wmflabs.org/api/user/simple_editcount/{}.wikipedia.org/{}".format(sub_domain, username)
+    final_url = "https://xtools.wmflabs.org/api/user/simple_editcount/{}.wikipedia.org/{}".format(
+        sub_domain, username)
     json_string = requests.get(final_url).json()
     result_text = json_string["liveEditCount"]
     end = datetime.now()

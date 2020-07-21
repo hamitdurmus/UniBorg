@@ -1,16 +1,16 @@
 
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import re
 from collections import defaultdict, deque
 
-import regex
 from telethon import events, utils
 from telethon.tl import functions, types
 
-
 from sample_config import Config
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 HEADER = "「sed」\n"
 KNOWN_RE_BOTS = re.compile(
@@ -41,7 +41,7 @@ def doit(chat_id, match, original):
     flags = 0
     for f in fl:
         if f == 'i':
-            flags |= regex.IGNORECASE
+            flags |= re.IGNORECASE
         elif f == 'g':
             count = 0
         else:
@@ -52,7 +52,7 @@ def doit(chat_id, match, original):
             s = original.message
             if s.startswith(HEADER):
                 s = s[len(HEADER):]
-            s, i = regex.subn(fr, to, s, count=count, flags=flags)
+            s, i = re.subn(fr, to, s, count=count, flags=flags)
             if i > 0:
                 return original, s
         except Exception as e:
@@ -80,11 +80,12 @@ async def group_has_sedbot(group):
     return any(KNOWN_RE_BOTS.match(x.username or '') for x in full.users)
 
 
-@borg.on(events.NewMessage) # pylint:disable=E0602
+@borg.on(events.NewMessage)
 async def on_message(event):
     last_msgs[event.chat_id].appendleft(event.message)
 
-@borg.on(events.MessageEdited) # pylint:disable=E0602
+
+@borg.on(events.MessageEdited)
 async def on_edit(event):
     for m in last_msgs[event.chat_id]:
         if m.id == event.id:
@@ -92,7 +93,7 @@ async def on_edit(event):
             break
 
 @borg.on(events.NewMessage(
-    pattern=re.compile(r"^s/((?:\\/|[^/])+)/((?:\\/|[^/])*)(/.*)?"), outgoing=True)) # pylint:disable=E0602
+    pattern=re.compile(r"^s/((?:\\/|[^/])+)/((?:\\/|[^/])*)(/.*)?"), outgoing=True))
 async def on_regex(event):
     if event.fwd_from:
         return

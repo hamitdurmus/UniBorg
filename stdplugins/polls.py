@@ -1,12 +1,15 @@
 """Get Poll Info on non supported clients
 Syntax: .get_poll"""
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+
 from uniborg.util import admin_cmd
 
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="get_poll")) # pylint:disable=E0602
+
+@borg.on(admin_cmd(pattern="get_poll"))
 async def _(event):
     reply_message = await event.get_reply_message()
     if reply_message.media is None:
@@ -26,7 +29,8 @@ Answers: \n""".format(closed_status, question)
             results = media.results
             i = 0
             for result in results.results:
-                edit_caption += "{}> {}    {}\n".format(result.option, answers[i].text, result.voters)
+                edit_caption += "{}> {}    {}\n".format(
+                    result.option, answers[i].text, result.voters)
                 i += 1
             edit_caption += "Total Voters: {}".format(results.total_voters)
         else:

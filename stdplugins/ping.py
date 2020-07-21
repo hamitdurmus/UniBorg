@@ -1,16 +1,20 @@
 import logging
+from datetime import datetime
+
+from uniborg.util import admin_cmd, edit_or_reply
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
-from datetime import datetime
-from uniborg.util import admin_cmd
+logger = logging.getLogger(__name__)
 
 
-@borg.on(admin_cmd(pattern="ping")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="ping"))
 async def _(event):
     if event.fwd_from:
         return
+    ed = await edit_or_reply(event, "...")
     start = datetime.now()
-    await event.edit("Pong!")
+    j = await ed.edit("Pong!")
     end = datetime.now()
     ms = (end - start).microseconds / 1000
-    await event.edit("Pong!\n`{}`".format(ms))
+    await j.edit("Pong!\n`{}`".format(ms))

@@ -2,16 +2,17 @@
 Syntax: .speedtest
 Available Options: image, file, text"""
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 from datetime import datetime
 
+import speedtest
 from uniborg.util import admin_cmd
 
-import speedtest
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
-@borg.on(admin_cmd(pattern="speedtest ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="speedtest ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

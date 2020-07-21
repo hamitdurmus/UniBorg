@@ -2,10 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from telethon import events
 import logging
+
+from telethon import events
+
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 PRINTABLE_ASCII = range(0x21, 0x7f)
 
 
@@ -19,8 +23,8 @@ def aesthetify(string):
         yield chr(c)
 
 
-@borg.on(events.NewMessage(pattern=r'.ae\s+(.+)', outgoing=True)) # pylint:disable=E0602
-@borg.on(events.MessageEdited(pattern=r'.ae\s+(.+)', outgoing=True)) # pylint:disable=E0602
+@borg.on(events.NewMessage(pattern=r'.ae\s+(.+)', outgoing=True))
+@borg.on(events.MessageEdited(pattern=r'.ae\s+(.+)', outgoing=True))
 async def _(event):
     text = event.pattern_match.group(1)
     text = "".join(aesthetify(text))

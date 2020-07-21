@@ -2,26 +2,27 @@
 coded by @By_Azade
 code rewritten my SnapDragon7410
 """
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import os
+import shutil
+import tarfile
 import time
 from datetime import datetime
-import tarfile
-from telethon.tl.types import DocumentAttributeVideo
 
-from uniborg.util import admin_cmd, progress
+from telethon.tl.types import DocumentAttributeVideo
 
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from sample_config import Config
+from uniborg.util import admin_cmd, progress
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
-
-
-@borg.on(admin_cmd(pattern="untar")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="untar"))
 async def _(event):
     if event.fwd_from:
         return
@@ -50,7 +51,7 @@ async def _(event):
             end = datetime.now()
             ms = (end - start).seconds
             await mone.edit("Stored the tar to `{}` in {} seconds.".format(downloaded_file_name, ms))
-        with tarfile.TarFile.open(downloaded_file_name,'r') as tar_file:
+        with tarfile.TarFile.open(downloaded_file_name, 'r') as tar_file:
             tar_file.extractall(path=extracted)
         # tf = tarfile.open(downloaded_file_name)
         # tf.extractall(path=extracted)
@@ -77,7 +78,8 @@ async def _(event):
                     if metadata.has("duration"):
                         duration = metadata.get('duration').seconds
                     if os.path.exists(thumb_image_path):
-                        metadata = extractMetadata(createParser(thumb_image_path))
+                        metadata = extractMetadata(
+                            createParser(thumb_image_path))
                         if metadata.has("width"):
                             width = metadata.get("width")
                         if metadata.has("height"):
@@ -115,11 +117,8 @@ async def _(event):
                     continue
                 os.remove(single_file)
         os.remove(downloaded_file_name)
-
-
-
-
-
+    await asyncio.sleep(2)
+    shutil.rmtree(Config.TMP_DOWNLOAD_DIRECTORY)
 
 
 def get_lst_of_files(input_directory, output_lst):

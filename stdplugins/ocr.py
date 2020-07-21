@@ -3,12 +3,12 @@ Syntax: .ocr <LangCode>
 Available Languages: .ocrlanguages"""
 import json
 import os
-from PIL import Image
+
 import requests
 
-from uniborg.util import admin_cmd
-
+from PIL import Image
 from sample_config import Config
+from uniborg.util import admin_cmd
 
 
 def ocr_space_file(filename, overlay=False, api_key=Config.OCR_SPACE_API_KEY, language='eng'):
@@ -67,7 +67,7 @@ def progress(current, total):
         current, total, (current / total) * 100))
 
 
-@borg.on(admin_cmd(pattern="ocrlanguages")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="ocrlanguages"))
 async def get_ocr_languages(event):
     if event.fwd_from:
         return
@@ -100,7 +100,7 @@ async def get_ocr_languages(event):
     await event.edit(str(a))
 
 
-@borg.on(admin_cmd(pattern="ocr (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="ocr (.*)"))
 async def parse_ocr_space_api(event):
     if event.fwd_from:
         return
@@ -115,11 +115,13 @@ async def parse_ocr_space_api(event):
     )
     if downloaded_file_name.endswith((".webp")):
         downloaded_file_name = conv_image(downloaded_file_name)
-    test_file = ocr_space_file(filename=downloaded_file_name, language=lang_code)
+    test_file = ocr_space_file(
+        filename=downloaded_file_name, language=lang_code)
     ParsedText = "hmm"
     try:
         ParsedText = test_file["ParsedResults"][0]["ParsedText"]
-        ProcessingTimeInMilliseconds = str(int(test_file["ProcessingTimeInMilliseconds"]) // 1000)
+        ProcessingTimeInMilliseconds = str(
+            int(test_file["ProcessingTimeInMilliseconds"]) // 1000)
     except Exception as e:
         await event.edit("Errors.\n `{}`\nReport This to @UniBorg\n\n`{}`".format(str(e), json.dumps(test_file, sort_keys=True, indent=4)))
     else:
@@ -134,5 +136,3 @@ def conv_image(image):
     new_file_name = image + ".png"
     os.rename(image, new_file_name)
     return new_file_name
-
-

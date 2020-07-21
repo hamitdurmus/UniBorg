@@ -4,10 +4,16 @@
 
 import math
 import os
-import time
 import re
+import time
+
 from telethon import events
+from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.tl.functions.messages import GetPeerDialogsRequest
+from telethon.tl.types import (ChannelParticipantAdmin,
+                               ChannelParticipantCreator)
+
+# from alive_progress import alive_bar
 
 # the secret configuration specific things
 ENV = bool(os.environ.get("ENV", False))
@@ -17,6 +23,26 @@ else:
     if os.path.exists("config.py"):
         from sample_config import Development as Config
 
+
+def get_arg(message):
+    msg = message.raw_text
+    msg = msg.replace(" ", "", 1) if msg[1] == " " else msg
+    split = msg[1:].replace("\n", " \n").split(" ")
+    if " ".join(split[1:]).strip() == "":
+        return ""
+    return " ".join(split[1:])
+
+
+def arg_split_with(message, char):
+    args = get_arg(message).split(char)
+    for space in args:
+        if space.strip() == "":
+            args.remove(space)
+    return args
+
+
+async def reply(message, msg):
+    await message.client.send_message(message.chat_id, msg, reply_to=message.id)
 
 
 def admin_cmd(**args):
@@ -48,15 +74,6 @@ def admin_cmd(**args):
     black_list_chats = list(Config.UB_BLACK_LIST_CHAT)
     if len(black_list_chats) > 0:
         args["chats"] = black_list_chats
-
-    # check if the plugin should allow edited updates
-    allow_edited_updates = False
-    if "allow_edited_updates" in args and args["allow_edited_updates"]:
-        allow_edited_updates = args["allow_edited_updates"]
-        del args["allow_edited_updates"]
-
-    # check if the plugin should listen for outgoing 'messages'
-    is_message_enabled = True
 
     return events.NewMessage(**args)
 
@@ -91,8 +108,8 @@ async def progress(current, total, event, start, type_of_ps):
         time_to_completion = round((total - current) / speed) * 1000
         estimated_total_time = elapsed_time + time_to_completion
         progress_str = "[{0}{1}]\nPercent: {2}%\n".format(
-            ''.join("█" for i in range(math.floor(percentage / 5))),
-            ''.join("░" for i in range(20 - math.floor(percentage / 5))),
+            ''.join("█" for _ in range(math.floor(percentage / 5))),
+            ''.join("░" for _ in range(20 - math.floor(percentage / 5))),
             round(percentage, 2))
         tmp = progress_str + \
             "{0} of {1}\nETA: {2}".format(
@@ -111,15 +128,39 @@ async def progress(current, total, event, start, type_of_ps):
 # 	now = time.time()
 # 	diff = now - start
 # 	if round(diff % 10.00) == 0 or current == total:
-# 		percentage = current * 100 / total
+#         percentage = current * 100 / total
 #         speed = current / diff
 #         elapsed_time = round(diff) * 1000
 #         time_to_completion = round((total - current) / speed) * 1000
 #         estimated_total_time = elapsed_time + time_to_completion
 #         with alive_bar(100, bar='blocks') as bar:
 #         	for i in range(100):
-# 			await asyncio.sleep(5)
-# 			progress_str = bar()
+#                 await asyncio.sleep(5)
+#                 progress_str = bar()
+#         tmp = progress_str + \
+#             "{0} of {1}\nETA: {2}".format(
+#                 humanbytes(current),
+#                 humanbytes(total),
+#                 time_formatter(estimated_total_time)
+#             )
+#         await event.edit("{}\n {}".format(
+#             type_of_ps,
+#             tmp
+#         ))
+
+# async def progress(current,total,event,start,type_of_ps):
+#     now = time.time()
+#     diff = now -start
+#     if round(diff % 10.00)== 0 or current == total:
+#         percentage = current * 100 / total
+#         speed = current / diff
+#         elapsed_time = round(diff) * 1000
+#         time_to_completion = round((total - current)/speed) * 1000
+#         estimated_total_time = elapsed_time + time_to_completion
+#         with alive_bar(100, bar='blocks') as bar:
+#             for i in range(100):
+#                 await asyncio.sleep(5)
+#                 progress_str = bar()
 #         tmp = progress_str + \
 #             "{0} of {1}\nETA: {2}".format(
 #                 humanbytes(current),
@@ -167,3 +208,29 @@ def time_formatter(milliseconds: int) -> str:
         ((str(seconds) + "s, ") if seconds else "") + \
         ((str(milliseconds) + "ms, ") if milliseconds else "")
     return tmp[:-2]
+
+
+async def is_admin(client, chat_id, user_id):
+    if not str(chat_id).startswith("-100"):
+        return False
+    req_jo = await client(GetParticipantRequest(
+        channel=chat_id,
+        user_id=user_id
+    ))
+    chat_participant = req_jo.participant
+    if isinstance(chat_participant, ChannelParticipantCreator) or isinstance(chat_participant, ChannelParticipantAdmin):
+        return True
+    return False
+
+
+# Not that Great but it will fix sudo reply
+async def edit_or_reply(event, text):
+    if event.from_id in Config.SUDO_USERS:
+        await event.delete()
+        reply_to = await event.get_reply_message()
+        if reply_to:
+            return await reply_to.reply(text)
+        else:
+            return await event.reply(text)
+    else:
+        return await event.edit(text)

@@ -2,23 +2,23 @@
 Syntax:
 .download
 .download url | file.name to download files from a Public Link"""
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import math
 import os
 import time
 from datetime import datetime
+
 from bin.FastTelethon import download_file
 from pySmartDL import SmartDL
-
+from sample_config import Config
 from uniborg.util import admin_cmd, humanbytes, progress, time_formatter
 
-from sample_config import Config
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-
-@borg.on(admin_cmd(pattern="udownload ?(.*)", allow_sudo=True)) # pylint:disable=E0602s
+@borg.on(admin_cmd(pattern="udownload ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -32,8 +32,8 @@ async def _(event):
         try:
             c_time = time.time()
             downloaded_file_name = await download_file(
-                reply_message, 
-                Config.TMP_DOWNLOAD_DIRECTORY, 
+                reply_message,
+                Config.TMP_DOWNLOAD_DIRECTORY,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                     progress(d, t, mone, c_time, "trying to download"))
             )
@@ -78,7 +78,7 @@ async def _(event):
                 round(percentage, 2))
             estimated_total_time = downloader.get_eta(human=True)
             try:
-                current_message = f"trying to download\n"
+                current_message = "trying to download\n"
                 current_message += f"URL: {url}\n"
                 current_message += f"File Name: {file_name}\n"
                 current_message += f"{progress_str}\n"
@@ -135,12 +135,12 @@ File Name: {}
 File Size: {}
 Downloaded: {}
 ETA: {}""".format(
-    url,
-    file_name,
-    humanbytes(total_length),
-    humanbytes(downloaded),
-    time_formatter(estimated_total_time)
-)
+                            url,
+                            file_name,
+                            humanbytes(total_length),
+                            humanbytes(downloaded),
+                            time_formatter(estimated_total_time)
+                        )
                         if current_message != display_message:
                             await event.edit(current_message)
                             display_message = current_message

@@ -3,23 +3,26 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """Filters
 Available Commands:
-.savefilter
-.listfilters
-.clearfilter
-.clearallfilters"""
+.savef
+.listf
+.clearf
+.clearaf"""
 import asyncio
-import re
-from sql_helpers.filters_sql import add_filter, remove_filter, get_all_filters, remove_all_filters
-from uniborg.util import admin_cmd
 import logging
+import re
+from database.filtersdb import get_all_filters, get_filter, add_filter, delete_filter, delete_all_filters
+from uniborg.util import admin_cmd
+from sample_config import Config
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 DELETE_TIMEOUT = 300
 last_triggered_filters = {}
 
 
-@borg.on(admin_cmd(incoming=True)) # pylint:disable=E0602
+@borg.on(admin_cmd(incoming=True))
 async def on_snip(event):
     name = event.raw_text
     if event.chat_id in last_triggered_filters:
@@ -27,24 +30,33 @@ async def on_snip(event):
             # avoid userbot spam
             # "I demand rights for us bots, we are equal to you humans." -Henri Koivuneva (t.me/UserbotTesting/2698)
             return False
-    snips = get_all_filters(event.chat_id)
+    snips = await get_all_filters(event.chat_id)
     if snips:
         for snip in snips:
-            pattern = r"( |^|[^\w])" + re.escape(snip.keyword) + r"( |$|[^\w])"
+            pattern = r"( |^|[^\w])" + \
+                re.escape(snip['keyword']) + r"( |$|[^\w])"
             if re.search(pattern, name, flags=re.IGNORECASE):
                 msg_o = await event.client.get_messages(
                     entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
-                    ids=int(snip.f_mesg_id)
+                    ids=int(snip['msg'])
                 )
                 message_id = event.message.id
                 if event.reply_to_msg_id:
                     message_id = event.reply_to_msg_id
-                await event.client.send_message(
-                    event.chat_id,
-                    msg_o.message,
-                    reply_to=message_id,
-                    file=msg_o.media
-                )
+                if msg_o.document:
+                    await event.client.send_message(
+                        event.chat_id,
+                        msg_o.message,
+                        reply_to=message_id,
+                        file=msg_o.media
+                    )
+                else:
+                    await event.client.send_message(
+                        event.chat_id,
+                        msg_o.message,
+                        reply_to=message_id,
+                        link_preview=False
+                    )
                 if event.chat_id not in last_triggered_filters:
                     last_triggered_filters[event.chat_id] = []
                 last_triggered_filters[event.chat_id].append(name)
@@ -52,7 +64,7 @@ async def on_snip(event):
                 last_triggered_filters[event.chat_id].remove(name)
 
 
-@borg.on(admin_cmd(pattern="savefilter (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="savef (.*)"))
 async def on_snip_save(event):
     name = event.pattern_match.group(1)
     msg = await event.get_reply_message()
@@ -63,19 +75,19 @@ async def on_snip_save(event):
             from_peer=event.chat_id,
             silent=True
         )
-        add_filter(event.chat_id, name, msg_o.id)
+        await add_filter(event.chat_id, name, msg_o.id)
         await event.edit(f"filter {name} saved successfully. Get it with {name}")
     else:
         await event.edit("Reply to a message with `savefilter keyword` to save the filter")
 
 
-@borg.on(admin_cmd(pattern="listfilters")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="listf"))
 async def on_snip_list(event):
-    all_snips = get_all_filters(event.chat_id)
+    all_snips = await get_all_filters(event.chat_id)
     OUT_STR = "Available Filters in the Current Chat:\n"
-    if len(all_snips) > 0:
+    if all_snips:
         for a_snip in all_snips:
-            OUT_STR += f"👉 {a_snip.keyword} \n"
+            OUT_STR += f"👉 {a_snip['keyword']} \n"
     else:
         OUT_STR = "No Filters. Start Saving using `.savefilter`"
     if len(OUT_STR) > Config.MAX_MESSAGE_SIZE_LIMIT:
@@ -94,14 +106,14 @@ async def on_snip_list(event):
         await event.edit(OUT_STR)
 
 
-@borg.on(admin_cmd(pattern="clearfilter (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="clearf (.*)"))
 async def on_snip_delete(event):
     name = event.pattern_match.group(1)
-    remove_filter(event.chat_id, name)
+    await delete_filter(event.chat_id, name)
     await event.edit(f"filter **{name}** deleted successfully")
 
 
-@borg.on(admin_cmd(pattern="clearallfilters")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="clearaf"))
 async def on_all_snip_delete(event):
-    remove_all_filters(event.chat_id)
-    await event.edit(f"filters **in current chat** deleted successfully")
+    await delete_all_filters(event.chat_id)
+    await event.edit("filters **in current chat** deleted successfully")

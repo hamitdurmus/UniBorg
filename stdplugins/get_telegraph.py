@@ -2,8 +2,6 @@
 
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import mimetypes
 import os
 from datetime import datetime
@@ -12,8 +10,13 @@ import requests
 from telethon import events
 
 
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+
 current_date_time = "./../DOWNLOADS/"
-@borg.on(events.NewMessage(pattern=r".telegraph media", outgoing=True)) # pylint:disable=E0602
+@borg.on(events.NewMessage(pattern=r".telegraph media", outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -38,6 +41,8 @@ async def _(event):
         await event.edit("Reply to a message to get a permanent telegra.ph link. (Inspired by @ControllerBot)")
 """ The below lines copied from https://github.com/python273/telegraph/blob/master/telegraph/upload.py
 """
+
+
 def upload_file(f):
     """ Upload file to Telegra.ph's servers. Returns a list of links.
         Allowed only .jpg, .jpeg, .png, .gif and .mp4 files.
@@ -57,6 +62,8 @@ def upload_file(f):
         # raise TelegraphException(error)
         pass
     return ["https://telegra.ph" + i['src'] for i in response]
+
+
 class FilesOpener(object):
     def __init__(self, paths, key_format='file{}'):
         if not isinstance(paths, list):
@@ -64,10 +71,13 @@ class FilesOpener(object):
         self.paths = paths
         self.key_format = key_format
         self.opened_files = []
+
     def __enter__(self):
         return self.open_files()
+
     def __exit__(self, type, value, traceback):
         self.close_files()
+
     def open_files(self):
         self.close_files()
         files = []
@@ -91,6 +101,7 @@ class FilesOpener(object):
                 (self.key_format.format(x), ('file{}'.format(x), f, mimetype))
             )
         return files
+
     def close_files(self):
         for f in self.opened_files:
             f.close()

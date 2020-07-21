@@ -7,12 +7,13 @@ from uniborg.util import admin_cmd
 
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 TEMPAT = ''
 
- 
-@borg.on(admin_cmd(pattern=("ezanvakti ?(.*)"))) # pylint:disable=E0602
-async def get_adzan(adzan): 
+
+@borg.on(admin_cmd(pattern=("ezanvakti ?(.*)")))
+async def get_adzan(adzan):
     if not adzan.text.startswith("."):
         return ""
 

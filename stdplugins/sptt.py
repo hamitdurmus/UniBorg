@@ -1,19 +1,21 @@
 """Speech to Text
 Syntax: .sptt <Language Code> as reply to a speech message"""
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import os
 from datetime import datetime
 
 import requests
 from telethon import events
 
-
 from sample_config import Config
 
 
-@borg.on(events.NewMessage(pattern=r"\.sptt (.*)", outgoing=True)) # pylint:disable=E0602
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+
+@borg.on(events.NewMessage(pattern=r"\.sptt (.*)", outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -51,14 +53,18 @@ async def _(event):
                 transcript_confidence = ""
                 for alternative in results:
                     alternatives = alternative["alternatives"][0]
-                    transcript_response += " " + str(alternatives["transcript"]) + " + "
-                    transcript_confidence += " " + str(alternatives["confidence"]) + " + "
+                    transcript_response += " " + \
+                        str(alternatives["transcript"]) + " + "
+                    transcript_confidence += " " + \
+                        str(alternatives["confidence"]) + " + "
                 end = datetime.now()
                 ms = (end - start).seconds
                 if transcript_response != "":
-                    string_to_show = "Language: `{}`\nTRANSCRIPT: `{}`\nTime Taken: {} seconds\nConfidence: `{}`".format(lan, transcript_response, ms, transcript_confidence)
+                    string_to_show = "Language: `{}`\nTRANSCRIPT: `{}`\nTime Taken: {} seconds\nConfidence: `{}`".format(
+                        lan, transcript_response, ms, transcript_confidence)
                 else:
-                    string_to_show = "Language: `{}`\nTime Taken: {} seconds\n**No Results Found**".format(lan, ms)
+                    string_to_show = "Language: `{}`\nTime Taken: {} seconds\n**No Results Found**".format(
+                        lan, ms)
                 await event.edit(string_to_show)
             else:
                 await event.edit(r["error"])

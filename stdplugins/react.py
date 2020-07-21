@@ -2,12 +2,16 @@
 # -*- coding: utf-8 -*-
 # (c) @INF1N17Y
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
-from telethon import events
 import random
 
-@borg.on(events.NewMessage(pattern=r"\.react (.*)", outgoing=True)) # pylint:disable=E0602
+from telethon import events
+
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
+@borg.on(events.NewMessage(pattern=r"\.react (.*)", outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -91,7 +95,7 @@ async def _(event):
             "-ᄒᴥᄒ-",
             "◖⚆ᴥ⚆◗",
         ]
-    else:    
+    else:
         emoticons = [
             "( ͡° ͜ʖ ͡°)",
             "¯\_(ツ)_/¯",

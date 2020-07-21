@@ -3,28 +3,30 @@ Syntax:
 .rnupload file.name
 .rnstreamupload file.name
 By @Ck_ATR"""
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import math
 import os
 import time
 from datetime import datetime
 
-from pySmartDL import SmartDL
 from telethon.tl.types import DocumentAttributeVideo
-
-from uniborg.util import admin_cmd, humanbytes, progress
 
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+from pySmartDL import SmartDL
 from sample_config import Config
+from uniborg.util import admin_cmd, humanbytes, progress
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 
 
-@borg.on(admin_cmd(pattern="rndlup (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="rndlup (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -61,7 +63,7 @@ async def _(event):
             round(percentage, 2))
         estimated_total_time = downloader.get_eta(human=True)
         try:
-            current_message = f"trying to download\n"
+            current_message = "trying to download\n"
             current_message += f"URL: {url}\n"
             current_message += f"File Name: {file_name}\n"
             current_message += f"{progress_str}\n"
@@ -104,7 +106,7 @@ async def _(event):
         await event.edit("Incorrect URL\n {}".format(input_str))
 
 
-@borg.on(admin_cmd(pattern="rnupload (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="rnupload (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -155,7 +157,7 @@ async def _(event):
         await event.edit("Syntax // .rnupload file.name as reply to a Telegram media")
 
 
-@borg.on(admin_cmd(pattern="rnstreamupload (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="rnstreamupload (.*)"))
 async def _(event):
     if event.fwd_from:
         return

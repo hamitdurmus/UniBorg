@@ -4,8 +4,6 @@ accroding to ur spotify songs u listening
 \n.disp (to disable and back to default name)
 \nPorted by @NeoMatrix90 , @kirito6969 (both are same person)"""
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 from asyncio import sleep
 from json import loads
 from json.decoder import JSONDecodeError
@@ -16,9 +14,15 @@ from requests import get
 from telethon import events
 from telethon.tl.functions.account import UpdateProfileRequest
 
-
 import spotify_token as st
 from sample_config import Config
+
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+
 
 # =================== CONSTANT ===================
 SPO_BIO_ENABLED = "```Spotify Current Music to Name enabled.```"
@@ -40,6 +44,7 @@ RUNNING = False
 OLDEXCEPT = False
 PARSE = False
 # ================================================
+
 
 async def get_spotify_token():
     sptoken = st.start_session(USERNAME, PASSWORD)
@@ -112,7 +117,8 @@ async def dirtyfix():
     await sleep(4)
     await update_spotify_info()
 
-@borg.on(events.NewMessage(pattern=r"\.ensp ?(.*)", outgoing=True)) # pylint:disable=E0602
+
+@borg.on(events.NewMessage(pattern=r"\.ensp ?(.*)", outgoing=True))
 async def set_biostgraph(setstbio):
     setrecursionlimit(700000)
     if not SPOTIFYCHECK:
@@ -123,7 +129,8 @@ async def set_biostgraph(setstbio):
     else:
         await setstbio.edit(SPO_BIO_RUNNING)
 
-@borg.on(events.NewMessage(pattern=r"\.disp ?(.*)", outgoing=True)) # pylint:disable=E0602
+
+@borg.on(events.NewMessage(pattern=r"\.disp ?(.*)", outgoing=True))
 async def set_biodgraph(setdbio):
     global SPOTIFYCHECK
     global RUNNING

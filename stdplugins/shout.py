@@ -3,12 +3,16 @@ usage: .shout message
 originaly from : @corsicanu_bot
 """
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+
 from telethon import events
 
 
-@borg.on(events.NewMessage(pattern=r"\.shout", outgoing=True)) # pylint:disable=E0602
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+
+@borg.on(events.NewMessage(pattern=r"\.shout", outgoing=True))
 async def shout(args):
     if args.fwd_from:
         return
@@ -26,6 +30,3 @@ async def shout(args):
         result = "".join(result)
         msg = "\n" + result
         await args.edit("`"+msg+"`")
-        
-    
-    

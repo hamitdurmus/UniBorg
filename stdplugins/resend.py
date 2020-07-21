@@ -2,12 +2,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+
 from telethon import events
 
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(events.NewMessage(pattern=r"\.resend", outgoing=True)) # pylint:disable=E0602
+
+@borg.on(events.NewMessage(pattern=r"\.resend", outgoing=True))
 async def _(event):
     await event.delete()
     m = await event.get_reply_message()

@@ -1,18 +1,21 @@
 """Upload local Files to Mirrors
 Syntax:
 ."""
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import os
 import time
 from datetime import datetime
 
-import aiohttp
 import requests
 
+import aiohttp
 from uniborg.util import admin_cmd, progress
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
 
 ENV = bool(os.environ.get("ENV", False))
 if ENV:
@@ -21,7 +24,8 @@ else:
     if os.path.exists("sample_config.py"):
         from sample_config import Development as Config
 
-@borg.on(admin_cmd(pattern="mirrorace ?(.*)", allow_sudo=True)) # pylint:disable=E0602
+
+@borg.on(admin_cmd(pattern="mirrorace ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return

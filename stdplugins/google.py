@@ -3,34 +3,36 @@ Available Commands:
 .google search <query>
 .google image <query>
 .google reverse search"""
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import os
 from datetime import datetime
 
 import requests
+
 from bs4 import BeautifulSoup
-
-from uniborg.util import admin_cmd
-
 from google_images_download import google_images_download
 from sample_config import Config
+from uniborg.util import admin_cmd
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 def progress(current, total):
-    logger.info("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
+    logger.info("Downloaded {} of {}\nCompleted {}".format(
+        current, total, (current / total) * 100))
 
-
-@borg.on(admin_cmd(pattern="google search (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="google search (.*)"))
 async def _(event):
     if event.fwd_from:
         return
     start = datetime.now()
     await event.edit("Processing ...")
     # SHOW_DESCRIPTION = False
-    input_str = event.pattern_match.group(1) # + " -inurl:(htm|html|php|pls|txt) intitle:index.of \"last modified\" (mkv|mp4|avi|epub|pdf|mp3)"
+    # + " -inurl:(htm|html|php|pls|txt) intitle:index.of \"last modified\" (mkv|mp4|avi|epub|pdf|mp3)"
+    input_str = event.pattern_match.group(1)
     input_url = "https://bots.shrimadhavuk.me/search/?q={}".format(input_str)
     headers = {"USER-AGENT": "UniBorg"}
     response = requests.get(input_url, headers=headers).json()
@@ -48,7 +50,7 @@ async def _(event):
     await event.edit("Google: {}\n{}".format(input_str, output_str), link_preview=False)
 
 
-@borg.on(admin_cmd(pattern="google image (.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="google image (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -69,6 +71,9 @@ async def _(event):
     paths = response.download(arguments)
     logger.info(paths)
     lst = paths[0].get(input_str)
+    if len(lst) == 0:
+        await event.delete()
+        return
     await borg.send_file(
         event.chat_id,
         lst,
@@ -86,7 +91,7 @@ async def _(event):
     await event.delete()
 
 
-@borg.on(admin_cmd(pattern="google reverse search")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="google reverse search"))
 async def _(event):
     if event.fwd_from:
         return
@@ -108,14 +113,16 @@ async def _(event):
                 "image_content": ""
             }
             # https://stackoverflow.com/a/28792943/4723940
-            google_rs_response = requests.post(SEARCH_URL, files=multipart, allow_redirects=False)
+            google_rs_response = requests.post(
+                SEARCH_URL, files=multipart, allow_redirects=False)
             the_location = google_rs_response.headers.get("Location")
             os.remove(downloaded_file_name)
         else:
             previous_message_text = previous_message.message
             SEARCH_URL = "{}/searchbyimage?image_url={}"
             request_url = SEARCH_URL.format(BASE_URL, previous_message_text)
-            google_rs_response = requests.get(request_url, allow_redirects=False)
+            google_rs_response = requests.get(
+                request_url, allow_redirects=False)
             the_location = google_rs_response.headers.get("Location")
         await event.edit("Found Google Result. Pouring some soup on it!")
         headers = {

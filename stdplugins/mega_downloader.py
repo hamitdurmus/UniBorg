@@ -2,14 +2,20 @@
 # All rights reserved.
 
 import json
+import logging
 import os
 import re
 import time
 from os.path import exists
 from subprocess import PIPE, Popen
 from urllib.error import HTTPError
+
 from pySmartDL import SmartDL
 from uniborg.util import admin_cmd, humanbytes
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 def subprocess_run(cmd):
@@ -27,7 +33,7 @@ def subprocess_run(cmd):
     return talk
 
 
-@borg.on(admin_cmd(pattern="mega ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="mega ?(.*)"))
 async def mega_downloader(megadl):
     await megadl.edit("`Processing...`")
     textx = await megadl.get_reply_message()
@@ -66,7 +72,8 @@ async def mega_download(url, megadl):
     if not exists(file_name):
         temp_file_name = file_name + ".temp"
         downloaded_file_name = "./" + "" + temp_file_name
-        downloader = SmartDL(file_url, downloaded_file_name, progress_bar=False)
+        downloader = SmartDL(
+            file_url, downloaded_file_name, progress_bar=False)
         display_message = None
         try:
             downloader.start(blocking=False)
@@ -120,4 +127,3 @@ def decrypt_file(file_name, temp_file_name, file_hex, file_raw_hex):
            .format(temp_file_name, file_hex, file_raw_hex, file_name))
     subprocess_run(cmd)
     os.remove(r"{}".format(temp_file_name))
-    return

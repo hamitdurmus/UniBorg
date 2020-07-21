@@ -1,4 +1,4 @@
-#kanged from AbhiNash Reddy's PPE (THX)
+# kanged from AbhiNash Reddy's PPE (THX)
 
 """it will search youtube videos using Api
 \n`Type .yt (anynumber(maximum 50)) {ur query}`
@@ -6,20 +6,22 @@
 \nPorted by © [EYEPATCH](t.me/neomatrix90)
 \n`Don't Copy Without Credits.`"""
 import logging
-import urllib.parse
 from html import unescape
+
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from sample_config import Config
 # from gtts import gTTS
 # from pytube.compat import quote
 # from pytube.helpers import safe_filename
 from uniborg.util import admin_cmd
-from sample_config import Config
 
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="youtubesearch ?(\d+)? ?(.*)?")) # pylint:disable=E0602
+
+@borg.on(admin_cmd(pattern=r"youtubesearch ?(\d+)? ?(.*)?"))
 async def yt_search(video_q):
     reply = await video_q.get_reply_message()
     if video_q.pattern_match.group(2):
@@ -28,7 +30,8 @@ async def yt_search(video_q):
         query = reply.message
     else:
         return await video_q.edit("Invalid syntax")
-    resultamt = int(video_q.pattern_match.group(1)) if video_q.pattern_match.group(1) is not None else 10
+    resultamt = int(video_q.pattern_match.group(
+        1)) if video_q.pattern_match.group(1) is not None else 10
     result = ''
     i = 1
 

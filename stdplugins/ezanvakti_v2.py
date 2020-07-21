@@ -1,19 +1,23 @@
 import datetime
 import json
 import logging
-# from ..bin.namaz_vakti import namazvakti
-from uniborg.util import admin_cmd
 from datetime import datetime
+
 import pytz
+
 # from bin.namaz_vakti import namazvakti
 from bin.namaz_vakti.namazvakti import namazvakti
+# from ..bin.namaz_vakti import namazvakti
+from uniborg.util import admin_cmd
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 TEMP = ''
 
 
-@borg.on(admin_cmd(pattern=("ezanv ?(.*) + ?(.*)"))) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern=("ezanv ?(.*) + ?(.*)")))
 async def namaz_(event):
     """kullanımı .ezanv <şehir> <ilçe>"""
     if not event.text.startswith("."):
@@ -28,7 +32,7 @@ async def namaz_(event):
         LOKASYON = event.pattern_match.group(1)
         if LOKASYON:
             LOKASYON = LOKASYON.replace('i', 'İ').upper()
-    
+
         # LOKASYON = LOKASYON.encode().decode('UTF-8').upper()
     # await event.edit("ezan vakti diyanetten alınıyor.")
     if not event.pattern_match.group(2):
@@ -36,7 +40,7 @@ async def namaz_(event):
     else:
         LOKASYON_2 = event.pattern_match.group(2)
         if LOKASYON_2:
-            LOKASYON_2 = LOKASYON_2.replace('i','İ').upper()
+            LOKASYON_2 = LOKASYON_2.replace('i', 'İ').upper()
     yer = './bin/namaz_vakti/db/yerler.ndb'
     with open(yer, "r", encoding="utf-8") as f:
         yerler_json = json.load(f)
@@ -49,7 +53,7 @@ async def namaz_(event):
     ilceler_sonuc = namaz.ilceler(2, sehir_id)
     # print(ilceler_sonuc)
     sonuc_ilceler = {v: k for k, v in ilceler_sonuc['veri'].items()}
-    # print(sonuc_ilceler)    
+    # print(sonuc_ilceler)
     # print(event.pattern_match.group(2).upper())
     # print(yerler_json['2']['sehirler'][f"{sonuc_sehirler_1}"]['ilceler'].items())
     # inverse_yerler = {v: k for k, v in yerler_json['2']['sehirler'][f"{sonuc_sehirler_1}"]['ilceler'].items()}
@@ -58,17 +62,16 @@ async def namaz_(event):
     # print(sonuc_str)
     # print(sonuc_str)
     sonuc = namaz.vakit(sonuc_str)
-    
-    
+
     tz = pytz.timezone('Europe/Istanbul')
     istanbul_now = datetime.now(tz)
     bugun = istanbul_now.strftime("%d%m%Y")
-    
-    gun =bugun[0:2]
+
+    gun = bugun[0:2]
     ay = bugun[2:4]
     yil = bugun[4:]
     tam_gun = gun + "." + ay + "." + yil
-    print(sonuc)
+    # print(sonuc)
     # tam_gun = int(tam_gun)
     # print(sonuc)
     yer = sonuc['veri']['yer_adi']
@@ -82,17 +85,17 @@ async def namaz_(event):
         ikindi = sonuc['veri']['vakit']['ikindi']
         aksam = sonuc['veri']['vakit']['aksam']
         yatsi = sonuc['veri']['vakit']['yatsi']
-    out = (f"**Diyanet Namaz Vakitleri**\n\n" +
-                f"📍**Yer: ** `{yer}`\n" +
-                f"🗓**Tarih ** `{tarih}`\n" +
-                f"🌕**Hicri Tarih :** `{hicri_tarih}`\n"+
-                f"🏙**İmsak :** `{imsak}`\n" +
-                f"🌅**Güneş :** `{gunes}`\n" +
-                f"🌇**Öğle :** `{ogle}`\n" +
-                f"🌆**İkindi :** `{ikindi}`\n" +
-                f"🌃**Akşam :** `{aksam}`\n" +
-                f"🌌**Yatsı :** `{yatsi}`\n"
-    )
+    out = ("**Diyanet Namaz Vakitleri**\n\n" +
+           f"📍**Yer: ** `{yer}`\n" +
+           f"🗓**Tarih ** `{tarih}`\n" +
+           f"🌕**Hicri Tarih :** `{hicri_tarih}`\n" +
+           f"🏙**İmsak :** `{imsak}`\n" +
+           f"🌅**Güneş :** `{gunes}`\n" +
+           f"🌇**Öğle :** `{ogle}`\n" +
+           f"🌆**İkindi :** `{ikindi}`\n" +
+           f"🌃**Akşam :** `{aksam}`\n" +
+           f"🌌**Yatsı :** `{yatsi}`\n"
+           )
     await event.edit(out)
     # print(inverse_yerler)
     # yerlerim = inverse_yerler[LOKASYON]

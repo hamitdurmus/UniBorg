@@ -1,14 +1,19 @@
 """Malayalam Calendar plugin for @UniBorg
 SYNTAX: .calendar YYYY-MM-DD"""
-from datetime import datetime
-import requests
 import json
-from uniborg.util import admin_cmd
 import logging
+from datetime import datetime
+
+import requests
+
+from uniborg.util import admin_cmd
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
-@borg.on(admin_cmd(pattern="calendar (.*)")) # pylint:disable=E0602
+
+@borg.on(admin_cmd(pattern="calendar (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -19,13 +24,15 @@ async def _(event):
         yyyy = input_sgra[0]
         mm = input_sgra[1]
         dd = input_sgra[2]
-        required_url = "https://calendar.kollavarsham.org/api/years/{}/months/{}/days/{}?lang={}".format(yyyy, mm, dd, "en")
+        required_url = "https://calendar.kollavarsham.org/api/years/{}/months/{}/days/{}?lang={}".format(
+            yyyy, mm, dd, "en")
         headers = {"Accept": "application/json"}
         response_content = requests.get(required_url, headers=headers).json()
         a = ""
         if "error" not in response_content:
             current_date_detail_arraays = response_content["months"][0]["days"][0]
-            a = json.dumps(current_date_detail_arraays, sort_keys=True, indent=4)
+            a = json.dumps(current_date_detail_arraays,
+                           sort_keys=True, indent=4)
         else:
             a = response_content["error"]
         await event.edit(str(a))

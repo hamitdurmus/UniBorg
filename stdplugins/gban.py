@@ -4,15 +4,16 @@ Available Commands:
 .gban REASON
 .ungban REASON"""
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
-
-from uniborg.util import admin_cmd
 
 from sample_config import Config
+from uniborg.util import admin_cmd
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
-@borg.on(admin_cmd(pattern="gban ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="fban ?(.*)"))
 async def _(event):
     if Config.G_BAN_LOGGER_GROUP is None:
         await event.edit("ENV VAR is not set. This module will not work.")
@@ -28,12 +29,18 @@ async def _(event):
             r_from_id = r.from_id
         await borg.send_message(
             Config.G_BAN_LOGGER_GROUP,
-            "!gban [user](tg://user?id={}) {}".format(r.from_id, reason)
+            "!fban {} {}".format(r.from_id, reason)
+        )
+    else:
+        user_id = event.pattern_match.group(1)
+        await borg.send_message(
+            Config.G_BAN_LOGGER_GROUP,
+            "!fban {}".format(user_id)
         )
     await event.delete()
 
 
-@borg.on(admin_cmd(pattern="ungban ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="unfban ?(.*)"))
 async def _(event):
     if Config.G_BAN_LOGGER_GROUP is None:
         await event.edit("ENV VAR is not set. This module will not work.")
@@ -46,6 +53,12 @@ async def _(event):
         r_from_id = r.from_id
         await borg.send_message(
             Config.G_BAN_LOGGER_GROUP,
-            "!ungban [user](tg://user?id={}) {}".format(r_from_id, reason)
+            "!unfban {} {}".format(r_from_id, reason)
+        )
+    else:
+        user_id = event.pattern_match.group(1)
+        await borg.send_message(
+            Config.G_BAN_LOGGER_GROUP,
+            "!unfban {}".format(user_id)
         )
     await event.delete()

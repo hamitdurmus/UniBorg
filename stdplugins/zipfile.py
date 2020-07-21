@@ -1,17 +1,19 @@
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 import os
 import time
 import zipfile
 
+from sample_config import Config
 from uniborg.util import admin_cmd, progress
 
-from sample_config import Config
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
-@borg.on(admin_cmd(pattern=("compress ?(.*)"))) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern=("zip ?(.*)")))
 async def _(event):
     if event.fwd_from:
         return
@@ -32,7 +34,8 @@ async def _(event):
             )
             directory_name = downloaded_file_name
             await event.edit("Finish downloading to my local")
-            zipfile.ZipFile(directory_name + '.zip', 'w', zipfile.ZIP_DEFLATED).write(directory_name)
+            zipfile.ZipFile(directory_name + '.zip', 'w',
+                            zipfile.ZIP_DEFLATED).write(directory_name)
             await borg.send_file(
                 event.chat_id,
                 directory_name + ".zip",
@@ -45,7 +48,7 @@ async def _(event):
                 os.remove(directory_name + ".zip")
                 os.remove(directory_name)
             except:
-                    pass
+                pass
             await event.edit("Task Completed")
             await asyncio.sleep(3)
             await event.delete()
@@ -53,5 +56,6 @@ async def _(event):
             await mone.edit(str(e))
     elif input_str:
         directory_name = input_str
-        zipfile.ZipFile(directory_name + '.zip', 'w', zipfile.ZIP_DEFLATED).write(directory_name)
+        zipfile.ZipFile(directory_name + '.zip', 'w',
+                        zipfile.ZIP_DEFLATED).write(directory_name)
         await event.edit("Local file compressed to `{}`".format(directory_name + ".zip"))

@@ -1,16 +1,19 @@
 """Notification Manager for @UniBorg
 """
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
 import io
+import logging
+
+from telethon import events, functions, types
+
 import sql_helpers.no_log_pms_sql as no_log_pms_sql
 import sql_helpers.pmpermit_sql as pmpermit_sql
-from telethon import events, functions, types
+from sample_config import Config
 from uniborg.util import admin_cmd
 
-from sample_config import Config
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 PM_WARNS = {}
@@ -23,17 +26,17 @@ UNIBORG_USER_BOT_WARN_ZERO = "I am currently offline. Please do not SPAM me."
 UNIBORG_USER_BOT_NO_WARN = "Hi! I will answer to your message soon. Please wait for my response and don't spam my PM. Thanks"
 
 
-@borg.on(admin_cmd(pattern="nccreatedch")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="nccreatedch"))
 async def create_dump_channel(event):
     if Config.PM_LOGGR_BOT_API_ID is None:
-        result = await event.client(functions.channels.CreateChannelRequest(  # pylint:disable=E0602
+        result = await event.client(functions.channels.CreateChannelRequest(
             title=f"UniBorg-{borg.uid}-PM_LOGGR_BOT_API_ID-data",
             about="@UniBorg PM_LOGGR_BOT_API_ID // Do Not Touch",
             megagroup=False
         ))
         logger.info(result)
         created_chat_id = result.chats[0].id
-        result = await event.client.edit_admin(  # pylint:disable=E0602
+        result = await event.client.edit_admin(
             entity=created_chat_id,
             user=Config.TG_BOT_USER_NAME_BF_HER,
             is_admin=True,
@@ -55,7 +58,7 @@ async def create_dump_channel(event):
         await event.edit(f"**is configured**. [please do not touch](https://t.me/c/{Config.PM_LOGGR_BOT_API_ID}/2)")
 
 
-@borg.on(admin_cmd(pattern="nolog ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="nolog ?(.*)"))
 async def set_no_log_p_m(event):
     if Config.PM_LOGGR_BOT_API_ID is not None:
         reason = event.pattern_match.group(1)
@@ -68,7 +71,7 @@ async def set_no_log_p_m(event):
                 await event.delete()
 
 
-@borg.on(admin_cmd(pattern="dellog ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="dellog ?(.*)"))
 async def set_no_log_p_m(event):
     if Config.PM_LOGGR_BOT_API_ID is not None:
         reason = event.pattern_match.group(1)
@@ -81,7 +84,7 @@ async def set_no_log_p_m(event):
                 await event.delete()
 
 
-@borg.on(admin_cmd(pattern="approvepm ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="approvepm ?(.*)"))
 async def approve_p_m(event):
     if event.fwd_from:
         return
@@ -101,7 +104,7 @@ async def approve_p_m(event):
                 await event.delete()
 
 
-@borg.on(admin_cmd(pattern="blockpm ?(.*)")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="blockpm ?(.*)"))
 async def approve_p_m(event):
     if event.fwd_from:
         return
@@ -116,7 +119,7 @@ async def approve_p_m(event):
                 await event.client(functions.contacts.BlockRequest(chat.id))
 
 
-@borg.on(admin_cmd(pattern="list approved pms")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="list approved pms"))
 async def approve_p_m(event):
     if event.fwd_from:
         return
@@ -146,7 +149,7 @@ async def approve_p_m(event):
         await event.edit(APPROVED_PMs)
 
 
-@borg.on(events.NewMessage(incoming=True)) # pylint:disable=E0602
+@borg.on(events.NewMessage(incoming=True))
 async def on_new_private_message(event):
     if Config.PM_LOGGR_BOT_API_ID is None:
         return
@@ -163,8 +166,8 @@ async def on_new_private_message(event):
 
     current_message_text = message_text.lower()
     if BAALAJI_TG_USER_BOT in current_message_text or \
-        TG_COMPANION_USER_BOT in current_message_text or \
-        UNIBORG_USER_BOT_NO_WARN in current_message_text:
+            TG_COMPANION_USER_BOT in current_message_text or \
+            UNIBORG_USER_BOT_NO_WARN in current_message_text:
         # userbot's should not reply to other userbot's
         # https://core.telegram.org/bots/faq#why-doesn-39t-my-bot-see-messages-from-other-bots
         return
@@ -189,7 +192,7 @@ async def on_new_private_message(event):
         await do_log_pm_action(chat_id, event, message_text, message_media)
 
 
-@borg.on(events.ChatAction(blacklist_chats=Config.UB_BLACK_LIST_CHAT)) # pylint:disable=E0602
+@borg.on(events.ChatAction(blacklist_chats=Config.UB_BLACK_LIST_CHAT))
 async def on_new_chat_action_message(event):
     if Config.PM_LOGGR_BOT_API_ID is None:
         return
@@ -217,7 +220,7 @@ async def on_new_chat_action_message(event):
             )
 
 
-@borg.on(events.Raw()) # pylint:disable=E0602
+@borg.on(events.Raw())
 async def on_new_channel_message(event):
     if Config.PM_LOGGR_BOT_API_ID is None:
         return

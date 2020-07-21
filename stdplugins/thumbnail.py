@@ -4,18 +4,19 @@ Available Commands:
 .clearthumbnail
 .getthumbnail"""
 import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import os
 import subprocess
 
-from PIL import Image
-
-from uniborg.util import admin_cmd
-
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+from PIL import Image
 from sample_config import Config
+from uniborg.util import admin_cmd
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 
@@ -25,7 +26,8 @@ def get_video_thumb(file, output=None, width=320):
     metadata = extractMetadata(createParser(file))
     p = subprocess.Popen([
         'ffmpeg', '-i', file,
-        '-ss', str(int((0, metadata.get('duration').seconds)[metadata.has('duration')] / 2)),
+        '-ss', str(int((0, metadata.get('duration').seconds)
+                       [metadata.has('duration')] / 2)),
         # '-filter:v', 'scale={}:-1'.format(width),
         '-vframes', '1',
         output,
@@ -36,7 +38,7 @@ def get_video_thumb(file, output=None, width=320):
         return output
 
 
-@borg.on(admin_cmd(pattern="savethumbnail")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="savethumbnail"))
 async def _(event):
     if event.fwd_from:
         return
@@ -59,7 +61,8 @@ async def _(event):
         # resize image
         # ref: https://t.me/PyrogramChat/44663
         # https://stackoverflow.com/a/21669827/4723940
-        Image.open(downloaded_file_name).convert("RGB").save(downloaded_file_name)
+        Image.open(downloaded_file_name).convert(
+            "RGB").save(downloaded_file_name)
         img = Image.open(downloaded_file_name)
         # https://stackoverflow.com/a/37631799/4723940
         # img.thumbnail((320, 320))
@@ -68,14 +71,14 @@ async def _(event):
         # https://pillow.readthedocs.io/en/3.1.x/reference/Image.html#create-thumbnails
         os.remove(downloaded_file_name)
         await event.edit(
-            "Custom video / file thumbnail saved. " + \
+            "Custom video / file thumbnail saved. " +
             "This image will be used in the upload, till `.clearthumbnail`."
         )
     else:
         await event.edit("Reply to a photo to save custom thumbnail")
 
 
-@borg.on(admin_cmd(pattern="clearthumbnail")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="clearthumbnail"))
 async def _(event):
     if event.fwd_from:
         return
@@ -84,7 +87,7 @@ async def _(event):
     await event.edit("✅ Custom thumbnail cleared succesfully.")
 
 
-@borg.on(admin_cmd(pattern="getthumbnail")) # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="getthumbnail"))
 async def _(event):
     if event.fwd_from:
         return

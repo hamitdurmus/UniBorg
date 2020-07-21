@@ -1,23 +1,25 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
 import asyncio
+import logging
 
 from telethon import events
+
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 _last_messages = {}
 
 
-@borg.on(events.NewMessage(outgoing=True)) # pylint:disable=E0602
+@borg.on(events.NewMessage(outgoing=True))
 async def _(event):
     _last_messages[event.chat_id] = event.message
 
 
-@borg.on(events.NewMessage(pattern=r"\.(fix)?reply", outgoing=True)) # pylint:disable=E0602
+@borg.on(events.NewMessage(pattern=r"\.(fix)?reply", outgoing=True))
 async def _(event):
     if not event.is_reply or event.chat_id not in _last_messages:
         return
