@@ -17,6 +17,8 @@ logger = logging.getLogger(__name__)
 SPOTIFY_CLIENT_ID = Config.SPOTIFY_CLIENT_ID
 SPOTIFY_CLIENT_SECRET = Config.SPOTIFY_CLIENT_SECRET
 PRIVATE_GROUP_BOT_API_ID = Config.PRIVATE_GROUP_BOT_API_ID
+SPOTIFY_INITIAL_TOKEN = Config.SPOTIFY_INITIAL_TOKEN
+SPOTIFY_INITIAL_BIO = Config.SPOTIFY_INITIAL_BIO
 
 # The key which is used to determine if the current bio was generated from the bot ot from the user. This means:
 # NEVER use whatever you put here in your original bio. NEVER. Don't do it!
@@ -39,9 +41,21 @@ LIMIT = 70 - OFFSET
 
 spotify_bio_status = False
 
+def sp_setup():
+    body = {"client_id": SPOTIFY_CLIENT_ID, "client_secret": SPOTIFY_CLIENT_SECRET,
+            "grant_type": "authorization_code", "redirect_uri": "https://example.com/callback",
+            "code": SPOTIFY_INITIAL_TOKEN}
+    r = requests.post("https://accounts.spotify.com/api/token", data=body)
+    save = r.json()
+    to_create = {'bio': SPOTIFY_INITIAL_BIO, 'access_token': save['access_token'], 'refresh_token': save['refresh_token'],
+                'telegram_spam': False, 'spotify_spam': False}
+    with open('./database.json', 'w') as outfile:
+        json.dump(to_create, outfile, indent=4, sort_keys=True)
+
 
 @borg.on(admin_cmd(pattern="sp ?(.*)"))
 async def spotify(event):
+    sp_setup()
     global spotify_bio_status
     if spotify_bio_status:
         spotify_bio_status = False
