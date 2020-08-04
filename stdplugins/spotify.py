@@ -100,46 +100,84 @@ def ms_converter(millis):
     return str(minutes) + ":" + str(seconds)
 
 
-class Database:
-    def __init__(self):
-        try:
-            self.db = json.load(open("./database.json"))
-        except FileNotFoundError:
-            print("You need to run generate.py first, please read the Readme.")
+def Database():
+    try:
+        db = json.load(open("./database.json"))
+    except FileNotFoundError:
+        print("You need to run generate.py first, please read the Readme.")
 
-    def save_token(self, token):
-        self.db["access_token"] = token
-        self.save()
 
-    def save_refresh(self, token):
-        self.db["refresh_token"] = token
-        self.save()
+def save_token(token):
+    try:
+        db = json.load(open("./database.json"))
+        db["access_token"] = token
+    except FileNotFoundError:
+        print("You need to run generate.py first, please read the Readme.")
 
-    def save_bio(self, bio):
-        self.db["bio"] = bio
-        self.save()
 
-    def save_spam(self, which, what):
-        self.db[which + "_spam"] = what
+def save_refresh(token):
+    try:
+        db = json.load(open("./database.json"))
+        db["refresh_token"] = token
+    except FileNotFoundError:
+        print("You need to run generate.py first, please read the Readme.")
 
-    def return_token(self):
-        return self.db["access_token"]
 
-    def return_refresh(self):
-        return self.db["refresh_token"]
+def save_bio(bio):
+    try:
+        db = json.load(open("./database.json"))
+        db["bio"] = bio
+    except FileNotFoundError:
+        print("You need to run generate.py first, please read the Readme.")
 
-    def return_bio(self):
-        return self.db["bio"]
 
-    def return_spam(self, which):
-        return self.db[which + "_spam"]
+def dsave_spam(which, what):
+    try:
+        db = json.load(open("./database.json"))
+        db[which + "_spam"] = what
+    except FileNotFoundError:
+        print("You need to run generate.py first, please read the Readme.")
 
-    def save(self):
+
+def return_token():
+    try:
+        db = json.load(open("./database.json"))
+        return db["access_token"]
+    except FileNotFoundError:
+        print("You need to run generate.py first, please read the Readme.")
+
+
+def return_refresh():
+    try:
+        db = json.load(open("./database.json"))
+        return db["refresh_token"]
+    except FileNotFoundError:
+        print("You need to run generate.py first, please read the Readme.")
+
+
+def return_bio():
+    try:
+        db = json.load(open("./database.json"))
+        return db["bio"]
+    except FileNotFoundError:
+        print("You need to run generate.py first, please read the Readme.")
+
+
+def return_spam(which):
+    try:
+        db = json.load(open("./database.json"))
+        return db[which + "_spam"]
+    except FileNotFoundError:
+        print("You need to run generate.py first, please read the Readme.")
+
+
+def save():
+    try:
+        db = json.load(open("./database.json"))
         with open('./database.json', 'w') as outfile:
-            json.dump(self.db, outfile, indent=4, sort_keys=True)
-
-
-database = Database()
+            json.dump(db, outfile, indent=4, sort_keys=True)
+    except FileNotFoundError:
+        print("You need to run generate.py first, please read the Readme.")
 
 
 def save_spam(which, what):
@@ -148,17 +186,17 @@ def save_spam(which, what):
     # this is if False is inserted, so if spam = False, so if everything is good.
     if not what:
         # if it wasn't normal before, we proceed
-        if database.return_spam(which):
+        if return_spam(which):
             # we save that it is normal now
-            database.save_spam(which, False)
+            save_spam(which, False)
             # we return True so we can test against it and if it this function returns, we can send a fitting message
             return True
     # this is if True is inserted, so if spam = True, so if something went wrong
     else:
         # if it was normal before, we proceed
-        if not database.return_spam(which):
+        if not return_spam(which):
             # we save that it is not normal now
-            database.save_spam(which, True)
+            dsave_spam(which, True)
             # we return True so we can send a message
             return True
     # if True wasn't returned before, we can return False now so our test fails and we dont send a message
@@ -172,7 +210,7 @@ async def spotify_bio():
         skip = False
         to_insert = {}
         oauth = {
-            "Authorization": "Bearer " + database.return_token()}
+            "Authorization": "Bearer " + return_token()}
         r = requests.get(
             'https://api.spotify.com/v1/me/player/currently-playing', headers=oauth)
         # 200 means user plays smth
@@ -213,16 +251,16 @@ async def spotify_bio():
         elif r.status_code == 401:
             data = {"client_id": SPOTIFY_CLIENT_ID, "client_secret": SPOTIFY_CLIENT_SECRET,
                     "grant_type": "refresh_token",
-                    "refresh_token": database.return_refresh()}
+                    "refresh_token": return_refresh()}
             r = requests.post(
                 "https://accounts.spotify.com/api/token", data=data)
             received = r.json()
             # if a new refresh is token as well, we save it here
             try:
-                database.save_refresh(received["refresh_token"])
+                save_refresh(received["refresh_token"])
             except KeyError:
                 pass
-            database.save_token(received["access_token"])
+            save_token(received["access_token"])
             # since we didnt actually update our status yet, lets do this without the 30 seconds wait
             skip = True
         # 502 means bad gateway, its an issue on spotify site which we can do nothing about. 30 seconds wait shouldn't
@@ -281,10 +319,10 @@ async def spotify_bio():
                 if new_bio:
                     # test if the user changed his bio to blank, we save it before we override
                     if not bio:
-                        database.save_bio(bio)
+                        save_bio(bio)
                     # test if the user changed his bio in the meantime, if yes, we save it before we override
                     elif "🎶" not in bio:
-                        database.save_bio(bio)
+                        save_bio(bio)
                     # test if the bio isn't the same, otherwise updating it would be stupid
                     if not new_bio == bio:
                         try:
@@ -313,16 +351,16 @@ async def spotify_bio():
                     stringy = "**[INFO]**\n\nEverything returned back to normal, the previous telegram issue has " \
                               "been resolved."
                     await borg.send_message(PRIVATE_GROUP_BOT_API_ID, stringy)
-                old_bio = database.return_bio()
+                old_bio = return_bio()
                 # this means the bio is blank, so we save that as the new one
                 if not bio:
-                    database.save_bio(bio)
+                    save_bio(bio)
                 # this means an old playback is in the bio, so we change it back to the original one
                 elif "🎶" in bio:
-                    await borg(UpdateProfileRequest(about=database.return_bio()))
+                    await borg(UpdateProfileRequest(about=return_bio()))
                 # this means a new original is there, lets save it
                 elif not bio == old_bio:
-                    database.save_bio(bio)
+                    save_bio(bio)
                 # this means the original one we saved is still valid
                 else:
                     pass
