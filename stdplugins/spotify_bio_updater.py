@@ -73,40 +73,40 @@ def ms_converter(millis):
 class Database:
     def __init__(self):
         try:
-            self.db = int(os.environ.get("SPOTIFY_FULL"))
+            self.db = Config.SPOTIFY_FULL
         except FileNotFoundError:
             print("File Not Found")
 
     def save_token(self, token):
-        self.db["access_token"] = token
+        Config.SPOTIFY_FULL["access_token"] = token
         self.save()
 
     def save_refresh(self, token):
-        self.db["refresh_token"] = token
+        Config.SPOTIFY_FULL["refresh_token"] = token
         self.save()
 
     def save_bio(self, bio):
-        self.db["bio"] = bio
+        Config.SPOTIFY_FULL["bio"] = bio
         self.save()
 
     def save_spam(self, which, what):
-        self.db[which + "_spam"] = what
+        Config.SPOTIFY_FULL[which + "_spam"] = what
 
     def return_token(self):
-        return self.db["access_token"]
+        return Config.SPOTIFY_FULL["access_token"]
 
     def return_refresh(self):
-        return self.db["refresh_token"]
+        return Config.SPOTIFY_FULL["refresh_token"]
 
     def return_bio(self):
-        return self.db["bio"]
+        return Config.SPOTIFY_FULL["bio"]
 
     def return_spam(self, which):
-        return self.db[which + "_spam"]
+        return Config.SPOTIFY_FULL[which + "_spam"]
 
     def save(self):
         with open('./database_spotify.json', 'w') as outfile:
-            json.dump(self.db, outfile, indent=4, sort_keys=True)
+            json.dump(Config.SPOTIFY_FULL, outfile, indent=4, sort_keys=True)
 
 
 database = Database()
