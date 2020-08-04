@@ -73,7 +73,7 @@ def ms_converter(millis):
 class Database:
     def __init__(self):
         try:
-            self.db = os.environ.get("SPOTIFY_FULL")
+            self.db = int(os.environ.get("SPOTIFY_FULL"))
         except FileNotFoundError:
             print("File Not Found")
 
