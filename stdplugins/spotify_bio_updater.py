@@ -41,21 +41,9 @@ LIMIT = 70 - OFFSET
 
 spotify_bio_status = False
 
-def sp_setup():
-    body = {"client_id": SPOTIFY_CLIENT_ID, "client_secret": SPOTIFY_CLIENT_SECRET,
-            "grant_type": "authorization_code", "redirect_uri": "https://example.com/callback",
-            "code": SPOTIFY_INITIAL_TOKEN}
-    r = requests.post("https://accounts.spotify.com/api/token", data=body)
-    save = r.json()
-    to_create = {'bio': SPOTIFY_INITIAL_BIO, 'access_token': save['access_token'], 'refresh_token': save['refresh_token'],
-                'telegram_spam': False, 'spotify_spam': False}
-    with open('./database.json', 'w') as outfile:
-        json.dump(to_create, outfile, indent=4, sort_keys=True)
-
 
 @borg.on(admin_cmd(pattern="sp ?(.*)"))
 async def spotify(event):
-    sp_setup()
     global spotify_bio_status
     if spotify_bio_status:
         spotify_bio_status = False
@@ -82,7 +70,7 @@ def ms_converter(millis):
 class Database:
     def __init__(self):
         try:
-            self.db = json.load(open("./database_spotify.json"))
+            self.db = Config.SPOTIFY_FULL
         except FileNotFoundError:
             print("File Not Found")
 
