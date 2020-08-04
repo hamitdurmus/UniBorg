@@ -109,6 +109,9 @@ class Config(object):
     SPOTIFY_BIO_PREFIX = os.environ.get("SPOTIFY_BIO_PREFIX", None)
     SPOTIFY_PASS = os.environ.get("SPOTIFY_PASS", None)
     SPOTIFY_USERNAME = os.environ.get("SPOTIFY_USERNAME", None)
+    SPOTIFY_CLIENT_ID = os.environ.get("SPOTIFY_CLIENT_ID", None)
+    SPOTIFY_CLIENT_SECRET = os.environ.get("SPOTIFY_CLIENT_SECRET", None)
+
     GDRIVE_FOLDER_ID = os.environ.get("GDRIVE_FOLDER_ID", None)
     LYDIA_API = os.environ.get("LYDIA_API", None)
     DEFAULT_NAME = os.environ.get("DEFAULT_NAME", None)
