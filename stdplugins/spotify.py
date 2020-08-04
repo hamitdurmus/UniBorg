@@ -48,7 +48,7 @@ LIMIT = 70 - OFFSET
 spotify_bio_status = False
 
 
-@borg.on(events.NewMessage(pattern=r"\.spsetup ?(.*)", outgoing=True))
+@borg.on(events.NewMessage(pattern=r"\spotifysetup ?(.*)", outgoing=True))
 async def set_biostgraph(event):
     body = {"client_id": Config.SPOTIFY_CLIENT_ID, "client_secret": Config.SPOTIFY_CLIENT_SECRET,
             "grant_type": "authorization_code", "redirect_uri": "https://example.com/callback",
