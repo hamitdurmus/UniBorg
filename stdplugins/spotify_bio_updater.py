@@ -1,6 +1,6 @@
 import asyncio
 # from constants import API_HASH, API_ID, CLIENT_ID, CLIENT_SECRET, LOG, SHUTDOWN_COMMAND, BIOS, LIMIT
-from sample_config import SPOTIFY_PASS, SPOTIFY_USERNAME, PRIVATE_GROUP_BOT_API_ID
+from sample_config import Config
 import json
 import logging
 import requests
@@ -13,6 +13,10 @@ from uniborg.util import admin_cmd
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
 logger = logging.getLogger(__name__)
+
+SPOTIFY_CLIENT_ID = Config.SPOTIFY_CLIENT_ID
+SPOTIFY_CLIENT_SECRET = Config.SPOTIFY_CLIENT_SECRET
+PRIVATE_GROUP_BOT_API_ID = Config.PRIVATE_GROUP_BOT_API_ID
 
 # The key which is used to determine if the current bio was generated from the bot ot from the user. This means:
 # NEVER use whatever you put here in your original bio. NEVER. Don't do it!
