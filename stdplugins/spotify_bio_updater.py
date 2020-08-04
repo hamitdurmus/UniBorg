@@ -45,11 +45,11 @@ async def spotify(event):
     global spotify_bio_status
     if spotify_bio_status:
         spotify_bio_status = False
-        event.edit("Spotify Bio Updater is disabled!")
+        await event.edit("Spotify Bio Updater is disabled!")
     else:
         spotify_bio_status = True
         await spotify_bio()
-        event.edit("Current Spotify playback will update in bio")
+        await event.edit("Current Spotify playback will update in bio")
 
 
 def ms_converter(millis):
