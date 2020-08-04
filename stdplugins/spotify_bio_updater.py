@@ -1,13 +1,16 @@
 import asyncio
-# from constants import API_HASH, API_ID, CLIENT_ID, CLIENT_SECRET, LOG, SHUTDOWN_COMMAND, BIOS, LIMIT
-from sample_config import Config
 import json
 import logging
+import os
+
 import requests
 from telethon import TelegramClient, events
-from telethon.errors import FloodWaitError, AboutTooLongError
+from telethon.errors import AboutTooLongError, FloodWaitError
 from telethon.tl.functions.account import UpdateProfileRequest
 from telethon.tl.functions.users import GetFullUserRequest
+
+# from constants import API_HASH, API_ID, CLIENT_ID, CLIENT_SECRET, LOG, SHUTDOWN_COMMAND, BIOS, LIMIT
+from sample_config import Config
 from uniborg.util import admin_cmd
 
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
@@ -70,7 +73,7 @@ def ms_converter(millis):
 class Database:
     def __init__(self):
         try:
-            self.db = Config.SPOTIFY_FULL
+            self.db = os.environ.get("SPOTIFY_FULL", Config.SPOTIFY_FULL)
         except FileNotFoundError:
             print("File Not Found")
 
