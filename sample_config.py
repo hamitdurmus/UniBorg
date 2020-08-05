@@ -106,14 +106,10 @@ class Config(object):
     GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", None)
     # spotify stuff
     DEFAULT_BIO = os.environ.get("DEFAULT_BIO", None)
-    SPOTIFY_BIO_PREFIX = os.environ.get("SPOTIFY_BIO_PREFIX", None)
-    SPOTIFY_PASS = os.environ.get("SPOTIFY_PASS", None)
-    SPOTIFY_USERNAME = os.environ.get("SPOTIFY_USERNAME", None)
-    SPOTIFY_CLIENT_ID = os.environ.get("SPOTIFY_CLIENT_ID", None)
-    SPOTIFY_CLIENT_SECRET = os.environ.get("SPOTIFY_CLIENT_SECRET", None)
-    SPOTIFY_INITIAL_TOKEN = os.environ.get("SPOTIFY_INITIAL_TOKEN", None)
     SPOTIFY_INITIAL_BIO = os.environ.get("SPOTIFY_INITIAL_BIO", None)
-    SPOTIFY_FULL = os.environ.get("SPOTIFY_FULL", None)
+    SPOTIFY_BIO_PREFIX = os.environ.get("SPOTIFY_BIO_PREFIX", None)
+    SPOTIFY_KEY = os.environ.get("SPOTIFY_KEY", None)
+    SPOTIFY_DC = os.environ.get("SPOTIFY_DC", None)
 
     GDRIVE_FOLDER_ID = os.environ.get("GDRIVE_FOLDER_ID", None)
     LYDIA_API = os.environ.get("LYDIA_API", None)
