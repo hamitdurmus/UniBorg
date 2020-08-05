@@ -63,7 +63,7 @@ async def set_biostgraph(event):
         await event.edit("database created")
 
 
-@borg.on(events.NewMessage(pattern=r"\.disablespotify ?(.*)", outgoing=True))
+@borg.on(admin_cmd(pattern="disablespotify ?(.*)"))
 async def set_biodgraph(setdbio):
     await borg(UpdateProfileRequest(about=Config.DEFAULT_BIO))
     await setdbio.edit("Default bio changed")
@@ -75,7 +75,7 @@ async def set_biodgraph(setdbio):
     # await borg(UpdateProfileRequest(about=Config.DEFAULT_BIO))
     # await setdbio.edit("Default bio changed")
 
-@borg.on(admin_cmd(pattern="sp ?(.*)"))
+@borg.on(admin_cmd(pattern="enablespotify ?(.*)"))
 async def spotify(event):
     global spotify_bio_status
     if spotify_bio_status:
@@ -83,8 +83,8 @@ async def spotify(event):
         await event.edit("Spotify Bio Updater is disabled!")
     else:
         spotify_bio_status = True
-        await spotify_bio()
         await event.edit("Current Spotify playback will update in bio")
+        await spotify_bio()
 
 
 def ms_converter(millis):
