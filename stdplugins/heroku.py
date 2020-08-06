@@ -29,7 +29,7 @@ async def variable(var):
                                "\nPlease setup your` **HEROKU_APP_NAME**")
     exe = var.pattern_match.group(1)
     heroku_var = app.config()
-    if exe == "get":
+    if exe in "get":
         await var.edit("`Getting information Bish...`")
         await asyncio.sleep(1.5)
         try:
@@ -61,7 +61,7 @@ async def variable(var):
                                    )
             os.remove("configs.json")
             return
-    elif exe == "set":
+    elif exe in "set":
         await var.edit("`Setting information...`")
         val = var.pattern_match.group(2).split()
         try:
@@ -74,7 +74,7 @@ async def variable(var):
         else:
             await var.reply(f"**{val[0]}**  `successfully added with value: **{val[1]}**")
         heroku_var[val[0]] = val[1]
-    elif exe == "del":
+    elif exe in "del":
         await var.edit("`Getting information to deleting variable...`")
         try:
             variable = var.pattern_match.group(2).split()[0]
@@ -169,7 +169,7 @@ async def dyno_manage(dyno):
     await dyno.edit("`Sending information...`")
     app = Heroku.app(HEROKU_APP_NAME)
     exe = dyno.pattern_match.group(1)
-    if exe == "on":
+    if exe in "on":
         try:
             Dyno = app.dynos()[0]
         except IndexError:
@@ -187,14 +187,14 @@ async def dyno_manage(dyno):
                     dot += "."
                 sleep += 1
             state = Dyno.state
-            if state == "up":
+            if state in "up":
                 await dyno.respond(f"⬢**{HEROKU_APP_NAME}** `up...`")
-            elif state == "crashed":
+            elif state in "crashed":
                 await dyno.respond(f"⬢**{HEROKU_APP_NAME}** `crashed...`")
             return await dyno.delete()
         else:
             return await dyno.edit(f"⬢**{HEROKU_APP_NAME}** `already on...`")
-    if exe == "restart":
+    if exe in "restart":
         try:
             """ - Catch error if dyno not on - """
             Dyno = app.dynos()[0]
@@ -215,12 +215,12 @@ async def dyno_manage(dyno):
                     dot += "."
                 sleep += 1
             state = Dyno.state
-            if state == "up":
+            if state in "up":
                 await dyno.respond(f"⬢**{HEROKU_APP_NAME}** `restarted...`")
-            elif state == "crashed":
+            elif state in "crashed":
                 await dyno.respond(f"⬢**{HEROKU_APP_NAME}** `crashed...`")
             return await dyno.delete()
-    elif exe == "off":
+    elif exe in "off":
         """ - Complete shutdown - """
         app.scale_formation_process("worker", 0)
         text = f"`Shutdown` ⬢**{HEROKU_APP_NAME}**"
@@ -233,7 +233,7 @@ async def dyno_manage(dyno):
             sleep += 1
         await dyno.respond(f"⬢**{HEROKU_APP_NAME}** `turned off...`")
         return await dyno.delete()
-    elif exe == "cancel deploy" or exe == "cancel build":
+    elif exe in "cancel deploy" or exe in "cancel build":
         """ - Only cancel 1 recent builds from activity - """
         build_id = dyno.pattern_match.group(2)
         if build_id is None:
@@ -243,7 +243,7 @@ async def dyno_manage(dyno):
             if build is None:
                 return await dyno.edit(
                     f"`There is no such build.id`:  **{build_id}**")
-        if build.status != "pending":
+        if build.status is not "pending":
             return await dyno.edit("`Zero active builds to cancel...`")
         useragent = ('Mozilla/5.0 (Linux; Android 10; SM-G975F) '
                      'AppleWebKit/537.36 (KHTML, like Gecko) '
