@@ -25,8 +25,9 @@ from sample_config import Config
 from sql_helpers.lydia_ai_sql import add_s, get_all_s, get_s, remove_s
 from uniborg.util import admin_cmd
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 

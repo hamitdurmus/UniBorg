@@ -149,7 +149,7 @@
 #     if val == "on":
 #         await nicedb.delete("Notifications")
 #         await nicedb.set_notif(True)
-#         await message.edit("<i>Notifications from unapproved PMs unmuted</i>")
+# await message.edit("<i>Notifications from unapproved PMs unmuted</i>")
 
 
 # @borg.on(admin_cmd(pattern='setlimits (.*)', outgoing=True))
@@ -163,7 +163,7 @@
 #     if limit > 0:
 #         await nicedb.delete("Limit")
 #         await nicedb.set_limit(limit)
-#         await message.edit("<i>Max. PM message limit successfully updated</i>")
+# await message.edit("<i>Max. PM message limit successfully updated</i>")
 
 
 # @borg.on(admin_cmd(pattern='superblocks (.*)', outgoing=True))

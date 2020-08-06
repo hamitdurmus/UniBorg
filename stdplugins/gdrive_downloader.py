@@ -1,5 +1,5 @@
 """
-G-Drive File Downloader Plugin For Userbot. 
+G-Drive File Downloader Plugin For Userbot.
 usage: .gdl File-Link
 By: @Zero_cool7870
 
@@ -10,8 +10,9 @@ import requests
 from telethon import events
 
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -84,7 +85,7 @@ async def get_file_name(content):
         if c_append:
             file_name = file_name + c
     file_name = file_name.replace('"', "")
-    print("File Name: "+str(file_name))
+    print("File Name: " + str(file_name))
     return file_name
 
 
@@ -93,8 +94,8 @@ async def g_download(event):
     if event.fwd_from:
         return
     drive_link = event.text[4:]
-    print("Drive Link: "+drive_link)
+    print("Drive Link: " + drive_link)
     file_id = await get_id(drive_link)
     await event.edit("Downloading Requested File from G-Drive...")
     file_name = await download_file_from_google_drive(file_id)
-    await event.edit("File Downloaded.\nName: "+str(file_name)+"")
+    await event.edit("File Downloaded.\nName: " + str(file_name) + "")

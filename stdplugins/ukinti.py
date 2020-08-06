@@ -15,8 +15,9 @@ from telethon.tl.types import (ChannelParticipantsKicked, ChatBannedRights,
 
 from uniborg.util import admin_cmd
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -90,7 +91,7 @@ async def _(event):
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
-                    except:
+                    except BaseException:
                         pass
                     ee.append(str(e))
                     # break
@@ -103,7 +104,7 @@ async def _(event):
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
-                    except:
+                    except BaseException:
                         pass
                     ee.append(str(e))
                     # break
@@ -116,7 +117,7 @@ async def _(event):
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
-                    except:
+                    except BaseException:
                         pass
                     ee.append(str(e))
                     # break
@@ -129,7 +130,7 @@ async def _(event):
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
-                    except:
+                    except BaseException:
                         pass
                     ee.append(str(e))
                     # break
@@ -142,7 +143,7 @@ async def _(event):
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
-                    except:
+                    except BaseException:
                         pass
                     ee.append(str(e))
                     # break
@@ -155,7 +156,7 @@ async def _(event):
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
-                    except:
+                    except BaseException:
                         pass
                     ee.append(str(e))
                     # break
@@ -168,7 +169,7 @@ async def _(event):
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
-                    except:
+                    except BaseException:
                         pass
                     ee.append(str(e))
                     # break
@@ -181,7 +182,7 @@ async def _(event):
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
-                    except:
+                    except BaseException:
                         pass
                     ee.append(str(e))
                     # break

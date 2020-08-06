@@ -7,8 +7,9 @@ import zipfile
 from sample_config import Config
 from uniborg.util import admin_cmd, progress
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 logger = logging.getLogger(__name__)
 
@@ -47,7 +48,7 @@ async def _(event):
             try:
                 os.remove(directory_name + ".zip")
                 os.remove(directory_name)
-            except:
+            except BaseException:
                 pass
             await event.edit("Task Completed")
             await asyncio.sleep(3)

@@ -14,7 +14,6 @@ from telethon.tl.functions.messages import GetStickerSetRequest
 from telethon.tl.types import (DocumentAttributeFilename,
                                DocumentAttributeSticker, InputStickerSetID,
                                MessageMediaPhoto)
-from telethon import events
 from PIL import Image
 from uniborg.util import admin_cmd
 

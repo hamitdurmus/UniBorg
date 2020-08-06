@@ -8,8 +8,9 @@ import sys
 from telethon import events
 from sample_config import Config
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -25,11 +26,12 @@ async def _(cas):
             from requests import get
             # async with aiohttp.get()
             r = get(f'https://combot.org/api/cas/check?user_id={id}')
-            # r = await aiohttp.get(f'https://combot.org/api/cas/check?user_id={id}')
+            # r = await
+            # aiohttp.get(f'https://combot.org/api/cas/check?user_id={id}')
             r_dict = r.json()
             if r_dict['ok']:
                 try:
-                    more = r_dict['result']
+                    r_dict['result']
                     # rights = ChatBannedRights(
                     #     until_date=None,
                     #     view_messages=True,

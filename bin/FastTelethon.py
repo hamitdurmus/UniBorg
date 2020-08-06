@@ -13,14 +13,23 @@ from telethon.network import MTProtoSender
 from telethon.tl.functions.auth import ExportAuthorizationRequest, ImportAuthorizationRequest
 from telethon.tl.functions.upload import (GetFileRequest, SaveFilePartRequest,
                                           SaveBigFilePartRequest)
-from telethon.tl.types import (Document, InputFileLocation, InputDocumentFileLocation,
-                               InputPhotoFileLocation, InputPeerPhotoFileLocation, TypeInputFile,
-                               InputFileBig, InputFile)
+from telethon.tl.types import (
+    Document,
+    InputFileLocation,
+    InputDocumentFileLocation,
+    InputPhotoFileLocation,
+    InputPeerPhotoFileLocation,
+    TypeInputFile,
+    InputFileBig,
+    InputFile)
 
 log: logging.Logger = logging.getLogger("telethon")
 logging.basicConfig(level=logging.WARNING)
-TypeLocation = Union[Document, InputDocumentFileLocation, InputPeerPhotoFileLocation,
-                     InputFileLocation, InputPhotoFileLocation]
+TypeLocation = Union[Document,
+                     InputDocumentFileLocation,
+                     InputPeerPhotoFileLocation,
+                     InputFileLocation,
+                     InputPhotoFileLocation]
 
 
 def stream_file(file_to_stream: BinaryIO, chunk_size=1024):
@@ -37,8 +46,14 @@ class DownloadSender:
     remaining: int
     stride: int
 
-    def __init__(self, sender: MTProtoSender, file: TypeLocation, offset: int, limit: int,
-                 stride: int, count: int) -> None:
+    def __init__(
+            self,
+            sender: MTProtoSender,
+            file: TypeLocation,
+            offset: int,
+            limit: int,
+            stride: int,
+            count: int) -> None:
         self.sender = sender
         self.request = GetFileRequest(file, offset=offset, limit=limit)
         self.stride = stride
@@ -64,8 +79,15 @@ class UploadSender:
     previous: Optional[asyncio.Task]
     loop: asyncio.AbstractEventLoop
 
-    def __init__(self, sender: MTProtoSender, file_id: int, part_count: int, big: bool, index: int,
-                 stride: int, loop: asyncio.AbstractEventLoop) -> None:
+    def __init__(
+            self,
+            sender: MTProtoSender,
+            file_id: int,
+            part_count: int,
+            big: bool,
+            index: int,
+            stride: int,
+            loop: asyncio.AbstractEventLoop) -> None:
         self.sender = sender
         self.part_count = part_count
         if big:
@@ -84,8 +106,9 @@ class UploadSender:
 
     async def _next(self, data: bytes) -> None:
         self.request.bytes = data
-        log.debug(f"Sending file part {self.request.file_part}/{self.part_count}"
-                  f" with {len(data)} bytes")
+        log.debug(
+            f"Sending file part {self.request.file_part}/{self.part_count}"
+            f" with {len(data)} bytes")
         await self.sender.send(self.request)
         self.request.file_part += self.stride
 
@@ -103,7 +126,10 @@ class ParallelTransferrer:
     auth_key: AuthKey
     upload_ticker: int
 
-    def __init__(self, client: TelegramClient, dc_id: Optional[int] = None) -> None:
+    def __init__(
+            self,
+            client: TelegramClient,
+            dc_id: Optional[int] = None) -> None:
         self.client = client
         self.loop = self.client.loop
         self.dc_id = dc_id or self.client.session.dc_id
@@ -272,7 +298,8 @@ async def _internal_transfer_to_telegram(client: TelegramClient,
     if is_large:
         return InputFileBig(file_id, part_count, "upload"), file_size
     else:
-        return InputFile(file_id, part_count, "upload", hash_md5.hexdigest()), file_size
+        return InputFile(file_id, part_count, "upload",
+                         hash_md5.hexdigest()), file_size
 
 
 async def download_file(client: TelegramClient,

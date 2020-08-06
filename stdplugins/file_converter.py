@@ -9,8 +9,9 @@ from sample_config import Config
 
 from uniborg.util import admin_cmd, progress
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -91,8 +92,8 @@ async def _(event):
         )
         # Wait for the subprocess to finish
         stdout, stderr = await process.communicate()
-        e_response = stderr.decode().strip()
-        t_response = stdout.decode().strip()
+        stderr.decode().strip()
+        stdout.decode().strip()
 
         if os.path.exists(new_required_file_name):
             end_two = datetime.now()

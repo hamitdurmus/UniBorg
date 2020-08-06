@@ -12,8 +12,9 @@ from telethon.tl import functions
 from sample_config import Config
 from uniborg.util import admin_cmd
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -108,7 +109,7 @@ async def _(event):
                 msg = "Last profile photo changed: \n👉 `{}` `UTC+3`".format(
                     str(msg_utc))
                 await a.edit(msg)
-        except:
+        except BaseException:
             pass
 
     else:
@@ -127,5 +128,5 @@ async def _(event):
                 msg = "Last profile photo changed: \n👉 `{}` `UTC+3`".format(
                     str(msg_utc))
                 await a.edit(msg)
-        except:
+        except BaseException:
             pass

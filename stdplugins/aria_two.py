@@ -5,8 +5,8 @@ cmds: Magnet link : .magnet magnetLink
 	  Torrent file from local: .tor file_path
 	  Show Downloads: .show
 	  Remove All Downloads: .ariaRM
-	  
-By:- @Zero_cool7870	   
+
+By:- @Zero_cool7870
 
 """
 import asyncio
@@ -17,8 +17,9 @@ from telethon import events
 
 import aria2p
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 cmd = "aria2c --enable-rpc --rpc-listen-all=false --rpc-listen-port 6800  --max-connection-per-server=10 --rpc-max-request-size=1024M --seed-time=0.01 --min-split-size=10M --follow-torrent=mem --split=10 --daemon=true --allow-overwrite=true"
@@ -103,7 +104,7 @@ async def remove_all(event):
     try:
         removed = aria2.remove_all(force=True)
         aria2.purge_all()
-    except:
+    except BaseException:
         pass
     if removed is False:  # If API returns False Try to Remove Through System Call.
         os.system("aria2p remove-all")
@@ -118,10 +119,10 @@ async def show_all(event):
     downloads = aria2.get_downloads()
     msg = ""
     for download in downloads:
-        msg = msg+"File: `"+str(download.name) + "`\nSpeed: " + str(download.download_speed_string())+"\nProgress: "+str(download.progress_string(
-        ))+"\nTotal Size: "+str(download.total_length_string())+"\nStatus: "+str(download.status)+"\nETA:  "+str(download.eta_string())+"\n\n"
+        msg = msg + "File: `" + str(download.name) + "`\nSpeed: " + str(download.download_speed_string()) + "\nProgress: " + str(download.progress_string(
+        )) + "\nTotal Size: " + str(download.total_length_string()) + "\nStatus: " + str(download.status) + "\nETA:  " + str(download.eta_string()) + "\n\n"
     if len(msg) <= 4096:
-        await event.edit("`Current Downloads: `\n"+msg)
+        await event.edit("`Current Downloads: `\n" + msg)
     else:
         await event.edit("`Output is huge. Sending as a file...`")
         with open(output, 'w') as f:
@@ -141,7 +142,7 @@ async def show_all(event):
 async def check_metadata(gid):
     file = aria2.get_download(gid)
     new_gid = file.followed_by_ids[0]
-    logger.info("Changing GID "+gid+" to "+new_gid)
+    logger.info("Changing GID " + gid + " to " + new_gid)
     return new_gid
 
 
@@ -150,8 +151,8 @@ async def progress_status(gid, event, previous):
         file = aria2.get_download(gid)
         if not file.is_complete:
             if not file.error_message:
-                msg = "Downloading File: `"+str(file.name) + "`\nSpeed: " + str(file.download_speed_string())+"\nProgress: "+str(file.progress_string(
-                ))+"\nTotal Size: "+str(file.total_length_string())+"\nStatus: "+str(file.status)+"\nETA:  "+str(file.eta_string())+"\n\n"
+                msg = "Downloading File: `" + str(file.name) + "`\nSpeed: " + str(file.download_speed_string()) + "\nProgress: " + str(file.progress_string(
+                )) + "\nTotal Size: " + str(file.total_length_string()) + "\nStatus: " + str(file.status) + "\nETA:  " + str(file.eta_string()) + "\n\n"
                 if previous != msg:
                     await event.edit(msg)
                     previous = msg

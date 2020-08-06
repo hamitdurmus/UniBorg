@@ -23,12 +23,14 @@ from youtube_dl.utils import (ContentTooShortError, DownloadError,
                               MaxDownloadsReached, PostProcessingError,
                               UnavailableVideoError, XAttrMetadataError)
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
 DELETE_TIMEOUT = 5
+
 
 @borg.on(admin_cmd(pattern="playlist(a|v) (.*)"))
 async def download_video(v_url):
@@ -37,7 +39,7 @@ async def download_video(v_url):
     type = v_url.pattern_match.group(1).lower()
     await v_url.edit("`Preparing to download...`")
     out_folder = Config.TMP_DOWNLOAD_DIRECTORY + "youtubedl/"
-    thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
+    Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
     if not os.path.isdir(out_folder):
         os.makedirs(out_folder)
     if type == "a":
@@ -91,7 +93,7 @@ async def download_video(v_url):
     try:
         await v_url.edit("`Fetching playlist data, please wait..`")
         with YoutubeDL(opts) as ytdl:
-            ytdl_data = ytdl.extract_info(url)
+            ytdl.extract_info(url)
             # print(ytdl_data['thumbnail'])
         filename = sorted(get_lst_of_files(out_folder, []))
     except DownloadError as DE:
@@ -152,7 +154,7 @@ async def download_video(v_url):
                         ytdl_data_name_audio = os.path.basename(single_file)
                         thumb = out_folder + \
                             ytdl_data_name_audio[:(
-                                len(ytdl_data_name_audio)-4)] + ".jpg"
+                                len(ytdl_data_name_audio) - 4)] + ".jpg"
                         print(ytdl_data_name_audio)
                         file_path = single_file
                         song_size = file_size(file_path)
@@ -219,7 +221,7 @@ async def download_video(v_url):
                         ytdl_data_name_video = os.path.basename(single_file)
                         thumb = out_folder + \
                             ytdl_data_name_video[:(
-                                len(ytdl_data_name_video)-4)] + ".jpg"
+                                len(ytdl_data_name_video) - 4)] + ".jpg"
                         await v_url.client.send_file(
                             v_url.chat_id,
                             single_file,
@@ -246,7 +248,6 @@ async def download_video(v_url):
                     await asyncio.sleep(DELETE_TIMEOUT)
                     # await v_url.delete()
         shutil.rmtree(out_folder)
-
 
 
 def get_lst_of_files(input_directory, output_lst):

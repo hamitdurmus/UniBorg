@@ -9,13 +9,11 @@ import asyncio
 import logging
 import math
 import os
-import re
 import shutil
 import time
 
 from telethon.tl.types import DocumentAttributeAudio
 
-import wget
 from sample_config import Config
 from uniborg.util import admin_cmd
 from youtube_dl import YoutubeDL
@@ -24,8 +22,9 @@ from youtube_dl.utils import (ContentTooShortError, DownloadError,
                               MaxDownloadsReached, PostProcessingError,
                               UnavailableVideoError, XAttrMetadataError)
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -117,7 +116,7 @@ async def download_video(v_url):
                 'preferredcodec': 'mp3',
                 'preferredquality': '320',
             }],
-            'outtmpl': out_folder+'%(title)s.mp3',
+            'outtmpl': out_folder + '%(title)s.mp3',
             'quiet': True,
             'logtostderr': False
         }
@@ -140,7 +139,7 @@ async def download_video(v_url):
                 'key': 'FFmpegVideoConvertor',
                 'preferedformat': 'mp4'
             }],
-            'outtmpl': out_folder+'%(title)s.mp4',
+            'outtmpl': out_folder + '%(title)s.mp4',
             'logtostderr': False,
             'quiet': True
         }
@@ -151,7 +150,7 @@ async def download_video(v_url):
         await v_url.edit("`Fetching data, please wait..`")
         with YoutubeDL(opts) as ytdl:
             ytdl_data = ytdl.extract_info(url)
-        filename = sorted(get_lst_of_files(out_folder, []))
+        sorted(get_lst_of_files(out_folder, []))
     except DownloadError as DE:
         await v_url.edit(f"`{str(DE)}`")
         return

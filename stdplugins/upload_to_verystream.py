@@ -16,9 +16,11 @@ import magic
 from sample_config import Config
 from uniborg.util import admin_cmd, progress
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
+
 
 @borg.on(admin_cmd(pattern="verystream ?(.*)", allow_sudo=True))
 async def _(event):
@@ -69,7 +71,7 @@ async def _(event):
         if "." in file_name:
             file_name = file_name.rsplit(".", maxsplit=1)[0]
         file_name = file_name + str(time.time())
-        file_size = os.stat(required_file_name).st_size
+        os.stat(required_file_name).st_size
         # https://stackoverflow.com/a/22058673/4723940
         sha_one_file_hash = get_sha_one_hash(required_file_name, 65536)
         # /* STEP 1: get upload_key */
@@ -110,7 +112,7 @@ async def _(event):
                         await event.delete()
                         try:
                             os.remove(required_file_name)
-                        except:
+                        except BaseException:
                             pass
                     else:
                         await mone.edit(f"VeryStream returned {step_two_response_text['status']} => {step_two_response_text['msg']}, after STEP ONE")

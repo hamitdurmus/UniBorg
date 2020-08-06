@@ -8,8 +8,9 @@ import logging
 from sample_config import Config
 from uniborg.util import admin_cmd
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -24,9 +25,9 @@ async def _(event):
     if event.reply_to_msg_id:
         r = await event.get_reply_message()
         if r.forward:
-            r_from_id = r.forward.from_id or r.from_id
+            r.forward.from_id or r.from_id
         else:
-            r_from_id = r.from_id
+            r.from_id
         await borg.send_message(
             Config.G_BAN_LOGGER_GROUP,
             "!fban {} {}".format(r.from_id, reason)

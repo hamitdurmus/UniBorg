@@ -10,12 +10,13 @@ from telethon import events, functions, types
 from sample_config import Config
 from uniborg.util import admin_cmd
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
-@borg.on(admin_cmd(pattern="lock( (?P<target>\S+)|$)"))
+@borg.on(admin_cmd(pattern=r"lock( (?P<target>\S+)|$)"))
 async def _(event):
     # Space weirdness in regex required because argument is optional and other
     # commands start with ".lock"
@@ -217,7 +218,10 @@ async def check_incoming_messages(event):
         is_url = False
         if entities:
             for entity in entities:
-                if isinstance(entity, (types.MessageEntityTextUrl, types.MessageEntityUrl)):
+                if isinstance(
+                    entity,
+                    (types.MessageEntityTextUrl,
+                     types.MessageEntityUrl)):
                     is_url = True
         if is_url:
             try:

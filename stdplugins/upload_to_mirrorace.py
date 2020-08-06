@@ -12,8 +12,9 @@ import requests
 import aiohttp
 from uniborg.util import admin_cmd, progress
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -95,7 +96,7 @@ async def _(event):
                     default_mirrors = step_one_response_json["result"]["default_mirrors"]
                     max_chunk_size = step_one_response_json["result"]["max_chunk_size"]
                     max_file_size = step_one_response_json["result"]["max_file_size"]
-                    max_mirrors = step_one_response_json["result"]["max_mirrors"]
+                    step_one_response_json["result"]["max_mirrors"]
 
                     # check file size limit
                     if int(file_size) >= int(max_file_size):
@@ -122,7 +123,8 @@ async def _(event):
 
                     with open(required_file_name, "rb") as f_handle:
                         # start chunk upload
-                        for chunk in iter((lambda: f_handle.read(chunk_size)), ""):
+                        for chunk in iter(
+                                (lambda: f_handle.read(chunk_size)), ""):
                             # for chunk in f_handle.read(chunk_size):
                             # print(chunk)
                             # while (i < chunks) and not while_error:

@@ -7,13 +7,14 @@ import cfscrape  # https://github.com/Anorov/cloudflare-scrape
 from bs4 import BeautifulSoup
 from uniborg.util import admin_cmd, humanbytes
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
 @borg.on(admin_cmd(
-    pattern="torrentz (torrentz2\.eu|idop\.se) (.*)"
+    pattern=r"torrentz (torrentz2\.eu|idop\.se) (.*)"
 ))
 async def _(event):
     if event.fwd_from:
@@ -111,6 +112,6 @@ def search_torrentz_eu(search_query):
                     "seeds": seeds,
                     "peers": peers
                 })
-            except:
+            except BaseException:
                 pass
     return r

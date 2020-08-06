@@ -1,5 +1,5 @@
 """
-command: .singer singer name - song name 
+command: .singer singer name - song name
 """
 from uniborg.util import admin_cmd
 from PyLyrics import *
@@ -9,7 +9,6 @@ from PyLyrics import *
 async def _(event):
     if event.fwd_from:
         return
-    i = 0
     input_str = event.pattern_match.group(1)
     try:
         song = input_str.split("-")
@@ -23,7 +22,7 @@ async def _(event):
             lyric_message += "\n\n" + "\n".join(lyrics)
             try:
                 await event.edit(lyric_message)
-            except:
+            except BaseException:
                 # TODO: send as file
                 logger.info(lyric_message)
     except ValueError:

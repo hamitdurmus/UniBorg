@@ -3,8 +3,9 @@ import logging
 
 from uniborg.util import admin_cmd
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -15,7 +16,7 @@ async def _(event):
     if event.reply_to_msg_id:
         previous_message = await event.get_reply_message()
         the_real_message = previous_message.text
-        reply_to_id = event.reply_to_msg_id
+        event.reply_to_msg_id
         the_real_message = the_real_message.replace("*", "**")
         the_real_message = the_real_message.replace("_", "__")
         await event.edit(the_real_message)

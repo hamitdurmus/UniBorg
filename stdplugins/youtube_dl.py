@@ -31,7 +31,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             try:
                 with open(Config.TMP_DOWNLOAD_DIRECTORY + "/" + "YouTubeDL.json", "r", encoding="utf8") as f:
                     response_json = json.load(f)
-            except FileNotFoundError as e:
+            except FileNotFoundError:
                 await event.edit("Something Bad Happened")
                 return False
             custom_file_name = str(response_json.get("title")) + \

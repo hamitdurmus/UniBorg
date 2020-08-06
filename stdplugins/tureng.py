@@ -8,10 +8,10 @@ from uniborg.util import admin_cmd
 
 def searchTureng(word):
     http = urllib3.PoolManager()
-    url = "http://www.tureng.com/search/"+word
+    url = "http://www.tureng.com/search/" + word
     try:
         answer = http.request('GET', url)
-    except:
+    except BaseException:
         return "No connection"
     soup = BeautifulSoup(answer.data, 'html.parser')
     trlated = '**{}** Kelimesinin Türkçe Anlamı/Anlamları:\n\n'.format(word)
@@ -21,15 +21,15 @@ def searchTureng(word):
         for val in td[0:5]:
             trlated = '{}👉  {}\n'.format(trlated, val.text)
         return trlated
-    except:
+    except BaseException:
         return "Sonuç bulunamadı"
 
 
 def turengsearch(word):
-    url = "http://www.tureng.com/search/"+word
+    url = "http://www.tureng.com/search/" + word
     try:
         answer = requests.get(url)
-    except:
+    except BaseException:
         return "Bağlantı Hatası"
     soup = BeautifulSoup(answer.content, 'html.parser')
     trlated = '**{}** Kelimesinin Türkçe Anlamı/Anlamları:\n\n'.format(word)
@@ -39,16 +39,16 @@ def turengsearch(word):
         for val in td[0:20]:
             trlated = '{}👉  {}\n'.format(trlated, val.text)
         return trlated
-    except:
+    except BaseException:
         return "Sonuç bulunamadı"
 
 
 def searchTureng_tr(word):
     http = urllib3.PoolManager()
-    url = "https://tureng.com/tr/turkce-ingilizce/"+word
+    url = "https://tureng.com/tr/turkce-ingilizce/" + word
     try:
         answer = http.request('GET', url)
-    except:
+    except BaseException:
         return "No connection"
     soup = BeautifulSoup(answer.data, 'html.parser')
     trlated = '{} Kelimesinin Anlamı/Anlamları:\n\n'.format(word)
@@ -59,7 +59,7 @@ def searchTureng_tr(word):
         for val in td[0:5]:
             trlated = '{}👉  {}\n'.format(trlated, val.text)
         return trlated
-    except:
+    except BaseException:
         return "Sonuç bulunamadı"
 
 

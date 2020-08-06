@@ -45,7 +45,7 @@ async def get_chatinfo(event):
             chat = event.chat_id
     try:
         chat_info = await event.client(GetFullChatRequest(chat))
-    except:
+    except BaseException:
         try:
             chat_info = await event.client(GetFullChannelRequest(chat))
         except ChannelInvalidError:
@@ -87,13 +87,14 @@ async def fetch_info(chat, event):
         0].first_name is not None else "Deleted Account"
     creator_username = msg_info.users[0].username if creator_valid and msg_info.users[0].username is not None else None
     created = msg_info.messages[0].date if first_msg_valid else None
-    former_title = msg_info.messages[0].action.title if first_msg_valid and type(
-        msg_info.messages[0].action) is MessageActionChannelMigrateFrom and msg_info.messages[0].action.title != chat_title else None
+    former_title = msg_info.messages[0].action.title if first_msg_valid and isinstance(
+        msg_info.messages[0].action,
+        MessageActionChannelMigrateFrom) and msg_info.messages[0].action.title != chat_title else None
     try:
         dc_id, location = get_input_location(chat.full_chat.chat_photo)
     except Exception as e:
         dc_id = "Unknown"
-        location = str(e)
+        str(e)
 
     # this is some spaghetti I need to change
     description = chat.full_chat.about
@@ -121,8 +122,8 @@ async def fetch_info(chat, event):
     bots = 0
     supergroup = "<b>Yes</b>" if hasattr(chat_obj_info,
                                          "megagroup") and chat_obj_info.megagroup else "No"
-    slowmode = "<b>Yes</b>" if hasattr(
-        chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled else "No"
+    slowmode = "<b>Yes</b>" if hasattr(chat_obj_info,
+                                       "slowmode_enabled") and chat_obj_info.slowmode_enabled else "No"
     slowmode_time = chat.full_chat.slowmode_seconds if hasattr(
         chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled else None
     restricted = "<b>Yes</b>" if hasattr(chat_obj_info,
@@ -135,7 +136,8 @@ async def fetch_info(chat, event):
     # end of spaghetti block
 
     if admins is None:
-        # use this alternative way if chat.full_chat.admins_count is None, works even without being an admin
+        # use this alternative way if chat.full_chat.admins_count is None,
+        # works even without being an admin
         try:
             participants_admins = await event.client(GetParticipantsRequest(channel=chat.full_chat.id, filter=ChannelParticipantsAdmins(),
                                                                             offset=0, limit=0, hash=0))
@@ -167,7 +169,7 @@ async def fetch_info(chat, event):
         caption += f"Created: <code>{chat_obj_info.date.date().strftime('%b %d, %Y')} - {chat_obj_info.date.time()}</code> {warn_emoji}\n"
     caption += f"Data Centre ID: {dc_id}\n"
     if exp_count is not None:
-        chat_level = int((1+sqrt(1+7*exp_count/14))/2)
+        chat_level = int((1 + sqrt(1 + 7 * exp_count / 14)) / 2)
         caption += f"{chat_type} level: <code>{chat_level}</code>\n"
     if messages_viewable is not None:
         caption += f"Viewable messages: <code>{messages_viewable}</code>\n"
@@ -192,7 +194,9 @@ async def fetch_info(chat, event):
     caption += "\n"
     if not broadcast:
         caption += f"Slow mode: {slowmode}"
-        if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled:
+        if hasattr(
+                chat_obj_info,
+                "slowmode_enabled") and chat_obj_info.slowmode_enabled:
             caption += f", <code>{slowmode_time}s</code>\n\n"
         else:
             caption += "\n\n"

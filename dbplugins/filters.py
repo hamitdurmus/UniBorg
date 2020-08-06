@@ -10,12 +10,13 @@ Available Commands:
 import asyncio
 import logging
 import re
-from database.filtersdb import get_all_filters, get_filter, add_filter, delete_filter, delete_all_filters
+from database.filtersdb import add_filter, delete_all_filters, delete_filter, get_all_filters
 from uniborg.util import admin_cmd
 from sample_config import Config
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 DELETE_TIMEOUT = 300

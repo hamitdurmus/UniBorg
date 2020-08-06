@@ -1,5 +1,5 @@
 """
-command: .url 
+command: .url
 
 """
 import asyncio
@@ -33,7 +33,7 @@ async def magnet_download(event):
     # Add URL Into Queue
     try:
         download = aria2.add_uris(uris, options=None, position=None)
-    except Exception as e:
+    except Exception:
         # await event.edit("`Error:\n`"+str(e))
         return
     gid = download.gid
@@ -47,11 +47,11 @@ async def magnet_download(event):
         file = aria2.get_download(gid)
         complete = file.is_complete
         try:
-            msg = "**Downloading File:** "+str(file.name) + "\n**Speed:** " + str(file.download_speed_string())+"\n**Progress:** "+str(
-                file.progress_string())+"\n**Total Size:** "+str(file.total_length_string())+"\n**ETA:**  "+str(file.eta_string())+"\n\n"
+            msg = "**Downloading File:** " + str(file.name) + "\n**Speed:** " + str(file.download_speed_string()) + "\n**Progress:** " + str(
+                file.progress_string()) + "\n**Total Size:** " + str(file.total_length_string()) + "\n**ETA:**  " + str(file.eta_string()) + "\n\n"
             await event.edit(msg)
             await asyncio.sleep(10)
-        except Exception as e:
+        except Exception:
             # print(str(e))
             pass
 
@@ -63,8 +63,8 @@ async def progress_status(gid, event, previous):
         file = aria2.get_download(gid)
         if not file.is_complete:
             if not file.error_message:
-                msg = "Downloading File: `"+str(file.name) + "`\nSpeed: " + str(file.download_speed_string())+"\nProgress: "+str(file.progress_string(
-                ))+"\nTotal Size: "+str(file.total_length_string())+"\nStatus: "+str(file.status)+"\nETA:  "+str(file.eta_string())+"\n\n"
+                msg = "Downloading File: `" + str(file.name) + "`\nSpeed: " + str(file.download_speed_string()) + "\nProgress: " + str(file.progress_string(
+                )) + "\nTotal Size: " + str(file.total_length_string()) + "\nStatus: " + str(file.status) + "\nETA:  " + str(file.eta_string()) + "\n\n"
                 if previous != msg:
                     await event.edit(msg)
                     previous = msg
@@ -93,5 +93,5 @@ async def progress_status(gid, event, previous):
 async def check_metadata(gid):
     file = aria2.get_download(gid)
     new_gid = file.followed_by_ids[0]
-    logger.info("Changing GID "+gid+" to "+new_gid)
+    logger.info("Changing GID " + gid + " to " + new_gid)
     return new_gid

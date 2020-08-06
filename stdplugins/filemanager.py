@@ -13,8 +13,9 @@ from telethon import events
 from sample_config import Config
 
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -22,7 +23,6 @@ logger = logging.getLogger(__name__)
 async def _(event):
     if event.fwd_from:
         return
-    DELAY_BETWEEN_EDITS = 0.3
     PROCESS_RUN_TIME = 100
 #    dirname = event.pattern_match.group(1)
 #    tempdir = "localdir"
@@ -32,7 +32,7 @@ async def _(event):
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
         reply_to_id = event.reply_to_msg_id
-    start_time = time.time() + PROCESS_RUN_TIME
+    time.time() + PROCESS_RUN_TIME
     process = await asyncio.create_subprocess_shell(
         cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
     )
@@ -57,18 +57,18 @@ async def _(event):
 #    else:
 #        await event.edit("Unknown Command")
 
+
 @borg.on(events.NewMessage(pattern=r"\.lsroot", outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
-    DELAY_BETWEEN_EDITS = 0.3
     PROCESS_RUN_TIME = 100
     cmd = "ls"
 
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
         reply_to_id = event.reply_to_msg_id
-    start_time = time.time() + PROCESS_RUN_TIME
+    time.time() + PROCESS_RUN_TIME
     process = await asyncio.create_subprocess_shell(
         cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
     )

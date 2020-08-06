@@ -10,10 +10,10 @@ from telethon import events
 from uniborg import util
 
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
-
 
 
 async def get_target_message(event):
@@ -41,7 +41,7 @@ async def await_read(chat, message):
 
 
 @borg.on(util.admin_cmd(pattern="(del)(?:ete)?$"))
-@borg.on(util.admin_cmd(pattern="(edit)(?:\s+(.*))?$"))
+@borg.on(util.admin_cmd(pattern=r"(edit)(?:\s+(.*))?$"))
 async def delete(event):
     await event.delete()
     command = event.pattern_match.group(1)

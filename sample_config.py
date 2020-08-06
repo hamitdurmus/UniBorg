@@ -21,7 +21,8 @@ class Config(object):
     PRIVATE_GROUP_BOT_API_ID = os.environ.get("PRIVATE_GROUP_BOT_API_ID", None)
     if PRIVATE_GROUP_BOT_API_ID:
         PRIVATE_GROUP_BOT_API_ID = int(PRIVATE_GROUP_BOT_API_ID)
-    # Send .get_id in any channel to fill this value. ReQuired for @Manuel15 inspiration to work!
+    # Send .get_id in any channel to fill this value. ReQuired for @Manuel15
+    # inspiration to work!
     PRIVATE_CHANNEL_BOT_API_ID = os.environ.get(
         "PRIVATE_CHANNEL_BOT_API_ID", None)
     if PRIVATE_CHANNEL_BOT_API_ID:
@@ -29,7 +30,8 @@ class Config(object):
     # This is required for the plugins involving the file system.
     TMP_DOWNLOAD_DIRECTORY = os.environ.get(
         "TMP_DOWNLOAD_DIRECTORY", "./DOWNLOADS/")
-    # This is required for the speech to text module. Get your USERNAME from https://console.bluemix.net/docs/services/speech-to-text/getting-started.html
+    # This is required for the speech to text module. Get your USERNAME from
+    # https://console.bluemix.net/docs/services/speech-to-text/getting-started.html
     IBM_WATSON_CRED_URL = os.environ.get("IBM_WATSON_CRED_URL", None)
     IBM_WATSON_CRED_PASSWORD = os.environ.get("IBM_WATSON_CRED_PASSWORD", None)
     IBM_WATSON_CRED_USERNAME = os.environ.get("IBM_WATSON_CRED_USERNAME", None)
@@ -79,7 +81,7 @@ class Config(object):
         os.environ.get("NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD", 5))
     # specify command handler that should be used for the plugins
     # this should be a valid "regex" pattern
-    COMMAND_HAND_LER = os.environ.get("COMMAND_HAND_LER", "\.")
+    COMMAND_HAND_LER = os.environ.get("COMMAND_HAND_LER", r"\.")
     # specify list of users allowed to use bot
     # WARNING: be careful who you grant access to your bot.
     # malicious users could do ".exec rm -rf /*"
@@ -101,7 +103,8 @@ class Config(object):
     OPEN_LOAD_LOGIN = os.environ.get("OPEN_LOAD_LOGIN", "0")
     OPEN_LOAD_KEY = os.environ.get("OPEN_LOAD_KEY", "0")
     # Google Chrome Selenium Stuff
-    # taken from https://github.com/jaskaranSM/UniBorg/blob/9072e3580cc6c98d46f30e41edbe73ffc9d850d3/sample_config.py#L104-L106
+    # taken from
+    # https://github.com/jaskaranSM/UniBorg/blob/9072e3580cc6c98d46f30e41edbe73ffc9d850d3/sample_config.py#L104-L106
     GOOGLE_CHROME_DRIVER = os.environ.get("GOOGLE_CHROME_DRIVER", None)
     GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", None)
     # spotify stuff

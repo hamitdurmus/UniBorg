@@ -19,9 +19,7 @@ import httplib2
 from telethon import events
 
 from apiclient.discovery import build
-from apiclient.errors import ResumableUploadError
 from apiclient.http import MediaFileUpload
-from oauth2client import client, file, tools
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.file import Storage
 from sample_config import Config
@@ -93,7 +91,8 @@ async def _(event):
         if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
             with open(G_DRIVE_TOKEN_FILE, "w") as t_file:
                 t_file.write(Config.G_DRIVE_AUTH_TOKEN_DATA)
-        # Check if token file exists, if not create it by requesting authorization code
+        # Check if token file exists, if not create it by requesting
+        # authorization code
         storage = None
         if not os.path.isfile(G_DRIVE_TOKEN_FILE):
             storage = await create_token_file(G_DRIVE_TOKEN_FILE, event)
@@ -112,7 +111,10 @@ async def _(event):
         await mone.edit("File Not found in local server. Give me a file path :((")
 
 
-@borg.on(admin_cmd(pattern="gdrivesp https?://drive\.google\.com/drive/u/\d/folders/([-\w]{25,})", allow_sudo=True))
+@borg.on(
+    admin_cmd(
+        pattern=r"gdrivesp https?://drive\.google\.com/drive/u/\d/folders/([-\w]{25,})",
+        allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -131,7 +133,6 @@ async def _(event):
     if event.fwd_from:
         return
     mone = await event.reply("Processing ...")
-    G_DRIVE_F_PARENT_ID = None
     await mone.edit("Custom Folder ID cleared successfully.")
     await event.delete()
 
@@ -154,7 +155,8 @@ async def _(event):
         if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
             with open(G_DRIVE_TOKEN_FILE, "w") as t_file:
                 t_file.write(Config.G_DRIVE_AUTH_TOKEN_DATA)
-        # Check if token file exists, if not create it by requesting authorization code
+        # Check if token file exists, if not create it by requesting
+        # authorization code
         storage = None
         if not os.path.isfile(G_DRIVE_TOKEN_FILE):
             storage = await create_token_file(G_DRIVE_TOKEN_FILE, event)
@@ -187,12 +189,14 @@ async def _(event):
     if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
         with open(G_DRIVE_TOKEN_FILE, "w") as t_file:
             t_file.write(Config.G_DRIVE_AUTH_TOKEN_DATA)
-    # Check if token file exists, if not create it by requesting authorization code
+    # Check if token file exists, if not create it by requesting authorization
+    # code
     storage = None
     if not os.path.isfile(G_DRIVE_TOKEN_FILE):
         storage = await create_token_file(G_DRIVE_TOKEN_FILE, event)
     http = authorize(G_DRIVE_TOKEN_FILE, storage)
-    # Authorize, get file parameters, upload file and print out result URL for download
+    # Authorize, get file parameters, upload file and print out result URL for
+    # download
     drive_service = build("drive", "v2", http=http, cache_discovery=False)
     if t_reqd_comd == "delete":
         response_from_svc = await gdrive_delete(drive_service, input_str)
@@ -218,12 +222,14 @@ async def _(event):
     if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
         with open(G_DRIVE_TOKEN_FILE, "w") as t_file:
             t_file.write(Config.G_DRIVE_AUTH_TOKEN_DATA)
-    # Check if token file exists, if not create it by requesting authorization code
+    # Check if token file exists, if not create it by requesting authorization
+    # code
     storage = None
     if not os.path.isfile(G_DRIVE_TOKEN_FILE):
         storage = await create_token_file(G_DRIVE_TOKEN_FILE, event)
     http = authorize(G_DRIVE_TOKEN_FILE, storage)
-    # Authorize, get file parameters, upload file and print out result URL for download
+    # Authorize, get file parameters, upload file and print out result URL for
+    # download
     await mone.edit(f"searching for {input_str} in your gDrive ...")
     gsearch_results = await gdrive_search(http, input_str)
     await mone.edit(gsearch_results, link_preview=False, parse_mode="html")
@@ -285,7 +291,8 @@ async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
     if parent_id is not None:
         body["parents"] = [{"id": parent_id}]
     # Permissions body description: anyone who has link can upload
-    # Other permissions can be found at https://developers.google.com/drive/v2/reference/permissions
+    # Other permissions can be found at
+    # https://developers.google.com/drive/v2/reference/permissions
     permissions = {
         "role": "reader",
         "type": "anyone",
@@ -314,12 +321,11 @@ async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
                     display_message = current_message
                 except Exception as e:
                     logger.info(str(e))
-                    pass
     file_id = response.get("id")
     try:
         # Insert new permissions
         drive_service.permissions().insert(fileId=file_id, body=permissions).execute()
-    except:
+    except BaseException:
         pass
     # Define file instance and get url for download
     file = drive_service.files().get(fileId=file_id, supportsTeamDrives=True).execute()
@@ -346,7 +352,7 @@ async def create_directory(http, directory_name, parent_id):
     file_id = file.get("id")
     try:
         drive_service.permissions().insert(fileId=file_id, body=permissions).execute()
-    except:
+    except BaseException:
         pass
     logger.info("Created Gdrive Folder:\nName: {}\nID: {} ".format(
         file.get("title"), file_id))
@@ -366,7 +372,7 @@ async def DoTeskWithDir(http, input_directory, event, parent_id):
         else:
             file_name, mime_type = file_ops(current_file_name)
             # current_file_name will have the full path
-            g_drive_link = await upload_file(http, current_file_name, file_name, mime_type, event, parent_id)
+            await upload_file(http, current_file_name, file_name, mime_type, event, parent_id)
             r_p_id = parent_id
     # TODO: there is a #bug here :(
     return r_p_id

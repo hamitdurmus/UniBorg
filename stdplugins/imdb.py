@@ -14,13 +14,16 @@ import requests
 import bs4
 from uniborg.util import admin_cmd
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 langi = "en"
 
 # kanged from Blank-x ;---;
+
+
 @borg.on(admin_cmd(pattern="imdb (.*)"))
 async def imdb(e):
     try:
@@ -28,8 +31,10 @@ async def imdb(e):
         remove_space = movie_name.split(' ')
         final_name = '+'.join(remove_space)
         page = requests.get(
-            "https://www.imdb.com/find?ref_=nv_sr_fn&q="+final_name+"&s=all")
-        lnk = str(page.status_code)
+            "https://www.imdb.com/find?ref_=nv_sr_fn&q=" +
+            final_name +
+            "&s=all")
+        str(page.status_code)
         soup = bs4.BeautifulSoup(page.content, 'lxml')
         odds = soup.findAll("tr", "odd")
         mov_title = odds[0].findNext('td').findNext('td').text
@@ -58,7 +63,7 @@ async def imdb(e):
             for x in credits[2].findAll('a'):
                 actors.append(x.text)
             actors.pop()
-            stars = actors[0]+','+actors[1]+','+actors[2]
+            stars = actors[0] + ',' + actors[1] + ',' + actors[2]
         else:
             director = credits[0].a.text
             writer = 'Not available'
@@ -66,7 +71,7 @@ async def imdb(e):
             for x in credits[1].findAll('a'):
                 actors.append(x.text)
             actors.pop()
-            stars = actors[0]+','+actors[1]+','+actors[2]
+            stars = actors[0] + ',' + actors[1] + ',' + actors[2]
         if soup.find('div', "inline canwrap"):
             story_line = soup.find(
                 'div', "inline canwrap").findAll('p')[0].text
@@ -88,17 +93,17 @@ async def imdb(e):
                 mov_rating = r.strong['title']
         else:
             mov_rating = 'Not available'
-        await e.edit('<a href='+poster+'>&#8203;</a>'
-                     '<b>Title : </b><code>'+mov_title +
-                     '</code>\n<code>'+mov_details +
-                     '</code>\n<b>Rating : </b><code>'+mov_rating +
-                     '</code>\n<b>Country : </b><code>'+mov_country[0] +
-                     '</code>\n<b>Language : </b><code>'+mov_language[0] +
-                     '</code>\n<b>Director : </b><code>'+director +
-                     '</code>\n<b>Writer : </b><code>'+writer +
-                     '</code>\n<b>Stars : </b><code>'+stars +
-                     '</code>\n<b>IMDB Url : </b>'+mov_link +
-                     '\n<b>Story Line : </b>'+story_line,
+        await e.edit('<a href=' + poster + '>&#8203;</a>'
+                     '<b>Title : </b><code>' + mov_title +
+                     '</code>\n<code>' + mov_details +
+                     '</code>\n<b>Rating : </b><code>' + mov_rating +
+                     '</code>\n<b>Country : </b><code>' + mov_country[0] +
+                     '</code>\n<b>Language : </b><code>' + mov_language[0] +
+                     '</code>\n<b>Director : </b><code>' + director +
+                     '</code>\n<b>Writer : </b><code>' + writer +
+                     '</code>\n<b>Stars : </b><code>' + stars +
+                     '</code>\n<b>IMDB Url : </b>' + mov_link +
+                     '\n<b>Story Line : </b>' + story_line,
                      link_preview=True, parse_mode='HTML'
                      )
     except IndexError:

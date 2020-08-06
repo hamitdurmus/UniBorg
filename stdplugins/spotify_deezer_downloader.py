@@ -17,18 +17,17 @@ async def _(event):
         await event.edit("` I need a link to download something pro.`**(._.)**")
     else:
         await event.edit("🎶**Initiating Download!**🎶")
-    bot = "@DeezLoadBot"
 
     async with event.client.conversation("@DeezLoadBot") as conv:
         try:
             await conv.send_message("/start")
-            response = await conv.get_response()
+            await conv.get_response()
             try:
                 await event.client(ImportChatInviteRequest('AAAAAFZPuYvdW1A8mrT8Pg'))
             except UserAlreadyParticipantError:
                 await asyncio.sleep(0.00000069420)
             await conv.send_message(d_link)
-            details = await conv.get_response()
+            await conv.get_response()
             # await event.client.send_message(event.chat_id, details)
             await conv.get_response()
             songh = await conv.get_response()

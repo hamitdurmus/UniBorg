@@ -150,7 +150,7 @@ class Main(object):
         if cast:
             try:
                 r = cast(r)
-            except:
+            except BaseException:
                 r = None
         return r
 
@@ -240,7 +240,8 @@ class Main(object):
         parser = TheHTMLParser()
         parser.feed(html)
 
-        # The object is JSON, except any < is hex encoded, so use decode wrapper.
+        # The object is JSON, except any < is hex encoded, so use decode
+        # wrapper.
         jsobj = parser.result()
         cloud_settings = self.js_object_decode(jsobj)
 
@@ -288,7 +289,8 @@ class Main(object):
         self.log('Found mtime: %s' % (file_mtime), True)
 
         # A unique hash, appears to be SHA1, but unknown what is hashed.
-        # If how it is generated can be documented, could be used to verify download.
+        # If how it is generated can be documented, could be used to verify
+        # download.
         file_hash = file_info['hash']
         self.log('Found hash: %s' % (file_hash), True)
 
@@ -432,7 +434,15 @@ class Main(object):
         os.rename(file_name_temp_path, file_name_path)
         self.log('Done')
 
-    def download_progress(self, status, start, now, offset, added, current, total):
+    def download_progress(
+            self,
+            status,
+            start,
+            now,
+            offset,
+            added,
+            current,
+            total):
         if status is self.DL_PROGRESS_READ:
             return
 
