@@ -29,7 +29,7 @@ from uniborg.util import admin_cmd
 logger = logging.getLogger(__name__)
 
 
-if 1 == 1:
+if True:
     strings = {
         "name": "Quotes",
         "api_token_cfg_doc": "API Key/Token for Quotes.",
@@ -222,7 +222,7 @@ def get_markdown(reply):
             md_item["Type"] = "underline"
         else:
             # logger.warninging("Unknown entity: " + str(entity))
-            logger.warningin('Unknown entity: {}', entity)
+            logger.warning('Unknown entity: {}', entity)
 
         markdown.append(md_item)
     return markdown
