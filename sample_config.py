@@ -152,6 +152,9 @@ class Config(object):
     G_PHOTOS_CLIENT_SECRET = os.environ.get("G_PHOTOS_CLIENT_SECRET", None)
     G_PHOTOS_AUTH_TOKEN_ID = int(
         os.environ.get("G_PHOTOS_AUTH_TOKEN_ID", "-100"))
+    # Heroku stuff
+    HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
+    HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
 
 
 class Production(Config):
