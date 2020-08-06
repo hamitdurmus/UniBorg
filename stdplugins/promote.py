@@ -7,17 +7,15 @@ from telethon.tl.types import ChatAdminRights
 
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
-
 
 @borg.on(admin_cmd(pattern="promote ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
-    datetime.now()
+    start = datetime.now()
     to_promote_id = None
     rights = ChatAdminRights(
         change_info=True,
@@ -48,7 +46,7 @@ async def _(event):
 async def _(event):
     if event.fwd_from:
         return
-    datetime.now()
+    start = datetime.now()
     to_promote_id = None
     rights = ChatAdminRights(
         post_messages=True

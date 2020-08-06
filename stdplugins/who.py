@@ -9,24 +9,18 @@ from telethon import events, utils
 from telethon.errors.rpcerrorlist import MessageTooLongError
 from telethon.tl import types
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
 def split_message(text, length=4096, offset=200):
-    return [text[text.find('\n',
-                           i - offset,
-                           i + 1) if text.find('\n',
-                                               i - offset,
-                                               i + 1) != -1 else i: text.find('\n',
-                                                                              i + length - offset,
-                                                                              i + length) if text.find('\n',
-                                                                                                       i + length - offset,
-                                                                                                       i + length) != -1 else i + length] for i in range(0,
-                                                                                                                                                         len(text),
-                                                                                                                                                         length)]
+    return [text[text.find('\n', i - offset, i + 1) if text.find('\n', i - offset, i + 1) != -1 else i:
+                 text.find('\n', i + length - offset, i + length) if text.find('\n', i + length - offset,
+                                                                               i + length) != -1 else i + length] for
+            i
+            in
+            range(0, len(text), length)]
 
 
 def get_who_string(who):
@@ -37,8 +31,7 @@ def get_who_string(who):
     return who_string
 
 
-@borg.on(events.NewMessage(pattern=r"\.who",
-                           outgoing=True))  # pylint:disable=E0602
+@borg.on(events.NewMessage(pattern=r"\.who", outgoing=True))  # pylint:disable=E0602
 async def _(event):
     if not event.message.is_reply:
         who = await event.get_chat()
@@ -54,8 +47,7 @@ async def _(event):
     await event.edit(get_who_string(who), parse_mode='html')
 
 
-@borg.on(events.NewMessage(pattern=r"\.members",
-                           outgoing=True))  # pylint:disable=E0602
+@borg.on(events.NewMessage(pattern=r"\.members", outgoing=True))  # pylint:disable=E0602
 async def _(event):
     members = []
     async for member in borg.iter_participants(event.chat_id):

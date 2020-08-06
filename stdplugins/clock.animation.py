@@ -8,9 +8,8 @@ from collections import deque
 from telethon import events
 
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 

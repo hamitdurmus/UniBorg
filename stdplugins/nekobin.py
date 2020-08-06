@@ -9,9 +9,8 @@ import requests
 from sample_config import Config
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -24,7 +23,7 @@ def progress(current, total):
 async def _(event):
     if event.fwd_from:
         return
-    datetime.now()
+    start = datetime.now()
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
     input_str = event.pattern_match.group(1)
@@ -55,19 +54,15 @@ async def _(event):
     if downloaded_file_name.endswith(".py"):
         py_file += ".py"
         data = message
-        key = requests.post(
-            'https://nekobin.com/api/documents',
-            json={
-                "content": data}).json().get('result').get('key')
+        key = requests.post('https://nekobin.com/api/documents',
+                            json={"content": data}).json().get('result').get('key')
         url = f'https://nekobin.com/{key}{py_file}'
         reply_text = f'Nekofied to *Nekobin* : {url}'
         await event.edit(reply_text)
     else:
         data = message
-        key = requests.post(
-            'https://nekobin.com/api/documents',
-            json={
-                "content": data}).json().get('result').get('key')
+        key = requests.post('https://nekobin.com/api/documents',
+                            json={"content": data}).json().get('result').get('key')
         url = f'https://nekobin.com/{key}'
         reply_text = f'Nekofied to *Nekobin* : {url}'
         await event.edit(reply_text)

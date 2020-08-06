@@ -6,9 +6,8 @@ from telethon.tl.types import ChatBannedRights
 import sql_helpers.antiflood_sql as sql
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 CHAT_FLOOD = sql.__load_flood_settings()
@@ -68,7 +67,7 @@ async def _(event):
     input_str = event.pattern_match.group(1)
     try:
         sql.set_flood(event.chat_id, input_str)
-        sql.__load_flood_settings()
+        CHAT_FLOOD = sql.__load_flood_settings()
         await event.edit("Antiflood updated to {} in the current chat".format(input_str))
     except Exception as e:  # pylint:disable=C0103,W0703
         await event.edit(str(e))

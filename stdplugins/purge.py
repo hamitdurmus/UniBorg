@@ -3,9 +3,8 @@ import asyncio
 import logging
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 level = logging.INFO
@@ -66,8 +65,7 @@ async def purgeme(delme):
 
 @borg.on(admin_cmd(pattern="sd ?(.*) + ?(.*)", outgoing=True))
 async def selfdestruct(destroy):
-    if not destroy.text[0].isalpha() and destroy.text[0] not in (
-            "/", "#", "@", "!"):
+    if not destroy.text[0].isalpha() and destroy.text[0] not in ("/", "#", "@", "!"):
         await destroy.delete()
         message = destroy.pattern_match.group(2)
         counter = destroy.pattern_match.group(1)

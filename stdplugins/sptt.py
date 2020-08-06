@@ -10,9 +10,8 @@ from telethon import events
 from sample_config import Config
 
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -44,9 +43,8 @@ async def _(event):
                 "https://gateway-lon.watsonplatform.net/speech-to-text/api/v1/recognize",
                 headers=headers,
                 data=data,
-                auth=(
-                    'apikey',
-                    Config.IBM_WATSON_CRED_PASSWORD))
+                auth=('apikey', Config.IBM_WATSON_CRED_PASSWORD)
+            )
             r = response.json()
             if "results" in r:
                 # process the json to appropriate string format

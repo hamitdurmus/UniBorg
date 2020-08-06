@@ -6,11 +6,9 @@ import requests
 
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
-
 
 @borg.on(admin_cmd(pattern="meaning (.*)"))
 async def _(event):
@@ -46,6 +44,6 @@ async def _(event):
             silent=True,
             supports_streaming=True
         )
-    except BaseException:
+    except:
         pass
     await event.edit(caption_str)

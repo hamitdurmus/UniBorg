@@ -8,9 +8,8 @@ import requests
 
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -40,4 +39,4 @@ async def _(event):
     else:
         await event.edit("SYNTAX: .calendar YYYY-MM-DD")
     end = datetime.now()
-    (end - start).seconds
+    ms = (end - start).seconds

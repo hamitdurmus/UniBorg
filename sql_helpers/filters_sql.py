@@ -8,6 +8,7 @@ class Filters(BASE):
     keyword = Column(UnicodeText, primary_key=True)
     f_mesg_id = Column(Numeric)
 
+
     def __init__(
         self,
         chat_id,
@@ -25,7 +26,7 @@ Filters.__table__.create(checkfirst=True)
 def get_filter(chat_id, keyword):
     try:
         return SESSION.query(Filters).get((chat_id, keyword))
-    except BaseException:
+    except:
         return None
     finally:
         SESSION.close()
@@ -34,7 +35,7 @@ def get_filter(chat_id, keyword):
 def get_all_filters(chat_id):
     try:
         return SESSION.query(Filters).filter(Filters.chat_id == chat_id).all()
-    except BaseException:
+    except:
         return None
     finally:
         SESSION.close()

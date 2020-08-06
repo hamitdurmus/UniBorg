@@ -26,13 +26,12 @@ from telethon import events
 import aiofiles
 import aiohttp
 from apiclient.discovery import build
-from oauth2client import client, file
+from oauth2client import client, file, tools
 from sample_config import Config
-from uniborg.util import admin_cmd, progress
+from uniborg.util import admin_cmd, humanbytes, progress, time_formatter
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 # setup the gPhotos v1 API
@@ -261,13 +260,7 @@ async def upload_google_photos(event):
                     data=current_chunk
                 )
                 loop.create_task(
-                    progress(
-                        offset +
-                        part_size,
-                        file_size,
-                        event,
-                        c_time,
-                        "uploading(gphoto)🧐?"))
+                    progress(offset + part_size, file_size, event, c_time, "uploading(gphoto)🧐?"))
                 logger.info(response.headers)
 
                 # await f_d.seek(i * upload_granularity)

@@ -6,9 +6,8 @@ from sclib.asyncio import SoundcloudAPI, Track
 from sample_config import Config
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -23,7 +22,7 @@ async def _(event):
     if os.path.exists(Config.TMP_DOWNLOAD_DIRECTORY):
         api = SoundcloudAPI()
         track = await api.resolve(link)
-        if not isinstance(track, Track):
+        if type(track) is not Track:
             raise AssertionError
         filename = Config.TMP_DOWNLOAD_DIRECTORY + \
             f'{track.artist} - {track.title}.mp3'

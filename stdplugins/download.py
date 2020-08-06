@@ -13,9 +13,8 @@ from pySmartDL import SmartDL
 from sample_config import Config
 from uniborg.util import admin_cmd, humanbytes, progress, time_formatter
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -65,8 +64,8 @@ async def _(event):
             now = time.time()
             diff = now - c_time
             percentage = downloader.get_progress() * 100
-            downloader.get_speed()
-            round(diff) * 1000
+            speed = downloader.get_speed()
+            elapsed_time = round(diff) * 1000
             progress_str = "[{0}{1}]\nProgress: {2}%".format(
                 ''.join("█" for _ in range(math.floor(percentage / 5))),
                 ''.join("░" for _ in range(20 - math.floor(percentage / 5))),
@@ -79,9 +78,7 @@ async def _(event):
                 current_message += f"{progress_str}\n"
                 current_message += f"{humanbytes(downloaded)} of {humanbytes(total_length)}\n"
                 current_message += f"ETA: {estimated_total_time}"
-                if round(
-                        diff %
-                        10.00) == 0 and current_message != display_message:
+                if round(diff % 10.00) == 0 and current_message != display_message:
                     await mone.edit(current_message)
                     display_message = current_message
             except Exception as e:
@@ -119,7 +116,7 @@ File Size: {}""".format(url, file_name, humanbytes(total_length)))
                 now = time.time()
                 diff = now - start
                 if round(diff % 5.00) == 0 or downloaded == total_length:
-                    downloaded * 100 / total_length
+                    percentage = downloaded * 100 / total_length
                     speed = downloaded / diff
                     elapsed_time = round(diff) * 1000
                     time_to_completion = round(
@@ -143,4 +140,5 @@ ETA: {}""".format(
                             display_message = current_message
                     except Exception as e:
                         logger.info(str(e))
+                        pass
         return await response.release()

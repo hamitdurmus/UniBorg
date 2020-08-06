@@ -41,12 +41,13 @@ def getsubitems(obj, itemkey, islast, maxlinelength, indent):
         if not islast:
             closing += ","
 
+        count = 0
         itemkey = ""
         subitems = []
 
         # get the list of inner tokens
         for (i, k) in enumerate(keys):
-            islast_ = i == len(obj) - 1
+            islast_ = i == len(obj)-1
             itemkey_ = ""
             if isdict:
                 itemkey_ = basictype2str(k)
@@ -54,25 +55,20 @@ def getsubitems(obj, itemkey, islast, maxlinelength, indent):
                 obj[k], itemkey_, islast_, maxlinelength - indent, indent)
             # inner can be a string or a list
             subitems.extend(inner)
-            # if a child couldn't be rendered inline, then we are not able
-            # either
+            # if a child couldn't be rendered inline, then we are not able either
             is_inline = is_inline and is_inner_inline
 
-        # fit inner tokens into one or multiple lines, each no longer than
-        # maxlinelength
+        # fit inner tokens into one or multiple lines, each no longer than maxlinelength
         if is_inline:
             multiline = True
 
             # in Multi-line mode items of a list/dict/tuple can be rendered in multiple lines if they don't fit on one.
-            # suitable for large lists holding data that's not manually
-            # editable.
+            # suitable for large lists holding data that's not manually editable.
 
             # in Single-line mode items are rendered inline if all fit in one line, otherwise each is rendered in a separate line.
-            # suitable for smaller lists or dicts where manual editing of
-            # individual items is preferred.
+            # suitable for smaller lists or dicts where manual editing of individual items is preferred.
 
-            # this logic may need to be customized based on visualization
-            # requirements:
+            # this logic may need to be customized based on visualization requirements:
             if (isdict):
                 multiline = False
             if (islist):
@@ -81,10 +77,11 @@ def getsubitems(obj, itemkey, islast, maxlinelength, indent):
             if (multiline):
                 lines = []
                 current_line = ""
+                current_index = 0
 
                 for (i, item) in enumerate(subitems):
                     item_text = item
-                    if i < len(inner) - 1:
+                    if i < len(inner)-1:
                         item_text = item + ","
 
                     if len(current_line) > 0:
@@ -93,26 +90,23 @@ def getsubitems(obj, itemkey, islast, maxlinelength, indent):
                         try_inline = item_text
 
                     if (len(try_inline) > maxlinelength):
-                        # push the current line to the list if maxlinelength is
-                        # reached
+                        # push the current line to the list if maxlinelength is reached
                         if len(current_line) > 0:
                             lines.append(current_line)
                         current_line = item_text
                     else:
-                        # keep fitting all to one line if still below
-                        # maxlinelength
+                        # keep fitting all to one line if still below maxlinelength
                         current_line = try_inline
 
-                    # Push the remainder of the content if end of list is
-                    # reached
-                    if (i == len(subitems) - 1):
+                    # Push the remainder of the content if end of list is reached
+                    if (i == len(subitems)-1):
                         lines.append(current_line)
 
                 subitems = lines
                 if len(subitems) > 1:
                     is_inline = False
             else:  # single-line mode
-                totallength = len(subitems) - 1   # spaces between items
+                totallength = len(subitems)-1   # spaces between items
                 for item in subitems:
                     totallength += len(item)
                 if (totallength <= maxlinelength):
@@ -134,8 +128,7 @@ def getsubitems(obj, itemkey, islast, maxlinelength, indent):
             else:
                 is_inline = False
 
-        # if inner tokens are rendered in multiple lines already, then the
-        # outer brackets remain in separate lines
+        # if inner tokens are rendered in multiple lines already, then the outer brackets remain in separate lines
         if not is_inline:
             items.append(opening)       # opening brackets
             # Append children to parent list as a nested list
@@ -161,9 +154,9 @@ def indentitems(items, indent, level):
     indentstr = " " * (indent * level)
     for (i, item) in enumerate(items):
         if isinstance(item, list):
-            res += indentitems(item, indent, level + 1)
+            res += indentitems(item, indent, level+1)
         else:
-            islast = (i == len(items) - 1)
+            islast = (i == len(items)-1)
             # no new line character after the last rendered line
             if level == 0 and islast:
                 res += indentstr + item

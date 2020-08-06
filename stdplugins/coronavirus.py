@@ -13,8 +13,7 @@ async def _(event):
     # output_text = ""
     # for name, value in country_data.items():
     # output_text += "`{}`: `{}`\n".format(str(name), str(value))
-    # await event.edit("**CoronaVirus Info in
-    # {}**:\n\n{}".format(country.capitalize(), output_text))
+    # await event.edit("**CoronaVirus Info in {}**:\n\n{}".format(country.capitalize(), output_text))
     try:
         ulke = country_data['country']
         onaylanan = country_data['confirmed']

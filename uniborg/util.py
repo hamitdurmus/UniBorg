@@ -51,7 +51,7 @@ def admin_cmd(**args):
 
     # get the pattern from the decorator
     if pattern is not None:
-        if pattern.startswith(r"\#"):
+        if pattern.startswith("\#"):
             # special fix for snip.py
             args["pattern"] = re.compile(pattern)
         else:
@@ -218,10 +218,7 @@ async def is_admin(client, chat_id, user_id):
         user_id=user_id
     ))
     chat_participant = req_jo.participant
-    if isinstance(
-        chat_participant,
-        (ChannelParticipantCreator,
-         ChannelParticipantAdmin)):
+    if isinstance(chat_participant, (ChannelParticipantCreator, ChannelParticipantAdmin)):
         return True
     return False
 

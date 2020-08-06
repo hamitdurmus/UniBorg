@@ -16,9 +16,8 @@ from hachoir.parser import createParser
 from sample_config import Config
 from uniborg.util import admin_cmd, progress
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 # thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "thumb_image.jpg"
 
@@ -55,8 +54,7 @@ async def _(event):
         # if os.path.exists(input_str):
 
             if os.path.exists(Config.TMP_DOWNLOAD_DIRECTORY):
-                if not downloaded_file_name.endswith(
-                        (".mkv", ".mp4", ".mp3", ".flac", ".webm", ".ts", ".mov")):
+                if not downloaded_file_name.endswith((".mkv", ".mp4", ".mp3", ".flac", ".webm", ".ts", ".mov")):
                     await mone.edit(
                         "**Supported Formats**: MKV, MP4, MP3, FLAC"
                     )
@@ -169,8 +167,8 @@ async def take_screen_shot(video_file, output_directory, ttl):
         )
         # Wait for the subprocess to finish
         stdout, stderr = await process.communicate()
-        stderr.decode().strip()
-        stdout.decode().strip()
+        e_response = stderr.decode().strip()
+        t_response = stdout.decode().strip()
     #
     if os.path.lexists(out_put_file_name):
         return out_put_file_name

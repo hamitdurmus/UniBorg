@@ -8,9 +8,8 @@ from telethon.tl import functions, types
 
 from sample_config import Config
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 HEADER = "「sed」\n"
@@ -93,11 +92,8 @@ async def on_edit(event):
             m.raw_text = event.raw_text
             break
 
-
-@borg.on(
-    events.NewMessage(
-        pattern=re.compile(r"^s/((?:\\/|[^/])+)/((?:\\/|[^/])*)(/.*)?"),
-        outgoing=True))
+@borg.on(events.NewMessage(
+    pattern=re.compile(r"^s/((?:\\/|[^/])+)/((?:\\/|[^/])*)(/.*)?"), outgoing=True))
 async def on_regex(event):
     if event.fwd_from:
         return

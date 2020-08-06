@@ -6,9 +6,8 @@ import requests
 
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -18,7 +17,13 @@ async def _(event):
         return
     input_str = event.pattern_match.group(1)
     url = "https://commons.wikimedia.org/w/api.php?action={}&generator={}&prop=imageinfo&gimlimit={}&redirects=1&titles={}&iiprop={}&format={}".format(
-        "query", "images", "5", input_str, "timestamp|user|url|mime|thumbmime|mediatype", "json")
+        "query",
+        "images",
+        "5",
+        input_str,
+        "timestamp|user|url|mime|thumbmime|mediatype",
+        "json"
+    )
     r = requests.get(url).json()
     result = ""
     results = r["query"]["pages"]

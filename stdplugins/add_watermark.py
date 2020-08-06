@@ -39,11 +39,10 @@ async def _(event):
             await mone.edit("Stored the pdf to `{}` in {} seconds.".format(downloaded_file_name, ms))
             await mone.edit("`Watermarking processing now, please wait for a while..`")
             watermark(
-                inputpdf=Config.TMP_DOWNLOAD_DIRECTORY +
-                reply_message.file.name,
-                outputpdf=watermark_path +
-                reply_message.file.name,
-                watermarkpdf='./bin/watermark.pdf')
+                inputpdf=Config.TMP_DOWNLOAD_DIRECTORY + reply_message.file.name,
+                outputpdf=watermark_path + reply_message.file.name,
+                watermarkpdf='./bin/watermark.pdf'
+            )
         # filename = sorted(get_lst_of_files(watermark_path + reply_message.file.name, []))
         #filename = filename + "/"
         await event.edit("Uploading now")

@@ -7,9 +7,8 @@ import logging
 from telethon import events
 
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -30,4 +29,4 @@ async def shout(args):
         result[0] = text[0]
         result = "".join(result)
         msg = "\n" + result
-        await args.edit("`" + msg + "`")
+        await args.edit("`"+msg+"`")

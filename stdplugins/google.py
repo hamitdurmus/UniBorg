@@ -15,16 +15,14 @@ from google_images_download import google_images_download
 from sample_config import Config
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
 def progress(current, total):
     logger.info("Downloaded {} of {}\nCompleted {}".format(
         current, total, (current / total) * 100))
-
 
 @borg.on(admin_cmd(pattern="google search (.*)"))
 async def _(event):
@@ -42,8 +40,8 @@ async def _(event):
     for result in response["results"]:
         text = result.get("title")
         url = result.get("url")
-        result.get("description")
-        result.get("image")
+        description = result.get("description")
+        image = result.get("image")
         output_str += " 👉🏻  [{}]({}) \n\n".format(text, url)
     end = datetime.now()
     ms = (end - start).seconds
@@ -111,12 +109,9 @@ async def _(event):
             )
             SEARCH_URL = "{}/searchbyimage/upload".format(BASE_URL)
             multipart = {
-                "encoded_image": (
-                    downloaded_file_name,
-                    open(
-                        downloaded_file_name,
-                        "rb")),
-                "image_content": ""}
+                "encoded_image": (downloaded_file_name, open(downloaded_file_name, "rb")),
+                "image_content": ""
+            }
             # https://stackoverflow.com/a/28792943/4723940
             google_rs_response = requests.post(
                 SEARCH_URL, files=multipart, allow_redirects=False)

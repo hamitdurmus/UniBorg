@@ -14,10 +14,10 @@ from telethon.tl.types import (MessageEntityBold, MessageEntityCode,
 from telethon.utils import add_surrogate, del_surrogate
 
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
+
 
 
 def parse_url_match(m):

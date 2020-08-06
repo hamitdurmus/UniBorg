@@ -4,11 +4,9 @@ import logging
 from sample_config import Config
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
-
 
 @borg.on(admin_cmd(pattern=("mailru ?(.*)")))
 async def _(event):
@@ -38,7 +36,7 @@ async def _(event):
             std1 = stds[1]
             std2 = stds[2]
             std3 = stds[3]
-            out = str(std1) + "\n" + str(std2) + "\n" + str(std3)
+            out = str(std1)+"\n"+str(std2)+"\n"+str(std3)
             await event.edit(f"**{out}**")
         if stderr.decode():
             await event.edit(f"**{stderr.decode()}**")

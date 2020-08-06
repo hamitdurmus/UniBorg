@@ -18,9 +18,8 @@ from pySmartDL import SmartDL
 from sample_config import Config
 from uniborg.util import admin_cmd, humanbytes, progress
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -56,8 +55,8 @@ async def _(event):
         now = time.time()
         diff = now - c_time
         percentage = downloader.get_progress() * 100
-        downloader.get_speed()
-        round(diff) * 1000
+        speed = downloader.get_speed()
+        elapsed_time = round(diff) * 1000
         progress_str = "[{0}{1}]\nProgress: {2}%".format(
             ''.join("█" for i in range(math.floor(percentage / 5))),
             ''.join("░" for i in range(20 - math.floor(percentage / 5))),

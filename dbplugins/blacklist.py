@@ -44,8 +44,7 @@
 #                          for trigger in text.split("\n") if trigger.strip()})
 #     for trigger in to_blacklist:
 #         sql.add_to_blacklist(event.chat_id, trigger.lower())
-# await event.edit("Added {} triggers to the blacklist in the current
-# chat".format(len(to_blacklist)))
+#     await event.edit("Added {} triggers to the blacklist in the current chat".format(len(to_blacklist)))
 
 
 # @borg.on(admin_cmd(pattern="listblacklist"))
@@ -82,5 +81,4 @@
 #     for trigger in to_unblacklist:
 #         if sql.rm_from_blacklist(event.chat_id, trigger.lower()):
 #             successful += 1
-# await event.edit(f"Removed {successful} / {len(to_unblacklist)} from the
-# blacklist")
+#     await event.edit(f"Removed {successful} / {len(to_unblacklist)} from the blacklist")

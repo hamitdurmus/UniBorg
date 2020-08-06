@@ -6,15 +6,15 @@ Available Commands:
 
 import logging
 
+from telethon.tl import types
 
 from database.snipsdb import (add, check, check_one, check_others, delete,
                               delete_one, delete_others, others, update)
 from sample_config import Config
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -102,7 +102,7 @@ async def on_snip_list(event):
         await event.edit(OUT_STR)
 
 
-@borg.on(admin_cmd(pattern=r"snipd (\S+)"))
+@borg.on(admin_cmd(pattern="snipd (\S+)"))
 async def on_snip_delete(event):
     name = event.pattern_match.group(1)
     await delete_one(name)

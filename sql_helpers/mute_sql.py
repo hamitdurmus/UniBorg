@@ -20,7 +20,7 @@ GMute.__table__.create(checkfirst=True)
 def is_muted(sender_id):
     try:
         return SESSION.query(GMute).all()
-    except BaseException:
+    except:
         return None
     finally:
         SESSION.close()

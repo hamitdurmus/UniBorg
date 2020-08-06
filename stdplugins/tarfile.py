@@ -25,9 +25,8 @@ import time
 from sample_config import Config
 from uniborg.util import admin_cmd, progress
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -70,7 +69,7 @@ async def _(event):
             try:
                 os.remove(output)
                 os.remove(output)
-            except BaseException:
+            except:
                 pass
             await event.edit("Task Completed")
             await asyncio.sleep(3)
@@ -106,12 +105,12 @@ async def create_archive(input_directory):
         )
         # Wait for the subprocess to finish
         stdout, stderr = await process.communicate()
-        stderr.decode().strip()
-        stdout.decode().strip()
+        e_response = stderr.decode().strip()
+        t_response = stdout.decode().strip()
         if os.path.exists(compressed_file_name):
             try:
                 shutil.rmtree(input_directory)
-            except BaseException:
+            except:
                 pass
             return_name = compressed_file_name
     return return_name

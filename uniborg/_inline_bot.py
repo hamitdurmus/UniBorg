@@ -106,8 +106,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 logger.info(command_to_exec)
                 if e_response:
                     error_message = e_response.replace(
-                        "please report this issue on https://yt-dl.org/bug . Make sure you are using the latest version; see  https://yt-dl.org/update  on how to update. Be sure to call youtube-dl with the --verbose flag and include its complete output.",
-                        "")
+                        "please report this issue on https://yt-dl.org/bug . Make sure you are using the latest version; see  https://yt-dl.org/update  on how to update. Be sure to call youtube-dl with the --verbose flag and include its complete output.", "")
                     # throw error
                     result = builder.article(
                         "YTDL Errors © @UniBorg",
@@ -214,7 +213,7 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
         await event.answer([result] if result else None)
 
     @tgbot.on(events.callbackquery.CallbackQuery(
-        data=re.compile(rb"helpme_next\((.+?)\)")
+        data=re.compile(b"helpme_next\((.+?)\)")
     ))
     async def on_plug_in_callback_query_handler(event):
         if event.sender_id == borg.uid:
@@ -229,7 +228,7 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
     @tgbot.on(events.callbackquery.CallbackQuery(
-        data=re.compile(rb"helpme_prev\((.+?)\)")
+        data=re.compile(b"helpme_prev\((.+?)\)")
     ))
     async def on_plug_in_callback_query_handler(event):
         if event.sender_id == borg.uid:

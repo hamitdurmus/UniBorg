@@ -48,7 +48,8 @@ if True:
         "admin": "admin",
         "creator": "creator",
         "hidden": "hidden",
-        "channel": "Channel"}
+        "channel": "Channel"
+    }
 
     config = {"api_token": os.environ.get("API_TOKEN"),
               "api_url": "http://api.antiddos.systems",
@@ -82,8 +83,7 @@ if True:
             try:
                 user = await client(telethon.tl.functions.channels.GetParticipantRequest(message.chat_id,
                                                                                          reply.from_id))
-                if isinstance(user.participant,
-                              telethon.tl.types.ChannelParticipantCreator):
+                if isinstance(user.participant, telethon.tl.types.ChannelParticipantCreator):
                     admintitle = user.participant.rank or strings["creator"]
                 elif isinstance(user.participant, telethon.tl.types.ChannelParticipantAdmin):
                     admintitle = user.participant.rank or strings["admin"]
@@ -95,9 +95,7 @@ if True:
             participants = chat.full_chat.participants.participants
             participant = next(filter(lambda x: x.user_id ==
                                       reply.from_id, participants), None)
-            if isinstance(
-                    participant,
-                    telethon.tl.types.ChatParticipantCreator):
+            if isinstance(participant, telethon.tl.types.ChatParticipantCreator):
                 admintitle = strings["creator"]
             elif isinstance(participant, telethon.tl.types.ChatParticipantAdmin):
                 admintitle = strings["admin"]
@@ -160,11 +158,9 @@ if True:
                 raise ValueError("Invalid response from server", resp)
         elif resp["status"] == 404:
             if resp["message"] == "ERROR_TEMPLATE_NOT_FOUND":
-                newreq = requests.post(
-                    config["api_url"] +
-                    "/api/v1/getalltemplates",
-                    data={
-                        "token": config["api_token"]})
+                newreq = requests.post(config["api_url"] + "/api/v1/getalltemplates", data={
+                    "token": config["api_token"]
+                })
                 newreq = newreq.json()
 
                 if newreq["status"] == "NOT_ENOUGH_PERMISSIONS":

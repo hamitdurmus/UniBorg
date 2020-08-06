@@ -10,9 +10,8 @@ from bin.namaz_vakti.namazvakti import namazvakti
 # from ..bin.namaz_vakti import namazvakti
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 TEMP = ''
@@ -44,7 +43,7 @@ async def namaz_(event):
             LOKASYON_2 = LOKASYON_2.replace('i', 'İ').upper()
     yer = './bin/namaz_vakti/db/yerler.ndb'
     with open(yer, "r", encoding="utf-8") as f:
-        json.load(f)
+        yerler_json = json.load(f)
     namaz = namazvakti()
     sehirler_sonuc = namaz.sehirler(2)
     sonuc_sehirler = {v: k for k, v in sehirler_sonuc['veri'].items()}

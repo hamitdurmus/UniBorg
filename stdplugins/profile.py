@@ -29,9 +29,8 @@ from uniborg.util import admin_cmd
 
 logger = logging.getLogger(__name__)
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -88,7 +87,7 @@ if 1 == 1:
                 if id <= 0:
                     await event.edit("`ID number you entered is invalid`")
                     return
-            except BaseException:
+            except:
                 await event.edit("`Are you Comedy Me ?`")
                 return
             if int(id) <= (len(photos)):

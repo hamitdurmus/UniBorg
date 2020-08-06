@@ -11,11 +11,7 @@ from sample_config import Config
 from uniborg.util import admin_cmd
 
 
-def ocr_space_file(
-        filename,
-        overlay=False,
-        api_key=Config.OCR_SPACE_API_KEY,
-        language='eng'):
+def ocr_space_file(filename, overlay=False, api_key=Config.OCR_SPACE_API_KEY, language='eng'):
     """ OCR.space API request with local file.
         Python3.5 - not tested on 2.7
     :param filename: Your file path & name.
@@ -41,11 +37,7 @@ def ocr_space_file(
     return r.json()
 
 
-def ocr_space_url(
-        url,
-        overlay=False,
-        api_key=Config.OCR_SPACE_API_KEY,
-        language='eng'):
+def ocr_space_url(url, overlay=False, api_key=Config.OCR_SPACE_API_KEY, language='eng'):
     """ OCR.space API request with remote file.
         Python3.5 - not tested on 2.7
     :param url: Image url.

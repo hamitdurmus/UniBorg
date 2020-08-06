@@ -9,16 +9,14 @@ import requests
 from sample_config import Config
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
 def progress(current, total):
     logger.info("Downloaded {} of {}\nCompleted {}".format(
         current, total, (current / total) * 100))
-
 
 @borg.on(admin_cmd(pattern="paste ?(.*)"))
 async def _(event):

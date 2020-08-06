@@ -35,8 +35,8 @@ async def _(event):
     if input_str:
         sticker_emoji = input_str
 
-    borg.me
-    event.from_id
+    me = borg.me
+    userid = event.from_id
     packname = "@By_Azade Pack"
     packshortname = "By_Azade"  # format: Uni_Borg_userid
 
@@ -153,7 +153,7 @@ async def _(event):
 async def _(event):
     if event.fwd_from:
         return
-    event.pattern_match.group(1)
+    input_str = event.pattern_match.group(1)
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
     if event.reply_to_msg_id:
@@ -175,9 +175,7 @@ async def _(event):
             file_caption = "Forward the ZIP file to @AnimatedStickersRoBot to get lottIE JSON containing the vector information."
         sticker_set = await borg(GetStickerSetRequest(sticker_attrib.stickerset))
         pack_file = os.path.join(
-            Config.TMP_DOWNLOAD_DIRECTORY,
-            sticker_set.set.short_name,
-            "pack.txt")
+            Config.TMP_DOWNLOAD_DIRECTORY, sticker_set.set.short_name, "pack.txt")
         if os.path.isfile(pack_file):
             os.remove(pack_file)
         # Sticker emojis are retrieved as a mapping of
@@ -196,17 +194,13 @@ async def _(event):
                     f"{{'image_file': '{file}','emojis':{emojis[sticker.id]}}},")
         pending_tasks = [
             asyncio.ensure_future(
-                download(
-                    document,
-                    emojis,
-                    Config.TMP_DOWNLOAD_DIRECTORY +
-                    sticker_set.set.short_name,
-                    f"{i:03d}.{file_ext_ns_ion}")) for i,
-            document in enumerate(
-                sticker_set.documents)]
+                download(document, emojis, Config.TMP_DOWNLOAD_DIRECTORY +
+                         sticker_set.set.short_name, f"{i:03d}.{file_ext_ns_ion}")
+            ) for i, document in enumerate(sticker_set.documents)
+        ]
         await event.edit(f"Downloading {sticker_set.set.count} sticker(s) to .{Config.TMP_DOWNLOAD_DIRECTORY}{sticker_set.set.short_name}...")
         num_tasks = len(pending_tasks)
-        while True:
+        while 1:
             done, pending_tasks = await asyncio.wait(pending_tasks, timeout=2.5,
                                                      return_when=asyncio.FIRST_COMPLETED)
             try:
@@ -235,7 +229,7 @@ async def _(event):
         try:
             os.remove(directory_name + ".zip")
             os.remove(directory_name)
-        except BaseException:
+        except:
             pass
         await event.edit("task Completed")
         await asyncio.sleep(3)
@@ -256,7 +250,7 @@ def is_it_animated_sticker(message):
                 return False
         else:
             return False
-    except BaseException:
+    except:
         return False
 
 

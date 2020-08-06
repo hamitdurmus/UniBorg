@@ -6,9 +6,8 @@ from telethon.tl.types import DocumentAttributeVideo
 from remotezip import RemoteZip
 import os
 import logging
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -22,7 +21,7 @@ async def _(event):
         return
     textx = await event.get_reply_message()
     message = event.pattern_match.group(1)
-    event.pattern_match.group(1)
+    input_str = event.pattern_match.group(1)
     if message:
         pass
     elif textx:
@@ -30,7 +29,7 @@ async def _(event):
     else:
         await event.edit("`Usage: .direct <url>`")
         return
-    await event.edit("Processing ...")
+    mone = await event.edit("Processing ...")
     if not os.path.isdir(filedir):
         os.makedirs(filedir)
     reply = ''
@@ -50,8 +49,7 @@ async def _(event):
                     force_document = True
                     supports_streaming = False
                     document_attributes = []
-                    if single_file.endswith(
-                            (".mp4", ".mp3", ".flac", ".webm")):
+                    if single_file.endswith((".mp4", ".mp3", ".flac", ".webm")):
                         metadata = extractMetadata(createParser(single_file))
                         duration = 0
                         width = 0

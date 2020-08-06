@@ -10,9 +10,8 @@ from telethon import events
 from sample_config import Config
 
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.WARN)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.WARN)
 NO_PM_LOG_USERS = []
 
 
@@ -41,7 +40,7 @@ async def monito_p_m_s(event):
 async def approve_p_m(event):
     if event.fwd_from:
         return
-    event.pattern_match.group(1)
+    reason = event.pattern_match.group(1)
     chat = await event.get_chat()
     if Config.NC_LOG_P_M_S:
         if event.is_private:

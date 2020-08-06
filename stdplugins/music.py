@@ -4,12 +4,12 @@ import logging
 from telethon import events
 from telethon.errors.rpcerrorlist import (UserAlreadyParticipantError,
                                           YouBlockedUserError)
+from telethon.tl.functions.account import UpdateNotifySettingsRequest
 
 from uniborg.util import admin_cmd, humanbytes
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -116,7 +116,7 @@ async def _(event):
         await event.edit("```reply to media message```")
         return
     chat = "@audiotubebot"
-    reply_message.sender
+    sender = reply_message.sender
     if reply_message.sender.bot:
         await event.edit("```Reply to actual users message.```")
         return

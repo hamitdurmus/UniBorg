@@ -9,9 +9,8 @@ import logging
 
 from uniborg.util import admin_cmd
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -23,7 +22,7 @@ async def _(event):
     animation_ttl = range(0, 16)
     input_str = event.pattern_match.group(1)
     if input_str == "shrug":
-        await event.edit(r"¯\_(ツ)_/¯")
+        await event.edit("¯\_(ツ)_/¯")
     elif input_str == "apple":
         await event.edit("\uF8FF")
     elif input_str == ":/":

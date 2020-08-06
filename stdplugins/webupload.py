@@ -9,15 +9,15 @@ import os
 from uniborg.util import admin_cmd
 from sample_config import Config
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
 @borg.on(admin_cmd(pattern="webupload ?(.+?|) --(anonfiles|transfer|filebin|anonymousfiles|megaupload|bayfiles|letsupload|vshare)"))
 async def _(event):
     await event.edit("processing ...")
+    PROCESS_RUN_TIME = 100
     input_str = event.pattern_match.group(1)
     selected_transfer = event.pattern_match.group(2)
     if input_str:
@@ -54,7 +54,7 @@ async def _(event):
         cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
     )
     stdout, stderr = await process.communicate()
-    stderr.decode().strip()
+    e_response = stderr.decode().strip()
     # logger.info(e_response)
     t_response = stdout.decode().strip()
     # logger.info(t_response)
@@ -65,7 +65,7 @@ async def _(event):
         try:
             t_response = json.dumps(json.loads(
                 t_response), sort_keys=True, indent=4)
-        except Exception:
+        except Exception as e:
             # some sites don't return valid JSONs
             pass
         # assuming, the return values won't be longer than

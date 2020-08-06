@@ -1,7 +1,7 @@
 """
 Telegram Channel Media Downloader Plugin for userbot.
 usage: .geta channel_username [will  get all media from channel, tho there is limit of 3000 there to prevent API limits.]
-       .getc number_of_messsages channel_username
+       .getc number_of_messsages channel_username  
 By: @Zero_cool7870
 """
 import asyncio
@@ -12,9 +12,8 @@ import subprocess
 from telethon import events
 from telethon.errors import FloodWaitError
 
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+                    level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -25,9 +24,10 @@ async def get_media(event):
     dir = "./temp/"
     try:
         os.makedirs("./temp/")
-    except BaseException:
+    except:
         pass
     channel_username = event.text
+    command = ['ls', 'temp', '|', 'wc', '-l']
     limit = channel_username[6:9]
     print(limit)
     channel_username = channel_username[11:]
@@ -46,7 +46,7 @@ async def get_media(event):
     output = str(output)
     output = output.replace("b'", "")
     output = output.replace("\n'", "")
-    await event.edit("Downloaded " + output + " files.")
+    await event.edit("Downloaded "+output+" files.")
 
 
 @borg.on(events.NewMessage(pattern=r"\.geta", outgoing=True))
@@ -56,9 +56,10 @@ async def get_media(event):
     dir = "./temp/"
     try:
         os.makedirs("./temp/")
-    except BaseException:
+    except:
         pass
     channel_username = event.text
+    command = ['ls', 'temp', '|', 'wc', '-l']
     channel_username = channel_username[7:]
 
     print(channel_username)
@@ -71,7 +72,7 @@ async def get_media(event):
             try:
                 await borg.download_media(
                     msg, dir)
-            except FloodWaitError:
+            except FloodWaitError as e:
                 await asyncio.sleep(20)
                 # await borg.download_media(
             #     msg,dir)
@@ -81,4 +82,4 @@ async def get_media(event):
     output = str(output)
     output = output.replace("b'", "")
     output = output.replace("\n'", "")
-    await event.edit("Downloaded " + output + " files.")
+    await event.edit("Downloaded "+output+" files.")
