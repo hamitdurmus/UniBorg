@@ -26,8 +26,7 @@ Pluggable [``asyncio``](https://docs.python.org/3/library/asyncio.html)
 [![CodeFactor](https://www.codefactor.io/repository/github/muhammedfurkan/uniborg/badge)](https://www.codefactor.io/repository/github/muhammedfurkan/uniborg)
 
 #### The Easy Way
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/muhammedfurkan/UniBorg)
 
 #### The Legacy Way
 Simply clone the repository and run the main file:
