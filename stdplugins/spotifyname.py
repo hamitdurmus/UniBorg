@@ -23,7 +23,6 @@ logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s'
 logger = logging.getLogger(__name__)
 
 
-
 # =================== CONSTANT ===================
 SPO_BIO_ENABLED = "```Spotify Current Music to Name enabled.```"
 SPO_BIO_DISABLED = "```Spotify Current Music to Name disabled. Name is default now.```"
@@ -31,8 +30,8 @@ SPO_BIO_RUNNING = "```Spotify Current Music to Name already running.```"
 SPO_BIO_CONFIG_ERROR = "```Error.```"
 ERROR_MSG = "```Module halted, Unexpected error.```"
 
-USERNAME = Config.SPOTIFY_USERNAME
-PASSWORD = Config.SPOTIFY_PASS
+sp_dc = Config.SPOTIFY_DC
+sp_key = Config.SPOTIFY_KEY
 
 ARTIST = 0
 SONG = 0
@@ -47,7 +46,7 @@ PARSE = False
 
 
 async def get_spotify_token():
-    sptoken = st.start_session(USERNAME, PASSWORD)
+    sptoken = st.start_session(sp_dc, sp_key)
     access_token = sptoken[0]
     environ["spftoken"] = access_token
 
@@ -104,7 +103,7 @@ async def update_spotify_info():
 
 
 async def update_token():
-    sptoken = st.start_session(USERNAME, PASSWORD)
+    sptoken = st.start_session(sp_dc, sp_key)
     access_token = sptoken[0]
     environ["spftoken"] = access_token
     environ["errorcheck"] = "1"

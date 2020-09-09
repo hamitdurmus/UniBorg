@@ -22,7 +22,6 @@ hachoir
 httplib2==0.15.0
 humanize
 hurry.filesize
-langdetect
 lxml
 mtranslate
 oauth2client
@@ -62,11 +61,12 @@ youtube-dl
 PyLyrics 
 soundcloud-lib
 JustWatch
+heroku3
 # gitpython
 # aioschedule
 # alive_progress
 # apscheduler
-
+# langdetect
 # pylast
 # attrs
 # idna

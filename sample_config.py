@@ -67,8 +67,7 @@ class Config(object):
         "dbhelper",
         "fban_gban"
         "unbanmute",
-        "antispam",
-        "notification_mtab_manager"
+        "antispam"
     ]
     # Get your own API key from https://www.remove.bg/ or
     # feel free to use http://telegram.dog/Remove_BGBot
@@ -94,6 +93,7 @@ class Config(object):
     G_DRIVE_CLIENT_ID = os.environ.get("G_DRIVE_CLIENT_ID", None)
     G_DRIVE_CLIENT_SECRET = os.environ.get("G_DRIVE_CLIENT_SECRET", None)
     G_DRIVE_AUTH_TOKEN_DATA = os.environ.get("G_DRIVE_AUTH_TOKEN_DATA", None)
+    G_DRIVE_F_PARENT_ID = os.environ.get("G_DRIVE_F_PARENT_ID", None)
     #
     TELE_GRAM_2FA_CODE = os.environ.get("TELE_GRAM_2FA_CODE", None)
     #
@@ -108,9 +108,11 @@ class Config(object):
     GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", None)
     # spotify stuff
     DEFAULT_BIO = os.environ.get("DEFAULT_BIO", None)
+    SPOTIFY_INITIAL_BIO = os.environ.get("SPOTIFY_INITIAL_BIO", None)
     SPOTIFY_BIO_PREFIX = os.environ.get("SPOTIFY_BIO_PREFIX", None)
-    SPOTIFY_PASS = os.environ.get("SPOTIFY_PASS", None)
-    SPOTIFY_USERNAME = os.environ.get("SPOTIFY_USERNAME", None)
+    SPOTIFY_KEY = os.environ.get("SPOTIFY_KEY", None)
+    SPOTIFY_DC = os.environ.get("SPOTIFY_DC", None)
+
     GDRIVE_FOLDER_ID = os.environ.get("GDRIVE_FOLDER_ID", None)
     LYDIA_API = os.environ.get("LYDIA_API", None)
     DEFAULT_NAME = os.environ.get("DEFAULT_NAME", None)
@@ -146,6 +148,15 @@ class Config(object):
     # Userbot logging feature switch.
     LOGSPAMMER = sb(os.environ.get("LOGSPAMMER", None))
     MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
+
+    # Google Photos ()
+    G_PHOTOS_CLIENT_ID = os.environ.get("G_PHOTOS_CLIENT_ID", None)
+    G_PHOTOS_CLIENT_SECRET = os.environ.get("G_PHOTOS_CLIENT_SECRET", None)
+    G_PHOTOS_AUTH_TOKEN_ID = int(
+        os.environ.get("G_PHOTOS_AUTH_TOKEN_ID", "-100"))
+    # Heroku stuff
+    HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
+    HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
 
 
 class Production(Config):

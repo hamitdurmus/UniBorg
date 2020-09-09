@@ -81,7 +81,7 @@ async def _(event):
     try:
         os.remove(photo)
     except Exception as e:  # pylint:disable=C0103,W0703
-        logger.warn(str(e))
+        logger.warning(str(e))
 
 
 @borg.on(admin_cmd(pattern="pf (.*)"))

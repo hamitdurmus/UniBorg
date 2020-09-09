@@ -20,16 +20,16 @@ logger = logging.getLogger(__name__)
 
 @borg.on(admin_cmd(pattern=r'\#(\S+)', outgoing=True))
 async def on_snip(event):
-    await event.delete()
     name = event.pattern_match.group(1)
     snip = await check_one(name)
     reply_message = await event.get_reply_message()
     if snip:
+        await event.delete()
         msg_o = await event.client.get_messages(
             entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
             ids=int(snip['Value'])
         )
-        if msg_o.media != None:
+        if msg_o.media is not None:
             if reply_message:
                 await event.client.send_file(
                     event.chat_id,

@@ -31,7 +31,7 @@ async def load_reload(event):
     except Exception as e:  # pylint:disable=C0103,W0703
         trace_back = traceback.format_exc()
 
-        logger.warn(f"Failed to (re)load plugin {shortname}: {trace_back}")
+        logger.warning(f"Failed to (re)load plugin {shortname}: {trace_back}")
         await event.respond(f"Failed to (re)load plugin {shortname}: {e}")
 
 

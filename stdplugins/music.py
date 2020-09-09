@@ -61,7 +61,6 @@ async def _(event):
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
-                break
 
             elif "(MP3_320)" in song_result[res].title:
 
@@ -69,7 +68,6 @@ async def _(event):
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
-                break
 
             elif "(MP3_128)" in song_result[res].title:
 
@@ -77,7 +75,6 @@ async def _(event):
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
-                break
 
     elif msg:
 
@@ -91,7 +88,6 @@ async def _(event):
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
-                break
 
             elif "(MP3_320)" in song_result[res].title:
 
@@ -99,7 +95,6 @@ async def _(event):
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
-                break
 
             elif "(MP3_128)" in song_result[res].title:
 
@@ -107,7 +102,6 @@ async def _(event):
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
-                break
 
 
 @events.register(events.NewMessage(pattern="ad ?(.*)", outgoing=True))

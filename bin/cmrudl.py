@@ -75,7 +75,7 @@ class Main(object):
     @staticmethod
     def dict_has_props(dic, props):
         for p in props:
-            if not p in dic:
+            if p not in dic:
                 return False
         return True
 
