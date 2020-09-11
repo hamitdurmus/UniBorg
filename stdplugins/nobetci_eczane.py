@@ -59,7 +59,7 @@ async def neczane(event):
     if event.fwd_from:
         return
     il = event.pattern_match.group(1).lower()
-    ilce = event.pattern_match.group(1).lower()
+    ilce = event.pattern_match.group(2).lower()
     tr2eng = str.maketrans(" .,-*/+-ıİüÜöÖçÇşŞğĞ", "________iIuUoOcCsSgG")
     il = il.translate(tr2eng)
     ilce = ilce.translate(tr2eng)
