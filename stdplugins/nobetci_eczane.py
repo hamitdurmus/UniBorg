@@ -54,7 +54,7 @@ def basliklar(il, ilce): return [
 # print(basliklar('canakkale', 'merkez'))
 
 
-@borg.on(admin_cmd(pattern="nobetci ?(.*) (.*)"))
+@borg.on(admin_cmd(pattern="nobetci (.*) (.*)"))
 async def neczane(event):
     if event.fwd_from:
         return
