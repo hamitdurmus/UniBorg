@@ -24,12 +24,6 @@ from youtube_dl.utils import (ContentTooShortError, DownloadError,
                               MaxDownloadsReached, PostProcessingError,
                               UnavailableVideoError, XAttrMetadataError)
 
-from pytube import YouTube
-import requests
-import wget
-import os
-import re
-from bs4 import BeautifulSoup
 
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
