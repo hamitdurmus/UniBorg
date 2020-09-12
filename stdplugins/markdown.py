@@ -1,23 +1,17 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-import logging
 import re
 from functools import partial
 
 from telethon import events
-from telethon.extensions.markdown import DEFAULT_URL_RE
 from telethon.tl.functions.messages import EditMessageRequest
-from telethon.tl.types import (MessageEntityBold, MessageEntityCode,
-                               MessageEntityItalic, MessageEntityPre,
-                               MessageEntityTextUrl)
+from telethon.extensions.markdown import DEFAULT_URL_RE
 from telethon.utils import add_surrogate, del_surrogate
-
-
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
-logger = logging.getLogger(__name__)
-
+from telethon.tl.types import (
+    MessageEntityBold, MessageEntityItalic, MessageEntityCode,
+    MessageEntityPre, MessageEntityTextUrl
+)
 
 
 def parse_url_match(m):
