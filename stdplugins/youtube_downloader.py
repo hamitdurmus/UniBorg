@@ -103,12 +103,10 @@ async def download_video(v_url):
     url = v_url.pattern_match.group(2)
     type = v_url.pattern_match.group(1).lower()
     out_folder = Config.TMP_DOWNLOAD_DIRECTORY + "youtubedl/"
-    pytube_thumb = YouTube(url)
 
     if not os.path.isdir(out_folder):
         os.makedirs(out_folder)
-    resim = wget.download(pytube_thumb.thumbnail_url,
-                          "./DOWNLOADS/youtubedl/thumb.jpg")
+
     await v_url.edit("`Preparing to download...`")
 
     if type == "a":
@@ -140,9 +138,9 @@ async def download_video(v_url):
             'format': 'best',
             'addmetadata': True,
             'key': 'FFmpegMetadata',
-            # 'writethumbnail': True,
-            # 'write_all_thumbnails': True,
-            # 'embedthumbnail': True,
+            'writethumbnail': True,
+            'write_all_thumbnails': True,
+            'embedthumbnail': True,
             'prefer_ffmpeg': True,
             'hls_prefer_native': True,
             'geo_bypass': True,
@@ -244,10 +242,10 @@ async def download_video(v_url):
         included_extensions = ["mp4"]
         file_names = [fn for fn in os.listdir(relevant_path)
                       if any(fn.endswith(ext) for ext in included_extensions)]
-        # img_extensions = ["webp", "jpg", "jpeg"]
-        # img_filenames = [fn_img for fn_img in os.listdir(relevant_path) if any(
-        # fn_img.endswith(ext_img) for ext_img in img_extensions)]
-        # thumb_image = out_folder + img_filenames[0]
+        img_extensions = ["webp", "jpg", "jpeg"]
+        img_filenames = [fn_img for fn_img in os.listdir(relevant_path) if any(
+            fn_img.endswith(ext_img) for ext_img in img_extensions)]
+        thumb_image = out_folder + img_filenames[0]
 
         file_path = out_folder + file_names[0]
         video_size = file_size(file_path)
@@ -261,14 +259,14 @@ async def download_video(v_url):
             file_path,
             supports_streaming=True,
             caption=ytdl_data['title'] + "\n" + f"`{video_size}`",
-            thumb=resim,
+            thumb=thumb_image,
             progress_callback=lambda d, t: asyncio.get_event_loop(
             ).create_task(
                 progress(d, t, v_url, c_time, "Uploading..",
                          f"{ytdl_data['title']}.mp4")))
         os.remove(file_path)
         await asyncio.sleep(DELETE_TIMEOUT)
-        os.remove(resim)
+        os.remove(thumb_image)
         await v_url.delete()
         await j.delete()
     shutil.rmtree(out_folder)
