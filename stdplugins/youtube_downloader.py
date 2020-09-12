@@ -104,10 +104,11 @@ async def download_video(v_url):
     type = v_url.pattern_match.group(1).lower()
     out_folder = Config.TMP_DOWNLOAD_DIRECTORY + "youtubedl/"
     pytube_thumb = YouTube(url)
-    resim = wget.download(pytube_thumb.thumbnail_url,
-                          "./DOWNLOADS/youtubedl/thumb.jpg")
+
     if not os.path.isdir(out_folder):
         os.makedirs(out_folder)
+    resim = wget.download(pytube_thumb.thumbnail_url,
+                          "./DOWNLOADS/youtubedl/thumb.jpg")
     await v_url.edit("`Preparing to download...`")
 
     if type == "a":
