@@ -104,7 +104,7 @@ async def download_video(v_url):
     type = v_url.pattern_match.group(1).lower()
     out_folder = Config.TMP_DOWNLOAD_DIRECTORY + "youtubedl/"
     pytube_thumb = YouTube(url)
-    resim = wget.download(pytube_thumb.thumbnail_url, out_folder)
+    resim = wget.download(pytube_thumb.thumbnail_url, "./DOWNLOADS/youtubedl/")
     if not os.path.isdir(out_folder):
         os.makedirs(out_folder)
     await v_url.edit("`Preparing to download...`")
@@ -114,8 +114,8 @@ async def download_video(v_url):
             'format': 'bestaudio',
             'addmetadata': True,
             'key': 'FFmpegMetadata',
-            # 'writethumbnail': True,
-            # 'embedthumbnail': True,
+            'writethumbnail': True,
+            'embedthumbnail': True,
             'audioquality': 0,
             'audioformat': 'mp3',
             'prefer_ffmpeg': True,
@@ -205,10 +205,10 @@ async def download_video(v_url):
         included_extensions = ["mp3"]
         file_names = [fn for fn in os.listdir(relevant_path)
                       if any(fn.endswith(ext) for ext in included_extensions)]
-        # img_extensions = ["webp", "jpg", "jpeg"]
-        # img_filenames = [fn_img for fn_img in os.listdir(relevant_path) if any(
-        # fn_img.endswith(ext_img) for ext_img in img_extensions)]
-        # thumb_image = out_folder + img_filenames[0]
+        img_extensions = ["webp", "jpg", "jpeg"]
+        img_filenames = [fn_img for fn_img in os.listdir(relevant_path) if any(
+            fn_img.endswith(ext_img) for ext_img in img_extensions)]
+        thumb_image = out_folder + img_filenames[0]
 
         # thumb = out_folder + "cover.jpg"
         file_path = out_folder + file_names[0]
@@ -221,7 +221,7 @@ async def download_video(v_url):
             file_path,
             caption=ytdl_data['title'] + "\n" + f"`{song_size}`",
             supports_streaming=True,
-            thumb=resim,
+            thumb=thumb_image,
             attributes=[
                 DocumentAttributeAudio(duration=int(ytdl_data['duration']),
                                        title=str(ytdl_data['title']),
