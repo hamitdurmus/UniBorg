@@ -253,7 +253,7 @@ async def download_video(v_url):
         video_size = file_size(file_path)
         # thumb = out_folder + "cover.jpg"
 
-        await v_url.edit(f"`Preparing to upload video:`\
+        j = await v_url.edit(f"`Preparing to upload video:`\
         \n**{ytdl_data['title']}**\
         \nby *{ytdl_data['uploader']}*")
         await v_url.client.send_file(
@@ -268,8 +268,9 @@ async def download_video(v_url):
                          f"{ytdl_data['title']}.mp4")))
         os.remove(file_path)
         await asyncio.sleep(DELETE_TIMEOUT)
-        os.remove(thumb_image)
+        os.remove(resim)
         await v_url.delete()
+        await j.delete()
     shutil.rmtree(out_folder)
 
 
