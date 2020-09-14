@@ -62,7 +62,6 @@ PyLyrics
 soundcloud-lib
 JustWatch
 heroku3
-youtube-dl
 # gitpython
 # aioschedule
 # alive_progress
