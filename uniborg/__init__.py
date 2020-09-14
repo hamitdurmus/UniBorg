@@ -6,3 +6,4 @@ from .uniborg import *
 import os
 
 os.system("pip install --upgrade youtube-dl ")
+os.system("pip install -U pip")
