@@ -12,10 +12,12 @@ import os
 import re
 import shutil
 import time
+from os import link
 
 from telethon.tl.types import DocumentAttributeAudio
 
-
+import wget
+from pytube import YouTube
 from sample_config import Config
 from uniborg.util import admin_cmd
 from youtube_dl import YoutubeDL
@@ -23,7 +25,6 @@ from youtube_dl.utils import (ContentTooShortError, DownloadError,
                               ExtractorError, GeoRestrictedError,
                               MaxDownloadsReached, PostProcessingError,
                               UnavailableVideoError, XAttrMetadataError)
-
 
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
@@ -232,6 +233,8 @@ async def download_video(v_url):
         await j.delete()
 
     elif video:
+        vid = YouTube(link)
+        resim = wget.download(vid.thumbnail_url)
         relevant_path = "./DOWNLOADS/youtubedl/"
         included_extensions = ["mp4"]
         file_names = [fn for fn in os.listdir(relevant_path)
@@ -253,14 +256,14 @@ async def download_video(v_url):
             file_path,
             supports_streaming=True,
             caption=ytdl_data['title'] + "\n" + f"`{video_size}`",
-            thumb=thumb_image,
+            thumb=resim,
             progress_callback=lambda d, t: asyncio.get_event_loop(
             ).create_task(
                 progress(d, t, v_url, c_time, "Uploading..",
                          f"{ytdl_data['title']}.mp4")))
         os.remove(file_path)
         await asyncio.sleep(DELETE_TIMEOUT)
-        os.remove(thumb_image)
+        os.remove(resim)
         await v_url.delete()
         await j.delete()
     shutil.rmtree(out_folder)
