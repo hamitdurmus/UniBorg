@@ -207,7 +207,7 @@ async def download_video(v_url):
         # thumb = out_folder + "cover.jpg"
         file_path = out_folder + file_names[0]
         song_size = file_size(file_path)
-        await v_url.edit(f"`Preparing to upload song:`\
+        j = await v_url.edit(f"`Preparing to upload song:`\
         \n**{ytdl_data['title']}**\
         \nby *{ytdl_data['uploader']}*")
         await v_url.client.send_file(
@@ -229,7 +229,7 @@ async def download_video(v_url):
         shutil.rmtree(out_folder)
         await asyncio.sleep(DELETE_TIMEOUT)
         os.remove(thumb_image)
-        await v_url.delete()
+        await j.delete()
 
     elif video:
         relevant_path = "./DOWNLOADS/youtubedl/"
