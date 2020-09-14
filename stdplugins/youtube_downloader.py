@@ -233,7 +233,7 @@ async def download_video(v_url):
         await j.delete()
 
     elif video:
-        vid = YouTube(link)
+        vid = YouTube(url)
         resim = wget.download(vid.thumbnail_url)
         relevant_path = "./DOWNLOADS/youtubedl/"
         included_extensions = ["mp4"]
