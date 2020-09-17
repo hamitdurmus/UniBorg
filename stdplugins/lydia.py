@@ -5,6 +5,8 @@ from time import time
 from telethon import events
 
 import coffeehouse as cf
+from coffeehouse.api import API
+from coffeehouse.lydia import LydiaAI
 from coffeehouse.exception import CoffeeHouseError
 from pymongo import MongoClient
 from sample_config import Config
@@ -16,7 +18,9 @@ if Config.MONGO_DB_URI and Config.LYDIA_API is not None:
     api_key = Config.LYDIA_API
 
     # Initialise client
-    api_client = cf.API(api_key)
+    api_client = API(api_key)
+    lydia = LydiaAI(api_client)
+
     cl = MongoClient(Config.MONGO_DB_URI)
     db = cl['Userbot']
     lydia = db.lydia
@@ -44,7 +48,7 @@ async def lydia_enable(event):
                 return
     except:
         pass
-    session = api_client.create_session()
+    session = lydia.create_session()
     ses = {'id': session.id, 'expires': session.expires}
     logging.info(ses)
     lydia.insert_one({'user_id': user_id, 'chat_id': chat_id, 'session': ses})
