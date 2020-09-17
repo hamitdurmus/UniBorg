@@ -24,7 +24,7 @@ if Config.LYDIA_API is not None:
     # Create the CoffeeHouse API instance
     coffeehouse_api = API(api_key)
     # Create Lydia instance
-    lydia = LydiaAI(coffeehouse_api)
+    lydia_session = LydiaAI(coffeehouse_api)
 
 
 @borg.on(admin_cmd(pattern="cf", allow_sudo=True))
@@ -49,7 +49,7 @@ async def lydia_enable(event):
                 return
     except:
         pass
-    session = lydia.create_session()
+    session = lydia_session.create_session()
     ses = {'id': session.id, 'expires': session.expires}
     logging.info(ses)
     lydia.insert_one({'user_id': user_id, 'chat_id': chat_id, 'session': ses})
@@ -110,7 +110,7 @@ async def Lydia_bot_update(event):
         # Check if the session is expired
         # If this method throws an exception at this point, then there's an issue with the API, Auth or Server.
                 if ses['expires'] < time():
-                    session = api_client.create_session()
+                    session = lydia_session.create_session()
                     ses = {'id': session.id, 'expires': session.expires}
                     logging.info(ses)
                     lydia.update_one(
@@ -120,14 +120,14 @@ async def Lydia_bot_update(event):
                 try:
                     async with borg.action(event.chat_id, "typing"):
                         await asyncio.sleep(1)
-                        output = api_client.think_thought(ses['id'], query)
+                        output = lydia_session.think_thought(ses['id'], query)
                         await event.reply(output)
                 except CoffeeHouseError as e:
                     # CoffeeHouse related issue, session issue most likely.
                     logging.error(str(e))
 
     # Create a new session
-                    session = api_client.create_session()
+                    session = lydia_session.create_session()
                     ses = {'id': session.id, 'expires': session.expires}
                     logging.info(ses)
                     lydia.update_one(
@@ -136,5 +136,5 @@ async def Lydia_bot_update(event):
     # Reply again, if this method fails then there's a other issue.
                     async with borg.action(event.chat_id, "typing"):
                         await asyncio.sleep(1)
-                        output = api_client.think_thought(ses['id'], query)
+                        output = lydia_session.think_thought(ses['id'], query)
                         await event.reply(output)
