@@ -14,16 +14,17 @@ from uniborg.util import admin_cmd
 
 logging.basicConfig(level=logging.INFO)
 
-if Config.MONGO_DB_URI and Config.LYDIA_API is not None:
-    api_key = Config.LYDIA_API
-
-    # Initialise client
-    api_client = API(api_key)
-    lydia = LydiaAI(api_client)
-
+if Config.MONGO_DB_URI is not None:
     cl = MongoClient(Config.MONGO_DB_URI)
     db = cl['Userbot']
     lydia = db.lydia
+
+if Config.LYDIA_API is not None:
+    api_key = Config.LYDIA_API
+    # Create the CoffeeHouse API instance
+    coffeehouse_api = API(api_key)
+    # Create Lydia instance
+    lydia = LydiaAI(coffeehouse_api)
 
 
 @borg.on(admin_cmd(pattern="cf", allow_sudo=True))
