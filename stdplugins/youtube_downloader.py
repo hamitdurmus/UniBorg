@@ -229,7 +229,7 @@ async def download_video(v_url):
         # os.remove(file_path)
         shutil.rmtree(out_folder)
         await asyncio.sleep(DELETE_TIMEOUT)
-        os.remove(thumb_image)
+        # os.remove(thumb_image)
         await j.delete()
 
     elif video:
