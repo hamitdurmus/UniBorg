@@ -27,28 +27,29 @@ async def handler(event):
                 ismi = user.first_name
                 # if user.username is not None:
                 #     k_adi = user.username
-                silinen_msg = events[0].old.message
-                kullanici = f"[{ismi}](tg://user?id={user.id})"
-                msg = f"**{group_ismi} Grubundan Silinen Mesaj\n\n**"\
-                    f"**Silen Kişi:** __{kullanici}__\n\n**Silinen Mesaj:** __{silinen_msg}__"
+                if not events[0].old.action:
+                    silinen_msg = events[0].old.message
+                    kullanici = f"[{ismi}](tg://user?id={user.id})"
+                    msg = f"**{group_ismi} Grubundan Silinen Mesaj\n\n**"\
+                        f"**Silen Kişi:** __{kullanici}__\n\n**Silinen Mesaj:** __{silinen_msg}__"
 
-                if events[0].old.media is not None:
+                    if events[0].old.media is not None:
 
-                    medya = events[0].old.media
-                    msg = f"**{group_ismi} Grubundan Silinen Medya\n\n**"\
-                        f"**Silen Kişi:** __{kullanici}__\n\n"
+                        medya = events[0].old.media
+                        msg = f"**{group_ismi} Grubundan Silinen Medya\n\n**"\
+                            f"**Silen Kişi:** __{kullanici}__\n\n"
 
-                    await event.client.send_message(
-                        entity=-1001220834298,
-                        message=msg,
-                        file=medya,
-                        force_document=False
-                    )
-                else:
+                        await event.client.send_message(
+                            entity=-1001220834298,
+                            message=msg,
+                            file=medya,
+                            force_document=False
+                        )
+                    else:
 
-                    await event.client.send_message(
-                        entity=-1001220834298,
-                        message=msg
-                    )
+                        await event.client.send_message(
+                            entity=-1001220834298,
+                            message=msg
+                        )
         except ChatAdminRequiredError:
             return
