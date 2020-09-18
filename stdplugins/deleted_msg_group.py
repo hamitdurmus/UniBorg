@@ -20,7 +20,7 @@ async def handler(event):
         return
     else:
         try:
-            if event and event.chat_id != me_id:
+            if event:
 
                 events = await event.client.get_admin_log(event.chat_id, delete=True)
                 user = await event.client.get_entity(events[0].user_id)
