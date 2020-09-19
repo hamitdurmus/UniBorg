@@ -34,7 +34,7 @@ async def lydia_enable(event):
     if Config.MONGO_DB_URI and Config.LYDIA_API is None:
         await event.edit("Make Sure You've added MONGO_URI and LYDIA_API env vars Correctly.")
         return
-    if event.reply_to_msg_id == None:
+    if event.reply_to_msg_id is not None:
         await event.edit("Reply To A User's Message to Add him/her in Lydia Auto-Chat.")
         return
     reply_msg = await event.get_reply_message()
@@ -63,7 +63,7 @@ async def lydia_disable(event):
     if Config.MONGO_DB_URI and Config.LYDIA_API is None:
         await event.edit("Make Sure You've added MONGO_URI and LYDIA_API env vars Correctly.")
         return
-    if event.reply_to_msg_id == None:
+    if event.reply_to_msg_id is not None:
         await event.edit("Reply To A User's Message to Remove him/her from Lydia Auto-Chat.")
         return
     reply_msg = await event.get_reply_message()
@@ -100,7 +100,7 @@ async def Lydia_bot_update(event):
         return
     if Config.MONGO_DB_URI and Config.LYDIA_API is None:
         return
-    if event.media == None:
+    if event.media is not None:
         cursor = lydia.find({})
         for c in cursor:
             if c['user_id'] == event.from_id and c['chat_id'] == event.chat_id:
