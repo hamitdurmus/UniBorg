@@ -10,9 +10,11 @@ Available Commands:
 import asyncio
 import logging
 import re
-from database.filtersdb import get_all_filters, get_filter, add_filter, delete_filter, delete_all_filters
-from uniborg.util import admin_cmd
+
+from database.filtersdb import (add_filter, delete_all_filters, delete_filter,
+                                get_all_filters, get_filter)
 from sample_config import Config
+from uniborg.util import admin_cmd
 
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
@@ -76,7 +78,7 @@ async def on_snip_save(event):
             silent=True
         )
         await add_filter(event.chat_id, name, msg_o.id)
-        await event.edit(f"filter {name} saved successfully. Get it with {name}")
+        await event.edit(f"Filter `{name}` saved successfully. Get it with `{name}`")
     else:
         await event.edit("Reply to a message with `savefilter keyword` to save the filter")
 
@@ -110,10 +112,10 @@ async def on_snip_list(event):
 async def on_snip_delete(event):
     name = event.pattern_match.group(1)
     await delete_filter(event.chat_id, name)
-    await event.edit(f"filter **{name}** deleted successfully")
+    await event.edit(f"Delete filter **{name}** deleted successfully")
 
 
 @borg.on(admin_cmd(pattern="clearaf"))
 async def on_all_snip_delete(event):
     await delete_all_filters(event.chat_id)
-    await event.edit("filters **in current chat** deleted successfully")
+    await event.edit("All filters **in current chat** deleted successfully")
