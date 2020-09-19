@@ -12,17 +12,18 @@ from telethon.errors import ChatAdminRequiredError
 
 @borg.on(events.MessageDeleted)
 async def handler(event):
-    my = await event.client.get_me()
-    me_id = my.id
-    if me_id == borg.me.id:
-        return
-    else:
-        grup = await event.client.get_entity(event.chat_id)
-        group_ismi = grup.title
-        try:
-            if event:
-                events = await event.client.get_admin_log(event.chat_id, delete=True)
-                user = await event.client.get_entity(events[0].user_id)
+    # me = await event.client.get_me()
+    # me_id = me.id
+    # if not (me_id == from_id[0]):
+    grup = await event.client.get_entity(event.chat_id)
+    group_ismi = grup.title
+    try:
+        if event:
+            events = await event.client.get_admin_log(event.chat_id, delete=True)
+            user = await event.client.get_entity(events[0].user_id)
+            if user.id == borg.me.id:
+                return
+            else:
                 if not user.bot:
                     ismi = user.first_name
                     # if user.username is not None:
@@ -48,5 +49,5 @@ async def handler(event):
                             entity=-1001220834298,
                             message=msg
                         )
-        except ChatAdminRequiredError:
-            return
+    except ChatAdminRequiredError:
+        return
