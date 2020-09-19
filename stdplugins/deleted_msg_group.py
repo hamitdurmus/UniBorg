@@ -15,9 +15,10 @@ async def handler(event):
     # me = await event.client.get_me()
     # me_id = me.id
     # if not (me_id == from_id[0]):
-    grup = await event.client.get_entity(event.chat_id)
-    group_ismi = grup.title
+
     try:
+        grup = await event.client.get_entity(event.chat_id)
+        group_ismi = grup.title
         if event:
             events = await event.client.get_admin_log(event.chat_id, delete=True)
             user = await event.client.get_entity(events[0].user_id)
