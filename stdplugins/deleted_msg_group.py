@@ -2,19 +2,21 @@
 from telethon import events
 from telethon.errors import ChatAdminRequiredError
 
-from_id = []
+# from_id = []
 
 
-@borg.on(events.NewMessage())
-async def new_msg(event):
-    from_id.insert(0, event.from_id)
+# @borg.on(events.NewMessage())
+# async def new_msg(event):
+#     from_id.insert(0, event.from_id)
 
 
 @borg.on(events.MessageDeleted)
 async def handler(event):
-    me = await event.client.get_me()
-    me_id = me.id
-    if not (me_id == from_id[0]):
+    my = await event.client.get_me()
+    me_id = my.id
+    if me_id == borg.me.id:
+        return
+    else:
         grup = await event.client.get_entity(event.chat_id)
         group_ismi = grup.title
         try:
