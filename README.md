@@ -17,9 +17,13 @@ Pluggable [``asyncio``](https://docs.python.org/3/library/asyncio.html)
 
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/muhammedfurkan/UniBorg)
 
-### Performance Test
+### Performance Test || Resolved Issues || Active Issues
 
 [![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/muhammedfurkan/UniBorg/?ref=repository-badge)
+
+[![DeepSource](https://deepsource.io/gh/muhammedfurkan/UniBorg.svg/?label=resolved+issues&show_trend=true)](https://deepsource.io/gh/muhammedfurkan/UniBorg/?ref=repository-badge)
+
+[![DeepSource](https://deepsource.io/gh/muhammedfurkan/UniBorg.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/muhammedfurkan/UniBorg/?ref=repository-badge)
 
 ### Code Quality
 
