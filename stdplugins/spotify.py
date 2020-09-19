@@ -4,13 +4,14 @@ from json import loads
 from json.decoder import JSONDecodeError
 from os import environ
 from sys import setrecursionlimit
-from uniborg.util import admin_cmd
+
 from requests import get
 from telethon import events
 from telethon.tl.functions.account import UpdateProfileRequest
 
 import spotify_token as st
 from sample_config import Config
+from uniborg.util import admin_cmd
 
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)

@@ -8,8 +8,7 @@ import logging
 
 from telethon.tl import types
 
-from database.snipsdb import (add, check, check_one, check_others, delete,
-                              delete_one, delete_others, others, update)
+from database.snipsdb import add, check, check_one, delete_one
 from sample_config import Config
 from uniborg.util import admin_cmd
 

@@ -2,9 +2,7 @@
 import logging
 
 from telethon import events
-from telethon.errors.rpcerrorlist import (UserAlreadyParticipantError,
-                                          YouBlockedUserError)
-from telethon.tl.functions.account import UpdateNotifySettingsRequest
+from telethon.errors.rpcerrorlist import YouBlockedUserError
 
 from uniborg.util import admin_cmd, humanbytes
 

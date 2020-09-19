@@ -6,7 +6,6 @@ cmds: .gmute user_id|reply to user messsage	//G-Mutes a User.
 By:- JaskaranSM ( @Zero_cool7870 )
 """
 
-import asyncio
 import logging
 
 from telethon import events

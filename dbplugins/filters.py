@@ -12,7 +12,7 @@ import logging
 import re
 
 from database.filtersdb import (add_filter, delete_all_filters, delete_filter,
-                                get_all_filters, get_filter)
+                                get_all_filters)
 from sample_config import Config
 from uniborg.util import admin_cmd
 
