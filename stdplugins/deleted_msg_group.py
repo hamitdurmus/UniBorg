@@ -51,3 +51,5 @@ async def handler(event):
                         )
     except ChatAdminRequiredError:
         return
+    except TypeError:
+        return
