@@ -1,4 +1,4 @@
-﻿# (c) @UniBorg
+# (c) @UniBorg
 import asyncio
 # Original written by @UniBorg edit by @INF1N17Y
 import logging
