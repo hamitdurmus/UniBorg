@@ -9,6 +9,7 @@ Syntax:
 
 import asyncio
 import json
+import logging
 import math
 import os
 import time
@@ -26,7 +27,7 @@ from sample_config import Config
 from uniborg.util import admin_cmd, humanbytes, progress
 
 # Path to token json file, it should be in same directory as script
-G_DRIVE_TOKEN_FILE = Config.TMP_DOWNLOAD_DIRECTORY + "/auth_token.txt"
+G_DRIVE_TOKEN_FILE = os.path.join(TMP_DOWNLOAD_DIRECTORY, "auth_token.txt")
 # Copy your credentials from the APIs Console
 CLIENT_ID = Config.G_DRIVE_CLIENT_ID
 CLIENT_SECRET = Config.G_DRIVE_CLIENT_SECRET
@@ -311,7 +312,7 @@ async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
                     await event.edit(current_message)
                     display_message = current_message
                 except Exception as e:
-                    logger.info(str(e))
+                    logging.info(str(e))
                     pass
     file_id = response.get("id")
     try:
@@ -346,7 +347,7 @@ async def create_directory(http, directory_name, parent_id):
         drive_service.permissions().insert(fileId=file_id, body=permissions).execute()
     except:
         pass
-    logger.info("Created Gdrive Folder:\nName: {}\nID: {} ".format(
+    logging.info("Created Gdrive Folder:\nName: {}\nID: {} ".format(
         file.get("title"), file_id))
     return file_id
 

@@ -5,7 +5,7 @@ import os
 from distutils.util import strtobool as sb
 
 
-class Config(object):
+class Config:
     LOGGER = True
     # Get this value from my.telegram.org! Please do not steal
     APP_ID = int(os.environ.get("APP_ID", 6))
@@ -155,6 +155,15 @@ class Config(object):
     # Heroku stuff
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
     HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
+    # for video trimming and screenshot plugins
+    LT_QOAN_NOE_FF_MPEG_CTD = os.environ.get(
+        "LT_QOAN_NOE_FF_MPEG_CTD",
+        None
+    )
+    LT_QOAN_NOE_FF_MPEG_URL = os.environ.get(
+        "LT_QOAN_NOE_FF_MPEG_URL",
+        None
+    )
 
 
 class Production(Config):

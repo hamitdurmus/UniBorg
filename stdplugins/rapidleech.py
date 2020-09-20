@@ -8,6 +8,8 @@
 #
 
 """RapidLeech plugin: Inspired by @SjProjects"""
+import asyncio
+import json
 import logging
 import re
 
