@@ -43,7 +43,7 @@ async def _(event):
             r = await borg(functions.channels.CreateChannelRequest(
                 title=group_name,
                 about="This is a Test from @UniBorg",
-                megagroup=False if type_of_group == "c" else True
+                megagroup=not type_of_group == "c"
             ))
             created_chat_id = r.chats[0].id
             result = await borg(functions.messages.ExportChatInviteRequest(
