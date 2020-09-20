@@ -64,7 +64,7 @@ def upload_file(f):
     return ["https://telegra.ph" + i['src'] for i in response]
 
 
-class FilesOpener(object):
+class FilesOpener():
     def __init__(self, paths, key_format='file{}'):
         if not isinstance(paths, list):
             paths = [paths]
