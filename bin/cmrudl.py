@@ -74,10 +74,7 @@ class Main():
 
     @staticmethod
     def dict_has_props(dic, props):
-        for p in props:
-            if p not in dic:
-                return False
-        return True
+        return all(p in dic for p in props)
 
     @staticmethod
     def assert_status_code(code, expected):
@@ -155,7 +152,6 @@ class Main():
         return r
 
     def request_download(self, url, dest, progress, cont=False):
-        buffer_size = self.options.buffer
 
         # Open the output file, append mode if continue.
         with open(dest, 'ab' if cont else 'wb') as fp:
@@ -173,6 +169,7 @@ class Main():
                 headers['Range'] = 'bytes=%s-' % (offset)
 
             start = time.time()
+            buffer_size = self.options.buffer
             progress(self.DL_PROGRESS_START, start,
                      start, offset, 0, offset, None)
 

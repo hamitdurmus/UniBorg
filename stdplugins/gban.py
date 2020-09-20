@@ -23,17 +23,14 @@ async def _(event):
     reason = event.pattern_match.group(1)
     if event.reply_to_msg_id:
         r = await event.get_reply_message()
-        if r.forward:
-            r_from_id = r.forward.from_id or r.from_id
-        else:
-            r_from_id = r.from_id
-        await borg.send_message(
+        r_from_id = r.forward.from_id or r.from_id if r.forward else r.from_id
+        await event.client.send_message(
             Config.G_BAN_LOGGER_GROUP,
-            "!fban {} {}".format(r.from_id, reason)
+            "!fban {} {}".format(r_from_id, reason)
         )
     else:
         user_id = event.pattern_match.group(1)
-        await borg.send_message(
+        await event.client.send_message(
             Config.G_BAN_LOGGER_GROUP,
             "!fban {}".format(user_id)
         )
@@ -51,13 +48,13 @@ async def _(event):
     if event.reply_to_msg_id:
         r = await event.get_reply_message()
         r_from_id = r.from_id
-        await borg.send_message(
+        await event.client.send_message(
             Config.G_BAN_LOGGER_GROUP,
             "!unfban {} {}".format(r_from_id, reason)
         )
     else:
         user_id = event.pattern_match.group(1)
-        await borg.send_message(
+        await event.client.send_message(
             Config.G_BAN_LOGGER_GROUP,
             "!unfban {}".format(user_id)
         )

@@ -72,7 +72,7 @@ def admin_cmd(**args):
     # add blacklist chats, UB should not respond in these chats
     args["blacklist_chats"] = True
     black_list_chats = list(Config.UB_BLACK_LIST_CHAT)
-    if len(black_list_chats) > 0:
+    if black_list_chats:
         args["chats"] = black_list_chats
 
     return events.NewMessage(**args)
@@ -218,9 +218,9 @@ async def is_admin(client, chat_id, user_id):
         user_id=user_id
     ))
     chat_participant = req_jo.participant
-    if isinstance(chat_participant, (ChannelParticipantCreator, ChannelParticipantAdmin)):
-        return True
-    return False
+    return isinstance(
+        chat_participant, (ChannelParticipantCreator, ChannelParticipantAdmin)
+    )
 
 
 # Not that Great but it will fix sudo reply

@@ -80,7 +80,7 @@ if 1 == 1:
                 await event.client.send_file(event.chat_id, photos)
             except a:
                 photo = await event.client.download_profile_photo(chat)
-                await borg.send_file(event.chat_id, photo)
+                await event.client.send_file(event.chat_id, photo)
         else:
             try:
                 id = int(id)
@@ -92,7 +92,7 @@ if 1 == 1:
                 return
             if int(id) <= (len(photos)):
                 send_photos = await event.client.download_media(photos[id - 1])
-                await borg.send_file(event.chat_id, send_photos)
+                await event.client.send_file(event.chat_id, send_photos)
             else:
                 await event.edit("`No photo found of that Nigga , now u Die`")
                 return

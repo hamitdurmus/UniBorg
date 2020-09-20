@@ -51,25 +51,40 @@ async def _(event):
         await event.delete()
         song_result = await event.client.inline_query("spotify_to_mp3_bot", music_name)
 
-        for res in range(len(song_result)):
+        for item_ in song_result:
 
-            if "(FLAC)" in song_result[res].title:
+            if "(FLAC)" in item_.title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await item_.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
 
-            elif "(MP3_320)" in song_result[res].title:
+            elif "(MP3_320)" in item_.title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await item_.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
 
-            elif "(MP3_128)" in song_result[res].title:
+            elif "(MP3_128)" in item_.title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await item_.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
@@ -78,25 +93,40 @@ async def _(event):
 
         await event.delete()
         song_result = await event.client.inline_query("spotify_to_mp3_bot", msg.message)
-        for res in range(len(song_result)):
+        for item in song_result:
 
-            if "(FLAC)" in song_result[res].title:
+            if "(FLAC)" in item.title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await item.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
 
-            elif "(MP3_320)" in song_result[res].title:
+            elif "(MP3_320)" in item.title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await item.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
 
-            elif "(MP3_128)" in song_result[res].title:
+            elif "(MP3_128)" in item.title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await item.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("Kanal Linki:\nhttps://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ")
@@ -115,7 +145,7 @@ async def _(event):
         return
     chat = "@audiotubebot"
     sender = reply_message.sender
-    if reply_message.sender.bot:
+    if sender.bot:
         await event.edit("```Reply to actual users message.```")
         return
     await event.edit("```Processing```")

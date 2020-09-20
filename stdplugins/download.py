@@ -94,8 +94,6 @@ async def _(event):
 
 
 async def download_coroutine(session, url, file_name, event, start):
-    CHUNK_SIZE = 2341
-    downloaded = 0
     display_message = ""
     async with session.get(url) as response:
         total_length = int(response.headers["Content-Length"])
@@ -107,6 +105,8 @@ URL: {}
 File Name: {}
 File Size: {}""".format(url, file_name, humanbytes(total_length)))
         with open(file_name, "wb") as f_handle:
+            CHUNK_SIZE = 2341
+            downloaded = 0
             while True:
                 chunk = await response.content.read(CHUNK_SIZE)
                 if not chunk:
@@ -140,5 +140,4 @@ ETA: {}""".format(
                             display_message = current_message
                     except Exception as e:
                         logger.info(str(e))
-                        pass
         return await response.release()

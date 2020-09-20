@@ -71,9 +71,9 @@ def doit(chat_id, match, original):
 
 async def group_has_sedbot(group):
     if isinstance(group, types.InputPeerChannel):
-        full = await borg(functions.channels.GetFullChannelRequest(group))
+        full = await event.client(functions.channels.GetFullChannelRequest(group))
     elif isinstance(group, types.InputPeerChat):
-        full = await borg(functions.messages.GetFullChatRequest(group.chat_id))
+        full = await event.client(functions.messages.GetFullChatRequest(group.chat_id))
     else:
         return False
 
@@ -92,6 +92,7 @@ async def on_edit(event):
             m.raw_text = event.raw_text
             break
 
+
 @borg.on(events.NewMessage(
     pattern=re.compile(r"^s/((?:\\/|[^/])+)/((?:\\/|[^/])*)(/.*)?"), outgoing=True))
 async def on_regex(event):
@@ -108,7 +109,7 @@ async def on_regex(event):
 
     if m is not None:
         s = f"{HEADER}{s}"
-        out = await borg.send_message(
+        out = await event.client.send_message(
             await event.get_input_chat(), s, reply_to=m.id
         )
         last_msgs[chat_id].appendleft(out)

@@ -80,7 +80,7 @@ async def _(event):
         await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms_dl))
         if os.path.exists(downloaded_file_name):
             c_time = time.time()
-            await borg.send_file(
+            await event.client.send_file(
                 event.chat_id,
                 downloaded_file_name,
                 force_document=True,
@@ -124,7 +124,7 @@ async def _(event):
         to_download_directory = Config.TMP_DOWNLOAD_DIRECTORY
         downloaded_file_name = os.path.join(to_download_directory, file_name)
         c_time = time.time()
-        downloaded_file_name = await borg.download_media(
+        downloaded_file_name = await event.client.download_media(
             reply_message,
             downloaded_file_name,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
@@ -135,7 +135,7 @@ async def _(event):
         ms_one = (end - start).seconds
         if os.path.exists(downloaded_file_name):
             c_time = time.time()
-            await borg.send_file(
+            await event.client.send_file(
                 event.chat_id,
                 downloaded_file_name,
                 force_document=True,
@@ -172,7 +172,7 @@ async def _(event):
         c_time = time.time()
         to_download_directory = Config.TMP_DOWNLOAD_DIRECTORY
         downloaded_file_name = os.path.join(to_download_directory, file_name)
-        downloaded_file_name = await borg.download_media(
+        downloaded_file_name = await event.client.download_media(
             reply_message,
             downloaded_file_name,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
@@ -203,7 +203,7 @@ async def _(event):
             # Bad Request: VIDEO_CONTENT_TYPE_INVALID
             c_time = time.time()
             try:
-                await borg.send_file(
+                await event.client.send_file(
                     event.chat_id,
                     downloaded_file_name,
                     thumb=thumb,

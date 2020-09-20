@@ -24,8 +24,7 @@ async def retrieve():
 
 
 async def check_one(name):
-    return (False if not cli.find_one({"Name": name})
-            else True)
+    return bool(cli.find_one({"Name": name}))
 
 
 async def delete():

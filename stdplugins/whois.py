@@ -22,7 +22,7 @@ async def _(event):
     if replied_user is None:
         await event.edit(str(error_i_a))
         return False
-    replied_user_profile_photos = await borg(GetUserPhotosRequest(
+    replied_user_profile_photos = await event.client(GetUserPhotosRequest(
         user_id=replied_user.user.id,
         offset=42,
         max_id=0,
@@ -102,14 +102,13 @@ async def get_full_user(event):
                     previous_message.forward.from_id or previous_message.forward.channel_id
                 )
             )
-            return replied_user, None
         else:
             replied_user = await event.client(
                 GetFullUserRequest(
                     previous_message.from_id
                 )
             )
-            return replied_user, None
+        return replied_user, None
     else:
         input_str = None
         try:

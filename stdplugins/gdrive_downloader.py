@@ -43,8 +43,8 @@ async def get_confirm_token(response):
 
 
 async def save_response_content(response, destination):
-    CHUNK_SIZE = 32768
     with open(destination, "wb") as f:
+        CHUNK_SIZE = 32768
         for chunk in response.iter_content(CHUNK_SIZE):
             if chunk:  # filter out keep-alive new chunks
                 f.write(chunk)
@@ -60,7 +60,7 @@ async def get_id(link):  # Extract File Id from G-Drive Link
         for c in link:
             if c == "/":
                 break
-            fid = fid + c
+            fid += c
         return fid
     for c in link:
         if c == "=":
@@ -68,12 +68,12 @@ async def get_id(link):  # Extract File Id from G-Drive Link
         if c == "&":
             break
         if c_append:
-            file_id = file_id + c
+            file_id += c
     file_id = file_id[1:]
     return file_id
 
 
-async def get_file_name(content):
+async def get_file_name(content):  # sourcery skip
     file_name = ""
     c_append = False
     for c in str(content):

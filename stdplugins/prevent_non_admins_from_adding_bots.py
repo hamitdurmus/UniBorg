@@ -34,12 +34,12 @@ async def kick_if_bots(event):
         )
         added_users = event.action_message.action.users
         for user_id in added_users:
-            user_obj = await borg.get_entity(user_id)
+            user_obj = await event.client.get_entity(user_id)
             if user_obj.bot:
                 is_ban_able = True
                 try:
                     # kick the bot
-                    await borg(EditBannedRequest(event.chat_id, user_obj, rights))
+                    await event.client(EditBannedRequest(event.chat_id, user_obj, rights))
                 except Exception as e:
                     logger.warning(str(e))
                     # maybe you don't have admin priveleges here :\

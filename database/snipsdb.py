@@ -24,7 +24,7 @@ async def check_one(key):
 
 
 async def check_others():
-    return False if cli.find_one({"Others": False}) else True
+    return not cli.find_one({"Others": False})
 
 
 async def update(query, key, value):

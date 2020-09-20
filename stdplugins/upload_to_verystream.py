@@ -20,6 +20,7 @@ logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s'
                     level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
+
 @borg.on(admin_cmd(pattern="verystream ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
@@ -58,7 +59,7 @@ async def _(event):
             end = datetime.now()
             ms = (end - start).seconds
             required_file_name = input_str
-            await mone.edit("Found `{}` in {} seconds.".format(input_str, ms))
+            await mone.edit("Found `{}` in {} seconds.".format(required_file_name, ms))
         else:
             await mone.edit("File Not found in local server. Give me a file path :((")
             return False
