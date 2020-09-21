@@ -175,3 +175,36 @@ async def _(event):
         )
     else:
         await event.edit("`mesajı yanıtla`")
+
+
+@borg.on(admin_cmd(pattern="sdown ?(.*)"))
+async def _(event):
+    if event.fwd_from:
+        return
+    d_link = event.pattern_match.group(1)
+    if ".com" not in d_link:
+        await event.edit("` I need a link to download something pro.`**(._.)**")
+    else:
+        msg = await event.edit("🎶**Initiating Download!**🎶")
+    bot = "@spotify_to_mp3_bot"
+
+    async with event.client.conversation(bot) as conv:
+        try:
+            await conv.send_message(d_link)
+            details = await conv.get_response()
+            for row in details.buttons:
+                for button in row:
+                    if button.text == "📲🎵Download this Song!":
+                        await button.click()
+                        first = await conv.get_response()
+                        if first.media:
+                            msj = f"[{first.media.document.attributes[1].file_name}](https://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ)\n`{humanbytes(first.media.document.size)}`"
+                            await event.client.send_file(event.chat_id, first, caption=msj)
+                        else:
+                            resp = await conv.get_response()
+                            msj = f"[{first.media.document.attributes[1].file_name}](https://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ)\n`{humanbytes(resp.media.file.size)}`"
+                            await event.client.send_file(event.chat_id, resp, caption=msj)
+                            await msg.delete()
+
+        except YouBlockedUserError:
+            await event.edit(f"**Error:** `unblock` {bot} `and retry!`")
