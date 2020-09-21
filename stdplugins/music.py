@@ -185,7 +185,7 @@ async def _(event):
     if ".com" not in d_link:
         await event.edit("` I need a link to download something pro.`**(._.)**")
     else:
-        msg = await event.edit("🎶**Initiating Download!**🎶")
+        msg = await event.edit("🎶**Müzik indirilip gönderiliyor..!**🎶")
     bot = "@spotify_to_mp3_bot"
 
     async with event.client.conversation(bot) as conv:
@@ -204,7 +204,6 @@ async def _(event):
                             resp = await conv.get_response()
                             msj = f"[{first.media.document.attributes[1].file_name}](https://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ)\n`{humanbytes(resp.media.file.size)}`"
                             await event.client.send_file(event.chat_id, resp, caption=msj)
-                            await msg.delete()
-
+                        await msg.delete()
         except YouBlockedUserError:
             await event.edit(f"**Error:** `unblock` {bot} `and retry!`")
