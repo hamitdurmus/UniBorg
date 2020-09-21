@@ -63,7 +63,7 @@ async def purgeme(delme):
     await asyncio.sleep(5)
 
 
-@borg.on(admin_cmd(pattern="sd ?(.*) + ?(.*)", outgoing=True))
+@borg.on(admin_cmd(pattern="selfd ?(.*) + ?(.*)", outgoing=True))
 async def selfdestruct(destroy):
     if not destroy.text[0].isalpha() and destroy.text[0] not in ("/", "#", "@", "!"):
         await destroy.delete()
