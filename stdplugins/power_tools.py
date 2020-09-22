@@ -27,7 +27,7 @@ async def _(event):
     # https://archive.is/im3rt
     os.execl(sys.executable, sys.executable, *sys.argv)
     # You probably don't need it but whatever
-    quit()
+    sys.exit()
 
 
 @borg.on(admin_cmd(pattern="shutdown"))
