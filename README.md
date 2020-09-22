@@ -4,12 +4,6 @@ Pluggable [``asyncio``](https://docs.python.org/3/library/asyncio.html)
 [Telegram](https://telegram.org) userbot based on
 [Telethon](https://github.com/LonamiWebs/Telethon).
 
-/**
-// **DISCLAIMER**
-
-// multiple accounts are getting banned,
-// hence, please do not deploy this REPOsitory
- */
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/muhammedfurkan/UniBorg)
 
