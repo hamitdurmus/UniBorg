@@ -4,12 +4,6 @@ Pluggable [``asyncio``](https://docs.python.org/3/library/asyncio.html)
 [Telegram](https://telegram.org) userbot based on
 [Telethon](https://github.com/LonamiWebs/Telethon).
 
-/**
-// **DISCLAIMER**
-
-// multiple accounts are getting banned,
-// hence, please do not deploy this REPOsitory
- */
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/muhammedfurkan/UniBorg)
 
@@ -17,17 +11,20 @@ Pluggable [``asyncio``](https://docs.python.org/3/library/asyncio.html)
 
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/muhammedfurkan/UniBorg)
 
-### Performance Test
+### Performance Test || Resolved Issues || Active Issues
 
 [![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/muhammedfurkan/UniBorg/?ref=repository-badge)
+
+[![DeepSource](https://deepsource.io/gh/muhammedfurkan/UniBorg.svg/?label=resolved+issues&show_trend=true)](https://deepsource.io/gh/muhammedfurkan/UniBorg/?ref=repository-badge)
+
+[![DeepSource](https://deepsource.io/gh/muhammedfurkan/UniBorg.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/muhammedfurkan/UniBorg/?ref=repository-badge)
 
 ### Code Quality
 
 [![CodeFactor](https://www.codefactor.io/repository/github/muhammedfurkan/uniborg/badge)](https://www.codefactor.io/repository/github/muhammedfurkan/uniborg)
 
 #### The Easy Way
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/muhammedfurkan/UniBorg)
 
 #### The Legacy Way
 Simply clone the repository and run the main file:

@@ -31,7 +31,7 @@ __copyright__ = 'Copyright (c) 2019 JrMasterModelBuilder'
 __license__ = 'MPL-2.0'
 
 
-class Main(object):
+class Main():
     DL_PROGRESS_START = 1
     DL_PROGRESS_READ = 2
     DL_PROGRESS_WROTE = 3
@@ -74,10 +74,7 @@ class Main(object):
 
     @staticmethod
     def dict_has_props(dic, props):
-        for p in props:
-            if not p in dic:
-                return False
-        return True
+        return all(p in dic for p in props)
 
     @staticmethod
     def assert_status_code(code, expected):
@@ -155,7 +152,6 @@ class Main(object):
         return r
 
     def request_download(self, url, dest, progress, cont=False):
-        buffer_size = self.options.buffer
 
         # Open the output file, append mode if continue.
         with open(dest, 'ab' if cont else 'wb') as fp:
@@ -173,6 +169,7 @@ class Main(object):
                 headers['Range'] = 'bytes=%s-' % (offset)
 
             start = time.time()
+            buffer_size = self.options.buffer
             progress(self.DL_PROGRESS_START, start,
                      start, offset, 0, offset, None)
 
@@ -405,7 +402,7 @@ class Main(object):
             meta = {"file_name": file_name,
                     "file_size": file_size, "download": url}
             print(json.dumps(meta))
-            exit(0)
+            sys.exit(0)
 
         # Download with progress info, adding new line to clear after.
         try:

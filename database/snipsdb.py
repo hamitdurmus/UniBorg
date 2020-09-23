@@ -14,8 +14,8 @@ async def others(opt):
 
 
 async def check():
-    return (False if not [x for x in cli.find({}, {"Others": 0})]
-            else [x for x in cli.find({}, {"Others": 0})])
+    return (False if not list(cli.find({}, {"Others": 0}))
+            else list(cli.find({}, {"Others": 0})))
 
 
 async def check_one(key):
@@ -24,7 +24,7 @@ async def check_one(key):
 
 
 async def check_others():
-    return False if cli.find_one({"Others": False}) else True
+    return not cli.find_one({"Others": False})
 
 
 async def update(query, key, value):

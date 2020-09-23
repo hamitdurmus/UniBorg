@@ -1,23 +1,17 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-import logging
 import re
 from functools import partial
 
 from telethon import events
-from telethon.extensions.markdown import DEFAULT_URL_RE
 from telethon.tl.functions.messages import EditMessageRequest
-from telethon.tl.types import (MessageEntityBold, MessageEntityCode,
-                               MessageEntityItalic, MessageEntityPre,
-                               MessageEntityTextUrl)
+from telethon.extensions.markdown import DEFAULT_URL_RE
 from telethon.utils import add_surrogate, del_surrogate
-
-
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
-logger = logging.getLogger(__name__)
-
+from telethon.tl.types import (
+    MessageEntityBold, MessageEntityItalic, MessageEntityCode,
+    MessageEntityPre, MessageEntityTextUrl
+)
 
 
 def parse_url_match(m):
@@ -88,53 +82,56 @@ MATCHERS = [
 
 
 def parse(message, old_entities=None):
-    entities = []
-    old_entities = sorted(old_entities or [], key=lambda e: e.offset)
+    try:
+        entities = []
+        old_entities = sorted(old_entities or [], key=lambda e: e.offset)
 
-    i = 0
-    after = 0
-    message = add_surrogate(message)
-    while i < len(message):
-        for after, e in enumerate(old_entities[after:], start=after):
-            # If the next entity is strictly to our right, we're done here
-            if i < e.offset:
-                break
-            # Skip already existing entities if we're at one
-            if i == e.offset:
-                i += e.length
+        i = 0
+        after = 0
+        message = add_surrogate(message)
+        while i < len(message):
+            for after, e in enumerate(old_entities[after:], start=after):
+                # If the next entity is strictly to our right, we're done here
+                if i < e.offset:
+                    break
+                # Skip already existing entities if we're at one
+                if i == e.offset:
+                    i += e.length
 
-        # Find the first pattern that matches
-        for pattern, parser in MATCHERS:
-            match = pattern.match(message, pos=i)
-            if match:
-                break
-        else:
-            i += 1
-            continue
+            # Find the first pattern that matches
+            for pattern, parser in MATCHERS:
+                match = pattern.match(message, pos=i)
+                if match:
+                    break
+            else:
+                i += 1
+                continue
 
-        text, entity = parser(match)
+            text, entity = parser(match)
 
-        # Shift old entities after our current position (so they stay in place)
-        shift = len(text) - len(match[0])
-        if shift:
-            for e in old_entities[after:]:
-                e.offset += shift
+            # Shift old entities after our current position (so they stay in place)
+            shift = len(text) - len(match[0])
+            if shift:
+                for e in old_entities[after:]:
+                    e.offset += shift
 
-        # Replace whole match with text from parser
-        message = ''.join((
-            message[:match.start()],
-            text,
-            message[match.end():]
-        ))
+            # Replace whole match with text from parser
+            message = ''.join((
+                message[:match.start()],
+                text,
+                message[match.end():]
+            ))
 
-        # Append entity if we got one
-        if entity:
-            entities.append(entity)
+            # Append entity if we got one
+            if entity:
+                entities.append(entity)
 
-        # Skip past the match
-        i += len(text)
+            # Skip past the match
+            i += len(text)
 
-    return del_surrogate(message), entities + old_entities
+        return del_surrogate(message), entities + old_entities
+    except TypeError:
+        return
 
 
 @borg.on(events.MessageEdited(outgoing=True))

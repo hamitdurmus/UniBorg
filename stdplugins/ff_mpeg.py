@@ -12,7 +12,6 @@ from uniborg.util import admin_cmd, progress
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
 logger = logging.getLogger(__name__)
-logger = logging.getLogger(__name__)
 
 
 FF_MPEG_DOWN_LOAD_MEDIA_PATH = "uniborg.media.ffmpeg"
@@ -30,7 +29,7 @@ async def ff_mpeg_trim_cmd(event):
             reply_message = await event.get_reply_message()
             try:
                 c_time = time.time()
-                downloaded_file_name = await borg.download_media(
+                downloaded_file_name = await event.client.download_media(
                     reply_message,
                     FF_MPEG_DOWN_LOAD_MEDIA_PATH,
                     progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
@@ -72,7 +71,7 @@ async def ff_mpeg_trim_cmd(event):
         logger.info(o)
         try:
             c_time = time.time()
-            await borg.send_file(
+            await event.cilent.send_file(
                 event.chat_id,
                 o,
                 caption=" ".join(cmt[1:]),
@@ -98,7 +97,7 @@ async def ff_mpeg_trim_cmd(event):
         logger.info(o)
         try:
             c_time = time.time()
-            await borg.send_file(
+            await event.client.send_file(
                 event.chat_id,
                 o,
                 caption=" ".join(cmt[1:]),

@@ -11,6 +11,7 @@ logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s'
                     level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
+
 @borg.on(admin_cmd(pattern="promote ?(.*)"))
 async def _(event):
     if event.fwd_from:
@@ -35,7 +36,7 @@ async def _(event):
     elif input_str:
         to_promote_id = input_str
     try:
-        await borg(EditAdminRequest(event.chat_id, to_promote_id, rights, ""))
+        await event.client(EditAdminRequest(event.chat_id, to_promote_id, rights, ""))
     except (Exception) as exc:
         await event.edit(str(exc))
     else:
@@ -59,7 +60,7 @@ async def _(event):
     elif input_str:
         to_promote_id = input_str
     try:
-        await borg(EditAdminRequest(event.chat_id, to_promote_id, rights, ""))
+        await event.client(EditAdminRequest(event.chat_id, to_promote_id, rights, ""))
     except (Exception) as exc:
         await event.edit(str(exc))
     else:

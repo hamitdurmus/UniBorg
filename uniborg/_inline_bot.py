@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # (c) Shrimadhav U K
+import logging
 from math import ceil
 import asyncio
 import json
@@ -22,18 +23,16 @@ async def _(event):
     search_query = event.pattern_match.group(2)
     try:
         output_message = ""
-        bot_results = await borg.inline_query(
+        bot_results = await event.client.inline_query(
             bot_username,
             search_query
         )
-        i = 0
-        for result in bot_results:
+        for i, result in enumerate(bot_results):
             output_message += "{} {} `{}`\n\n".format(
                 result.title,
                 result.description,
                 ".icb " + bot_username + " " + str(i + 1) + " " + search_query
             )
-            i = i + 1
         await event.edit(output_message)
     except Exception as e:
         await event.edit("{} did not respond correctly, for **{}**!\n\
@@ -51,7 +50,7 @@ async def _(event):
     i_plus_oneth_result = event.pattern_match.group(2)
     search_query = event.pattern_match.group(3)
     try:
-        bot_results = await borg.inline_query(
+        bot_results = await event.client.inline_query(
             bot_username,
             search_query
         )
@@ -68,7 +67,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
         query = event.text
         if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
             os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
-        if event.query.user_id == borg.uid and query.startswith("@UniBorg"):
+        if event.sender_id == borg.uid and query.startswith("@UniBorg"):
             rev_text = query[::-1]
             buttons = paginate_help(0, borg._plugins, "helpme")
             result = builder.article(
@@ -91,7 +90,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                     "-j",
                     ytdl_url
                 ]
-                logger.info(command_to_exec)
+                logging.info(command_to_exec)
                 process = await asyncio.create_subprocess_exec(
                     *command_to_exec,
                     # stdout must a pipe to be accessible as process.stdout
@@ -103,7 +102,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 e_response = stderr.decode().strip()
                 # logger.info(e_response)
                 t_response = stdout.decode().strip()
-                logger.info(command_to_exec)
+                logging.info(command_to_exec)
                 if e_response:
                     error_message = e_response.replace(
                         "please report this issue on https://yt-dl.org/bug . Make sure you are using the latest version; see  https://yt-dl.org/update  on how to update. Be sure to call youtube-dl with the --verbose flag and include its complete output.", "")
@@ -211,11 +210,12 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
                 link_preview=False
             )
         await event.answer([result] if result else None)
+
     @tgbot.on(events.callbackquery.CallbackQuery(
         data=re.compile(b"helpme_next\((.+?)\)")
     ))
     async def on_plug_in_callback_query_handler(event):
-        if event.query.user_id == borg.uid:
+        if event.sender_id == borg.uid:
             current_page_number = int(
                 event.data_match.group(1).decode("UTF-8"))
             buttons = paginate_help(
@@ -225,11 +225,12 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
         else:
             reply_pop_up_alert = "Please get your own @UniBorg, and don't edit my messages!"
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
+
     @tgbot.on(events.callbackquery.CallbackQuery(
         data=re.compile(b"helpme_prev\((.+?)\)")
     ))
     async def on_plug_in_callback_query_handler(event):
-        if event.query.user_id == borg.uid:
+        if event.sender_id == borg.uid:
             current_page_number = int(
                 event.data_match.group(1).decode("UTF-8"))
             buttons = paginate_help(
@@ -242,6 +243,7 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
         else:
             reply_pop_up_alert = "Please get your own @UniBorg, and don't edit my messages!"
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
+
     @tgbot.on(events.callbackquery.CallbackQuery(
         data=re.compile(b"ub_plugin_(.*)")
     ))
@@ -259,10 +261,7 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
 def paginate_help(page_number, loaded_plugins, prefix):
     number_of_rows = Config.NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD
     number_of_cols = 2
-    helpable_plugins = []
-    for p in loaded_plugins:
-        if not p.startswith("_"):
-            helpable_plugins.append(p)
+    helpable_plugins = [p for p in loaded_plugins if not p.startswith("_")]
     helpable_plugins = sorted(helpable_plugins)
     modules = [custom.Button.inline(
         "{} {}".format("✅", x),

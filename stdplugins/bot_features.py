@@ -24,15 +24,15 @@ async def _(event):
         return
     chat = "@SangMataInfo_bot"
     sender = reply_message.sender
-    if reply_message.sender.bot:
+    if sender.bot:
         await event.edit("```Reply to actual users message.```")
         return
     await event.edit("```Processing```")
-    async with borg.conversation(chat) as conv:
+    async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(events.NewMessage(
                 incoming=True, from_users=461843263))
-            await borg.forward_messages(chat, reply_message)
+            await event.client.forward_messages(chat, reply_message)
             response = await response
         except YouBlockedUserError:
             await event.reply("```Please unblock @sangmatainfo_bot and try again```")
@@ -50,7 +50,7 @@ async def _(event):
     chat = "@fakemailbot"
     command = "/generate"
     await event.edit("```Fakemail Creating, wait```")
-    async with borg.conversation(chat) as conv:
+    async with event.client.conversation(chat) as conv:
         try:
             m = await event.client.send_message("@fakemailbot", "/generate")
             await asyncio.sleep(5)
@@ -70,7 +70,7 @@ async def _(event):
     chat = "@fakemailbot"
     command = "/id"
     await event.edit("```Fakemail list getting```")
-    async with borg.conversation(chat) as conv:
+    async with event.client.conversation(chat) as conv:
         try:
             m = await event.client.send_message("@fakemailbot", "/id")
             await asyncio.sleep(5)
@@ -96,15 +96,15 @@ async def _(event):
         return
     chat = "@uploadbot"
     sender = reply_message.sender
-    if reply_message.sender.bot:
+    if sender.bot:
         await event.edit("```Reply to actual users message.```")
         return
     await event.edit("```Processing```")
-    async with borg.conversation(chat) as conv:
+    async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(events.NewMessage(
                 incoming=True, from_users=97342984))
-            await borg.forward_messages(chat, reply_message)
+            await event.client.forward_messages(chat, reply_message)
             response = await response
         except YouBlockedUserError:
             await event.reply("```Please unblock @uploadbot and try again```")
@@ -128,15 +128,15 @@ async def _(event):
         return
     chat = "@getidsbot"
     sender = reply_message.sender
-    if reply_message.sender.bot:
+    if sender.bot:
         await event.edit("```Reply to actual users message.```")
         return
     await event.edit("```Processing```")
-    async with borg.conversation(chat) as conv:
+    async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(events.NewMessage(
                 incoming=True, from_users=186675376))
-            await borg.forward_messages(chat, reply_message)
+            await event.client.forward_messages(chat, reply_message)
             response = await response
         except YouBlockedUserError:
             await event.reply("```you blocked bot```")
@@ -160,7 +160,7 @@ async def voicy(event):
         return
     chat = "@Voicybot"
     sender = reply_message.sender
-    if reply_message.sender.bot:
+    if sender.bot:
         await event.edit("`Lütfen gerçekten bir kullanıcının mesajına yanıt verin.`")
         return
     await event.edit("`Ses dinleniyor...`")

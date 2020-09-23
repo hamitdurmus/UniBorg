@@ -14,18 +14,17 @@ async def update_file(name, path, newfile):
 
 
 async def check():
-    return (False if not [x for x in cli.find({}, {"File": 0})]
-            else [x for x in cli.find({}, {"File": 0})])
+    return (False if not list(cli.find({}, {"File": 0}))
+            else list(cli.find({}, {"File": 0})))
 
 
 async def retrieve():
-    return (False if not [x for x in cli.find({})]
-            else [x for x in cli.find({})])
+    return (False if not list(cli.find({}))
+            else list(cli.find({})))
 
 
 async def check_one(name):
-    return (False if not cli.find_one({"Name": name})
-            else True)
+    return bool(cli.find_one({"Name": name}))
 
 
 async def delete():

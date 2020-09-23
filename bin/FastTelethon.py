@@ -233,7 +233,7 @@ class ParallelTransferrer:
 
 
 parallel_transfer_locks: DefaultDict[int, asyncio.Lock] = defaultdict(
-    lambda: asyncio.Lock())
+    asyncio.Lock)
 
 
 async def _internal_transfer_to_telegram(client: TelegramClient,
@@ -300,5 +300,4 @@ async def upload_file(client: TelegramClient,
                       progress_callback: callable = None,
 
                       ) -> TypeInputFile:
-    res = (await _internal_transfer_to_telegram(client, file, progress_callback))[0]
-    return res
+    return (await _internal_transfer_to_telegram(client, file, progress_callback))[0]

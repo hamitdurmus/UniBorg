@@ -21,7 +21,7 @@ async def _(event):
     group_name = event.pattern_match.group(2)
     if type_of_group == "b":
         try:
-            result = await borg(functions.messages.CreateChatRequest(
+            result = await event.client(functions.messages.CreateChatRequest(
                 users=["@GoogleIMGBot"],
                 # Not enough users (to create a chat, for example)
                 # Telegram, no longer allows creating a chat with ourselves
@@ -40,17 +40,20 @@ async def _(event):
             await event.edit(str(e))
     elif type_of_group in ("c", "g"):
         try:
-            r = await borg(functions.channels.CreateChannelRequest(
-                title=group_name,
-                about="This is a Test from @UniBorg",
-                megagroup=False if type_of_group == "c" else True
-            ))
+            r = await borg(
+                functions.channels.CreateChannelRequest(
+                    title=group_name,
+                    about="New Channel",
+                    megagroup=type_of_group != "c",
+                )
+            )
+
             created_chat_id = r.chats[0].id
-            result = await borg(functions.messages.ExportChatInviteRequest(
+            result = await event.client(functions.messages.ExportChatInviteRequest(
                 peer=created_chat_id,
             ))
             await event.edit("Channel `{}` created successfully. Join {}".format(group_name, result.link))
-        except Exception as e:  # pylint:disable=C0103,W0703
+        except Exception as e:
             await event.edit(str(e))
     else:
         await event.edit("Read .helpme to know how to use me")

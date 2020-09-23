@@ -1,5 +1,3 @@
-# Thanks to @AvinashReddy3108 for this plugin
-
 """
 Audio and video downloader using Youtube-dl
 .yta To Download in mp3 format
@@ -29,6 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 DELETE_TIMEOUT = 5
+
 
 @borg.on(admin_cmd(pattern="playlist(a|v) (.*)"))
 async def download_video(v_url):
@@ -167,9 +166,9 @@ async def download_video(v_url):
                             thumb=thumb,
                             reply_to=v_url.message.id,
                             attributes=document_attributes,
-                            progress_callback=lambda d, t: asyncio.get_event_loop(
+                            progress_callback=lambda d, : asyncio.get_event_loop(
                             ).create_task(
-                                progress(d, t, v_url, c_time, "Uploading..",
+                                progress(d, v_url, c_time, "Uploading..",
                                          f"{ytdl_data_name_audio}")))
                         # os.remove(thumb)
                     except Exception as e:
@@ -246,7 +245,6 @@ async def download_video(v_url):
                     await asyncio.sleep(DELETE_TIMEOUT)
                     # await v_url.delete()
         shutil.rmtree(out_folder)
-
 
 
 def get_lst_of_files(input_directory, output_lst):

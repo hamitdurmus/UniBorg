@@ -28,11 +28,11 @@ async def _(event):
         await event.edit("```Reply to actual users message.```")
         return
     await event.edit("```Making Love```")
-    async with borg.conversation(chat) as conv:
+    async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(events.NewMessage(
                 incoming=True, from_users=1031952739))
-            await borg.forward_messages(chat, reply_message)
+            await event.client.forward_messages(chat, reply_message)
             response = await response
         except YouBlockedUserError:
             await event.reply("```Please unblock @QuotLyBot and try again```")

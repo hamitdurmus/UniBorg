@@ -33,7 +33,7 @@ async def _(event):
     elif event.reply_to_msg_id:
         previous_message = await event.get_reply_message()
         if previous_message.media:
-            downloaded_file_name = await borg.download_media(
+            downloaded_file_name = await event.client.download_media(
                 previous_message,
                 Config.TMP_DOWNLOAD_DIRECTORY,
                 progress_callback=progress
@@ -48,24 +48,23 @@ async def _(event):
             os.remove(downloaded_file_name)
         else:
             message = previous_message.message
-    # else:
-    #     message = "SYNTAX: `.paste <long text to include>`"
-    py_file = ""
     if downloaded_file_name.endswith(".py"):
+        # else:
+        #     message = "SYNTAX: `.paste <long text to include>`"
+        py_file = ""
         py_file += ".py"
         data = message
         key = requests.post('https://nekobin.com/api/documents',
                             json={"content": data}).json().get('result').get('key')
         url = f'https://nekobin.com/{key}{py_file}'
-        reply_text = f'Nekofied to *Nekobin* : {url}'
-        await event.edit(reply_text)
     else:
         data = message
         key = requests.post('https://nekobin.com/api/documents',
                             json={"content": data}).json().get('result').get('key')
         url = f'https://nekobin.com/{key}'
-        reply_text = f'Nekofied to *Nekobin* : {url}'
-        await event.edit(reply_text)
+
+    reply_text = f'Nekofied to *Nekobin* : {url}'
+    await event.edit(reply_text)
 
 # data = "tets sgdfgklj kdgjld"
 

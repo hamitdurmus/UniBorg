@@ -16,6 +16,8 @@ logger = logging.getLogger(__name__)
 
 
 current_date_time = "./../DOWNLOADS/"
+
+
 @borg.on(events.NewMessage(pattern=r".telegraph media", outgoing=True))
 async def _(event):
     if event.fwd_from:
@@ -24,7 +26,7 @@ async def _(event):
         os.makedirs(current_date_time)
     if event.reply_to_msg_id:
         start = datetime.now()
-        downloaded_file_name = await borg.download_media(
+        downloaded_file_name = await event.client.download_media(
             await event.get_reply_message(),
             current_date_time
         )
@@ -64,7 +66,7 @@ def upload_file(f):
     return ["https://telegra.ph" + i['src'] for i in response]
 
 
-class FilesOpener(object):
+class FilesOpener():
     def __init__(self, paths, key_format='file{}'):
         if not isinstance(paths, list):
             paths = [paths]
@@ -88,10 +90,7 @@ class FilesOpener(object):
                 file_or_name = file_or_name[0]
             if hasattr(file_or_name, 'read'):
                 f = file_or_name
-                if hasattr(f, 'name'):
-                    filename = f.name
-                else:
-                    filename = name
+                filename = f.name if hasattr(f, 'name') else name
             else:
                 filename = file_or_name
                 f = open(filename, 'rb')

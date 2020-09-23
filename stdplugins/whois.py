@@ -13,6 +13,7 @@ from uniborg.util import admin_cmd
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
 
+
 @borg.on(admin_cmd(pattern="whois ?(.*)"))
 async def _(event):
     if event.fwd_from:
@@ -21,7 +22,7 @@ async def _(event):
     if replied_user is None:
         await event.edit(str(error_i_a))
         return False
-    replied_user_profile_photos = await borg(GetUserPhotosRequest(
+    replied_user_profile_photos = await event.client(GetUserPhotosRequest(
         user_id=replied_user.user.id,
         offset=42,
         max_id=0,
@@ -55,29 +56,28 @@ async def _(event):
     except Exception as e:
         dc_id = "Need a Profile Picture to check **this**"
         location = str(e)
-    caption = """ID: <code>{}</code>
-First Name: <a href='tg://user?id={}'>{}</a>
-🤦‍♂️ Last Name: {}
-Bio: {}
-DC ID: {}
-Number of PPs: {}
-Restricted: {}
-Verified: {}
-Bot: {}
-Groups in Common: {}
-""".format(
-        user_id,
-        user_id,
-        first_name,
-        last_name,
-        user_bio,
-        dc_id,
-        replied_user_profile_photos_count,
-        replied_user.user.restricted,
-        replied_user.user.verified,
-        replied_user.user.bot,
-        common_chats
-    )
+    caption = "ID: <code>{}</code>\n" \
+        "First Name: <a href='tg://user?id={}'>{}</a>\n" \
+        "🤦‍♂️ Last Name: {}\n"\
+        "Bio: {}\n"\
+        "DC ID: {}\n"\
+        "Number of PPs: {}\n"\
+        "Restricted: {}\n"\
+        "Verified: {}\n"\
+        "Bot: {}\n"\
+        "Groups in Common: {}".format(
+            user_id,
+            user_id,
+            first_name,
+            last_name,
+            user_bio,
+            dc_id,
+            replied_user_profile_photos_count,
+            replied_user.user.restricted,
+            replied_user.user.verified,
+            replied_user.user.bot,
+            common_chats
+        )
     message_id_to_reply = event.message.reply_to_msg_id
     if not message_id_to_reply:
         message_id_to_reply = event.message.id
@@ -102,14 +102,13 @@ async def get_full_user(event):
                     previous_message.forward.from_id or previous_message.forward.channel_id
                 )
             )
-            return replied_user, None
         else:
             replied_user = await event.client(
                 GetFullUserRequest(
                     previous_message.from_id
                 )
             )
-            return replied_user, None
+        return replied_user, None
     else:
         input_str = None
         try:

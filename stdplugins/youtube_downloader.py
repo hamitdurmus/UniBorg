@@ -15,7 +15,6 @@ import time
 
 from telethon.tl.types import DocumentAttributeAudio
 
-import wget
 from sample_config import Config
 from uniborg.util import admin_cmd
 from youtube_dl import YoutubeDL
@@ -96,8 +95,10 @@ async def download_video(v_url):
     url = v_url.pattern_match.group(2)
     type = v_url.pattern_match.group(1).lower()
     out_folder = Config.TMP_DOWNLOAD_DIRECTORY + "youtubedl/"
+
     if not os.path.isdir(out_folder):
         os.makedirs(out_folder)
+
     await v_url.edit("`Preparing to download...`")
 
     if type == "a":
@@ -204,7 +205,7 @@ async def download_video(v_url):
         # thumb = out_folder + "cover.jpg"
         file_path = out_folder + file_names[0]
         song_size = file_size(file_path)
-        await v_url.edit(f"`Preparing to upload song:`\
+        j = await v_url.edit(f"`Preparing to upload song:`\
         \n**{ytdl_data['title']}**\
         \nby *{ytdl_data['uploader']}*")
         await v_url.client.send_file(
@@ -223,10 +224,9 @@ async def download_video(v_url):
                 progress(d, t, v_url, c_time, "Uploading..",
                          f"{ytdl_data['title']}.mp3")))
         # os.remove(file_path)
-        shutil.rmtree(out_folder)
         await asyncio.sleep(DELETE_TIMEOUT)
         os.remove(thumb_image)
-        await v_url.delete()
+        await j.delete()
 
     elif video:
         relevant_path = "./DOWNLOADS/youtubedl/"
@@ -242,7 +242,7 @@ async def download_video(v_url):
         video_size = file_size(file_path)
         # thumb = out_folder + "cover.jpg"
 
-        await v_url.edit(f"`Preparing to upload video:`\
+        j = await v_url.edit(f"`Preparing to upload video:`\
         \n**{ytdl_data['title']}**\
         \nby *{ytdl_data['uploader']}*")
         await v_url.client.send_file(
@@ -259,6 +259,7 @@ async def download_video(v_url):
         await asyncio.sleep(DELETE_TIMEOUT)
         os.remove(thumb_image)
         await v_url.delete()
+        await j.delete()
     shutil.rmtree(out_folder)
 
 

@@ -13,11 +13,13 @@ import sys
 
 from telethon import __version__, functions
 
+from sample_config import Config
 from uniborg.util import admin_cmd
 
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
 logger = logging.getLogger(__name__)
+
 
 @borg.on(admin_cmd(pattern="helpme ?(.*)", allow_sudo=True))
 async def _(event):
@@ -46,10 +48,10 @@ UserBot Forked from https://github.com/muhammedfurkan/uniborg""".format(
             reply_to=event.reply_to_msg_id,
             hide_via=True
         )
-        await event.delete()
     else:
         await event.reply(help_string + "\n\n" + s_help_string)
-        await event.delete()
+
+    await event.delete()
 
 
 @borg.on(admin_cmd(pattern="dc"))

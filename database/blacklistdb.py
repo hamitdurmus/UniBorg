@@ -8,8 +8,7 @@ async def add_blacklist(id):
 
 
 async def check_blacklist(id):
-    return (False if not cli.find_one({"Blacklist": id})
-            else True)
+    return bool(cli.find_one({"Blacklist": id}))
 
 
 async def delete_blacklist(id):
