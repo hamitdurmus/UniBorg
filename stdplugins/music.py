@@ -197,11 +197,11 @@ async def _(event):
                     if button.text == "📲🎵Download this Song!":
                         await button.click()
                         first = await conv.get_response()
-                        resp = await conv.get_response()
                         if first.media:
                             msj = f"[{first.media.document.attributes[1].file_name}](https://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ)\n`{humanbytes(first.media.document.size)}`"
                             await event.client.send_file(event.chat_id, first, caption=msj)
-                        elif resp.media:
+                        resp = await conv.get_response()
+                        if resp.media:
                             msj = f"[{resp.media.document.attributes[1].file_name}](https://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ)\n`{humanbytes(resp.media.document.size)}`"
                             await event.client.send_file(event.chat_id, resp, caption=msj)
                         await msg.delete()
