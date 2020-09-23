@@ -4,7 +4,7 @@ from telethon.errors.rpcerrorlist import (UserAlreadyParticipantError,
                                           YouBlockedUserError)
 from telethon.tl.functions.messages import ImportChatInviteRequest
 
-#from userbot.utils import admin_cmd
+#from userbot.utils import admin_cmdD
 from uniborg.util import admin_cmd
 
 
