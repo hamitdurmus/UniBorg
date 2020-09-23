@@ -195,7 +195,7 @@ async def _(event):
             details = await conv.get_response()
             for row in details.buttons:
                 for button in row:
-                    if button.text == "📲🎵Download this Song!":
+                    if button.text == "📲🎵Bu Şarkıyı İndir!":
                         await button.click()
                         first = await conv.get_response()
                         if first.media:
