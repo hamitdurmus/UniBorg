@@ -5,31 +5,31 @@ Pluggable [``asyncio``](https://docs.python.org/3/library/asyncio.html)
 [Telethon](https://github.com/LonamiWebs/Telethon).
 
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/muhammedfurkan/UniBorg)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/hamitdurmus/UniBorg)
 
 #### Other way 
 
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/muhammedfurkan/UniBorg)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/hamitdurmus/UniBorg)
 
 ### Performance Test || Resolved Issues || Active Issues
 
-[![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/muhammedfurkan/UniBorg/?ref=repository-badge)
+[![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/hamitdurmus/UniBorg/?ref=repository-badge)
 
-[![DeepSource](https://deepsource.io/gh/muhammedfurkan/UniBorg.svg/?label=resolved+issues&show_trend=true)](https://deepsource.io/gh/muhammedfurkan/UniBorg/?ref=repository-badge)
+[![DeepSource](https://deepsource.io/gh/hamitdurmus/UniBorg.svg/?label=resolved+issues&show_trend=true)](https://deepsource.io/gh/hamitdurmus/UniBorg/?ref=repository-badge)
 
-[![DeepSource](https://deepsource.io/gh/muhammedfurkan/UniBorg.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/muhammedfurkan/UniBorg/?ref=repository-badge)
+[![DeepSource](https://deepsource.io/gh/hamitdurmus/UniBorg.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/hamitdurmus/UniBorg/?ref=repository-badge)
 
 ### Code Quality
 
-[![CodeFactor](https://www.codefactor.io/repository/github/muhammedfurkan/uniborg/badge)](https://www.codefactor.io/repository/github/muhammedfurkan/uniborg)
+[![CodeFactor](https://www.codefactor.io/repository/github/hamitdurmus/uniborg/badge)](https://www.codefactor.io/repository/github/hamitdurmus/uniborg)
 
 #### The Easy Way
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/muhammedfurkan/UniBorg)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/hamitdurmus/UniBorg)
 
 #### The Legacy Way
 Simply clone the repository and run the main file:
 ```sh
-git clone https://github.com/muhammedfurkan/uniborg.git
+git clone https://github.com/hamitdurmus/uniborg.git
 cd uniborg
 virtualenv -p /usr/bin/python3 venv
 . ./venv/bin/activate
@@ -75,7 +75,7 @@ class Development(Config):
 ## internals
 
 The core features offered by the custom `TelegramClient` live under the
-[`uniborg/`](https://github.com/muhammedfurkan/uniborg/tree/master/uniborg)
+[`uniborg/`](https://github.com/hamitdurmus/uniborg/tree/master/uniborg)
 directory, with some utilities, enhancements, the `_core` plugin, and the `_inline_bot` plugin.
 
 
@@ -96,7 +96,7 @@ through [plugins](https://github.com/SpEcHiDe/uniborg/tree/master/stdplugins)
 which you can enable or disable on demand.
 
 Each plugin gets the `borg`, `logger`, `Config`, `tgbot` magical
-[variables](https://github.com/muhammedfurkan/UniBorg/blob/488eff632e65103ba7017d4f52777d22ddd52ea2/uniborg/uniborg.py#L76-L80)
+[variables](https://github.com/hamitdurmus/UniBorg/blob/488eff632e65103ba7017d4f52777d22ddd52ea2/uniborg/uniborg.py#L76-L80)
 to ease their use. Thus creating a plugin as easy as adding
 a new file under the plugin directory to do the job:
 
@@ -113,7 +113,7 @@ async def handler(event):
 
 ## learning
 
-Check out the already-mentioned [plugins](https://github.com/SpEcHiDe/muhammedfurkan/tree/master/stdplugins) directory, or some third-party [plugins](https://telegram.dog/UniBorg) to learn how to write your own, and consider reading [Telethon's documentation](http://telethon.readthedocs.io/).
+Check out the already-mentioned [plugins](https://github.com/SpEcHiDe/hamitdurmus/tree/master/stdplugins) directory, or some third-party [plugins](https://telegram.dog/UniBorg) to learn how to write your own, and consider reading [Telethon's documentation](http://telethon.readthedocs.io/).
 
 
 ## credits
