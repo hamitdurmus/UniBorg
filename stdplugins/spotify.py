@@ -18,7 +18,7 @@ logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s'
 logger = logging.getLogger(__name__)
 
 
-# =================== CONSTANT ===================
+# =================== CONSTANT ===================3
 SPO_BIO_ENABLED = "```Spotify Current Music to Bio enabled.```"
 SPO_BIO_DISABLED = "```Spotify Current Music to Bio disabled. Bio is default now.```"
 SPO_BIO_RUNNING = "```Spotify Current Music to Bio already running.```"
