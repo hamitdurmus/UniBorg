@@ -42,7 +42,7 @@ SPOTIFYCHECK = False
 RUNNING = False
 OLDEXCEPT = False
 PARSE = False
-# ================================================
+# =================================================
 
 
 async def get_spotify_token():
