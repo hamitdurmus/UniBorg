@@ -67,7 +67,7 @@ async def _(event):
                 await event.edit(string_to_show)
             else:
                 await event.edit(r["error"])
-            # now, remove the temporary file
+            # now, remove the temporary file.
             os.remove(required_file_name)
     else:
         await event.edit("Reply to a voice message, to get the relevant transcript.")
