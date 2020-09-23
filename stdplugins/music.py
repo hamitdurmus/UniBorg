@@ -1,5 +1,6 @@
 "get music from .m <music query>  Credits https://t.me/By_Azade"
 import logging
+from asyncio.exceptions import TimeoutError
 
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
@@ -208,3 +209,5 @@ async def _(event):
 
         except YouBlockedUserError:
             await event.edit("**Error:** `unblock` @DeezLoadBot `and retry!`")
+        except TimeoutError:
+            return
