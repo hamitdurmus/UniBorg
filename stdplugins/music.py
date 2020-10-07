@@ -199,11 +199,11 @@ async def _(event):
                         await button.click()
                         first = await conv.get_response()
                         if first.media:
-                            msj = f"[{first.media.document.attributes[1].file_name}](https://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ)\n`{humanbytes(first.media.document.size)}`"
+                            msj = f"[{first.media.document.attributes[1].file_name}]()\n`{humanbytes(first.media.document.size)}`"
                             await event.client.send_file(event.chat_id, first, caption=msj)
                         resp = await conv.get_response()
                         if resp.media:
-                            msj = f"[{resp.media.document.attributes[1].file_name}](https://t.me/joinchat/AAAAAE8NqbV48l7ls-pFtQ)\n`{humanbytes(resp.media.document.size)}`"
+                            msj = f"[{resp.media.document.attributes[1].file_name}]()\n`{humanbytes(resp.media.document.size)}`"
                             await event.client.send_file(event.chat_id, resp, caption=msj)
                         await msg.delete()
 
