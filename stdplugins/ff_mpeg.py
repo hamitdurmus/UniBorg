@@ -1,24 +1,27 @@
 """FFMpeg for @UniBorg
 """
 import asyncio
+import io
 import logging
 import os
 import time
 from datetime import datetime
 
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
 from sample_config import Config
 from uniborg.util import admin_cmd, progress
 
+FF_MPEG_DOWN_LOAD_MEDIA_PATH = "uniborg.media.ffmpeg"
+
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
+
 logger = logging.getLogger(__name__)
 
 
-FF_MPEG_DOWN_LOAD_MEDIA_PATH = "uniborg.media.ffmpeg"
-
-
-@borg.on(admin_cmd(pattern="ffmpegsave"))
-async def ff_mpeg_trim_cmd(event):
+@borg.on(admin_cmd(pattern="ffmpegsave ?(.*)"))
+async def ff_mpeg_save_cmd(event):
     if event.fwd_from:
         return
     if not os.path.exists(FF_MPEG_DOWN_LOAD_MEDIA_PATH):
@@ -29,7 +32,7 @@ async def ff_mpeg_trim_cmd(event):
             reply_message = await event.get_reply_message()
             try:
                 c_time = time.time()
-                downloaded_file_name = await event.client.download_media(
+                downloaded_file_name = await borg.download_media(
                     reply_message,
                     FF_MPEG_DOWN_LOAD_MEDIA_PATH,
                     progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
@@ -37,23 +40,23 @@ async def ff_mpeg_trim_cmd(event):
                     )
                 )
             except Exception as e:  # pylint:disable=C0103,W0703
-                await event.edit(str(e))
+                event.client.send_message(event.chat_id, str(e))
             else:
                 end = datetime.now()
                 ms = (end - start).seconds
-                await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
+                await event.client.send_message(event.chat_id, "Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
         else:
-            await event.edit("Reply to a Telegram media file")
+            await event.client.send_message(event.chat_id, "Reply to a Telegram media file")
     else:
-        await event.edit(f"a media file already exists in path. Please remove the media and try again!\n`.exec rm {FF_MPEG_DOWN_LOAD_MEDIA_PATH}`")
+        await event.client.send_message(event.chat_id, "a media file already exists in path. Please remove the media and try again!")
 
 
-@borg.on(admin_cmd(pattern="ffmpegtrim"))
+@borg.on(admin_cmd(pattern="ffmpegtrim ?(.*)"))
 async def ff_mpeg_trim_cmd(event):
     if event.fwd_from:
         return
     if not os.path.exists(FF_MPEG_DOWN_LOAD_MEDIA_PATH):
-        await event.edit(f"a media file needs to be downloaded, and saved to the following path: `{FF_MPEG_DOWN_LOAD_MEDIA_PATH}`")
+        await event.client.send_message(event.chat_id, f"a media file needs to be downloaded, and saved to the following path: `{FF_MPEG_DOWN_LOAD_MEDIA_PATH}`")
         return
     current_message_text = event.raw_text
     cmt = current_message_text.split(" ")
@@ -71,7 +74,7 @@ async def ff_mpeg_trim_cmd(event):
         logger.info(o)
         try:
             c_time = time.time()
-            await event.cilent.send_file(
+            await borg.send_file(
                 event.chat_id,
                 o,
                 caption=" ".join(cmt[1:]),
@@ -97,7 +100,7 @@ async def ff_mpeg_trim_cmd(event):
         logger.info(o)
         try:
             c_time = time.time()
-            await event.client.send_file(
+            await borg.send_file(
                 event.chat_id,
                 o,
                 caption=" ".join(cmt[1:]),
@@ -113,11 +116,11 @@ async def ff_mpeg_trim_cmd(event):
         except Exception as e:
             logger.info(str(e))
     else:
-        await event.edit("RTFM")
+        await event.client.send_message(event.chat_id, "RTFM")
         return
     end = datetime.now()
     ms = (end - start).seconds
-    await event.edit(f"Completed Process in {ms} seconds")
+    await event.client.send_message(event.chat_id, f"Completed Process in {ms} seconds")
 
 
 async def take_screen_shot(video_file, output_directory, ttl):
